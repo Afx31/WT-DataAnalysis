@@ -20,6 +20,7 @@ namespace WRD_DataAnalysis
                 Point location = screens[2].Bounds.Location;
                 this.Left = location.X;
                 this.Top = 100;
+                this.WindowState = FormWindowState.Maximized;
             }
 
             CsvData csvData = new CsvData();
@@ -47,6 +48,11 @@ namespace WRD_DataAnalysis
 
         public void InitialChartSetup()
         {
+            /*
+             * TODO: Very hardcoded for now, just on initial setup. Still working out a decent colouring scheme
+             * "I'll rework it dynamically one day.."
+             */
+            
             // Setup ChartAreas
             ChartArea chartArea1 = new ChartArea("Chart Area 1");
             ChartArea chartArea2 = new ChartArea("Chart Area 2");
@@ -66,45 +72,105 @@ namespace WRD_DataAnalysis
             chart3.Legends.Add(legend3);
             chart4.Legends.Add(legend4);
 
-            chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = true;
             chart1.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
-            chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            chart1.ChartAreas[0].AxisY.MinorGrid.Enabled = true;
-            chart1.ChartAreas[0].AxisY.MinorGrid.LineColor = Color.LightGray;
-            chart1.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chart1.ChartAreas[0].AxisX.MajorTickMark.Enabled = true;
             chart1.ChartAreas[0].AxisX.MinorTickMark.Enabled = false;
-            chart1.ChartAreas[0].AxisX2.MajorTickMark.Enabled = false;
-            chart1.ChartAreas[0].AxisX2.MinorTickMark.Enabled = false;
+            chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = true;
+            chart1.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+            chart1.ChartAreas[0].AxisY.MajorTickMark.Enabled = true;
+            chart1.ChartAreas[0].AxisY.MinorTickMark.Enabled = false;
 
-            chart2.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chart2.ChartAreas[0].AxisX.MajorGrid.Enabled = true;
             chart2.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
-            chart2.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            chart2.ChartAreas[0].AxisY.MinorGrid.Enabled = true;
-            chart2.ChartAreas[0].AxisY.MinorGrid.LineColor = Color.LightGray;
-            chart2.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chart2.ChartAreas[0].AxisX.MajorTickMark.Enabled = true;
             chart2.ChartAreas[0].AxisX.MinorTickMark.Enabled = false;
-            chart2.ChartAreas[0].AxisX2.MajorTickMark.Enabled = false;
-            chart2.ChartAreas[0].AxisX2.MinorTickMark.Enabled = false;
+            chart2.ChartAreas[0].AxisY.MajorGrid.Enabled = true;
+            chart2.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+            chart2.ChartAreas[0].AxisY.MajorTickMark.Enabled = true;
+            chart2.ChartAreas[0].AxisY.MinorTickMark.Enabled = false;
 
-            chart3.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chart3.ChartAreas[0].AxisX.MajorGrid.Enabled = true;
             chart3.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
-            chart3.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            chart3.ChartAreas[0].AxisY.MinorGrid.Enabled = true;
-            chart3.ChartAreas[0].AxisY.MinorGrid.LineColor = Color.LightGray;
-            chart3.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chart3.ChartAreas[0].AxisX.MajorTickMark.Enabled = true;
             chart3.ChartAreas[0].AxisX.MinorTickMark.Enabled = false;
-            chart3.ChartAreas[0].AxisX2.MajorTickMark.Enabled = false;
-            chart3.ChartAreas[0].AxisX2.MinorTickMark.Enabled = false;
+            chart3.ChartAreas[0].AxisY.MajorGrid.Enabled = true;
+            chart3.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+            chart3.ChartAreas[0].AxisY.MajorTickMark.Enabled = true;
+            chart3.ChartAreas[0].AxisY.MinorTickMark.Enabled = false;
 
-            chart4.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chart4.ChartAreas[0].AxisX.MajorGrid.Enabled = true;
             chart4.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
-            chart4.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            chart4.ChartAreas[0].AxisY.MinorGrid.Enabled = true;
-            chart4.ChartAreas[0].AxisY.MinorGrid.LineColor = Color.LightGray;
-            chart4.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chart4.ChartAreas[0].AxisX.MajorTickMark.Enabled = true;
             chart4.ChartAreas[0].AxisX.MinorTickMark.Enabled = false;
-            chart4.ChartAreas[0].AxisX2.MajorTickMark.Enabled = false;
-            chart4.ChartAreas[0].AxisX2.MinorTickMark.Enabled = false;
+            chart4.ChartAreas[0].AxisY.MajorGrid.Enabled = true;
+            chart4.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+            chart4.ChartAreas[0].AxisY.MajorTickMark.Enabled = true;
+            chart4.ChartAreas[0].AxisY.MinorTickMark.Enabled = false;
+
+            // ---- Colouring ----
+            // Chart
+            chart1.ChartAreas[0].BackColor = ColorTranslator.FromHtml("#1E1E1E");
+            chart2.ChartAreas[0].BackColor = ColorTranslator.FromHtml("#1E1E1E");
+            chart3.ChartAreas[0].BackColor = ColorTranslator.FromHtml("#1E1E1E");
+            chart4.ChartAreas[0].BackColor = ColorTranslator.FromHtml("#1E1E1E");
+
+            // Chart Area
+            chart1.ChartAreas[0].AxisX.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333"); // Originally #333333
+            chart1.ChartAreas[0].AxisX.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart1.ChartAreas[0].AxisX.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart1.ChartAreas[0].AxisX.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart1.ChartAreas[0].AxisX.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart1.ChartAreas[0].AxisX.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart1.ChartAreas[0].AxisY.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart1.ChartAreas[0].AxisY.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart1.ChartAreas[0].AxisY.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart1.ChartAreas[0].AxisY.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart1.ChartAreas[0].AxisY.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart1.ChartAreas[0].AxisY.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+
+            chart2.ChartAreas[0].AxisX.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart2.ChartAreas[0].AxisX.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart2.ChartAreas[0].AxisX.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart2.ChartAreas[0].AxisX.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart2.ChartAreas[0].AxisX.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart2.ChartAreas[0].AxisX.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart2.ChartAreas[0].AxisY.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart2.ChartAreas[0].AxisY.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart2.ChartAreas[0].AxisY.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart2.ChartAreas[0].AxisY.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart2.ChartAreas[0].AxisY.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart2.ChartAreas[0].AxisY.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+
+            chart3.ChartAreas[0].AxisX.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart3.ChartAreas[0].AxisX.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart3.ChartAreas[0].AxisX.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart3.ChartAreas[0].AxisX.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart3.ChartAreas[0].AxisX.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart3.ChartAreas[0].AxisX.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart3.ChartAreas[0].AxisY.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart3.ChartAreas[0].AxisY.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart3.ChartAreas[0].AxisY.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart3.ChartAreas[0].AxisY.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart3.ChartAreas[0].AxisY.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart3.ChartAreas[0].AxisY.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+
+            chart4.ChartAreas[0].AxisX.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart4.ChartAreas[0].AxisX.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart4.ChartAreas[0].AxisX.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart4.ChartAreas[0].AxisX.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart4.ChartAreas[0].AxisX.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart4.ChartAreas[0].AxisX.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart4.ChartAreas[0].AxisY.MajorGrid.LineColor = ColorTranslator.FromHtml("#333333");
+            chart4.ChartAreas[0].AxisY.MinorGrid.LineColor = ColorTranslator.FromHtml("#4D4D4D");
+            chart4.ChartAreas[0].AxisY.MajorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart4.ChartAreas[0].AxisY.MinorTickMark.LineColor = ColorTranslator.FromHtml("#FFFFFF");
+            chart4.ChartAreas[0].AxisY.LabelStyle.ForeColor = ColorTranslator.FromHtml("#CCCCCC");
+            chart4.ChartAreas[0].AxisY.TitleForeColor = ColorTranslator.FromHtml("#FFFFFF");
+
+            // Series
+            // done in KMapDataPointsToChart()
+
 
             //chart1.Dock = DockStyle.Fill;
             //chart1.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
@@ -208,23 +274,33 @@ namespace WRD_DataAnalysis
             chart4.ChartAreas[0].AxisX.Interval = 0.100;
             chart4.ChartAreas[0].AxisY.Interval = 10;
             chart4.Series.Add(series4);
+
+            chart1.Series[0].Color = ColorTranslator.FromHtml("#FF5722");
+            chart2.Series[0].Color = ColorTranslator.FromHtml("#4CAF50");
+            chart2.Series[1].Color = ColorTranslator.FromHtml("#FFC107");
+            chart3.Series[0].Color = ColorTranslator.FromHtml("#2196F3");
+            chart4.Series[0].Color = ColorTranslator.FromHtml("#FFC107");
         }
 
-        private void chart1_MouseMove(object sender, MouseEventArgs e)
+        private void chart_MouseMove(object sender, MouseEventArgs e)
         {
+            Chart currentChart = sender as Chart;
+
+            if (currentChart != null)
+            {
             // Get the current position of the cursor on the grid, relevant to the axis
-            HitTestResult htRes = chart1.HitTest(e.X, e.Y);
+                HitTestResult htRes = currentChart.HitTest(e.X, e.Y);
             if (htRes.ChartArea != null)
             {
                 // Get cursor position
-                double xValue = chart1.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                    double xValue = currentChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
 
                 // Remove the old one first
-                if (chart1.ChartAreas[0].AxisX.StripLines.Any())
-                    chart1.ChartAreas[0].AxisX.StripLines.Remove(chart1.ChartAreas[0].AxisX.StripLines[0]);
+                    if (currentChart.ChartAreas[0].AxisX.StripLines.Any())
+                        currentChart.ChartAreas[0].AxisX.StripLines.Remove(currentChart.ChartAreas[0].AxisX.StripLines[0]);
 
                 // Then add the new one
-                chart1.ChartAreas[0].AxisX.StripLines.Add(new StripLine()
+                    currentChart.ChartAreas[0].AxisX.StripLines.Add(new StripLine()
                 {
                     IntervalOffset = xValue,
                     StripWidth = 0,
@@ -238,7 +314,7 @@ namespace WRD_DataAnalysis
             if (false)
             {
                 var pos = e.Location;
-                var results = chart1.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);
+                    var results = currentChart.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);
 
                 foreach (var result in results)
                 {
@@ -247,11 +323,20 @@ namespace WRD_DataAnalysis
                         var prop = result.Object as DataPoint;
                         if (prop != null)
                         {
-                            toolTip1.Show("X=" + prop.XValue + ", Y=" + prop.YValues[0], this.chart1, pos.X, pos.Y - 15);
+                                toolTip1.Show("X=" + prop.XValue + ", Y=" + prop.YValues[0], currentChart, pos.X, pos.Y - 15);
+                            }
+                        }
                         }
                     }
                 }
             }
+
+        private void chart_MouseLeave(object sender, EventArgs e)
+        {
+            Chart currentChart = sender as Chart;
+
+            if (currentChart?.ChartAreas[0].AxisX.StripLines.Any() != null)
+                currentChart.ChartAreas[0].AxisX.StripLines.Remove(currentChart.ChartAreas[0].AxisX.StripLines[0]);
         }
 
         private void DoTheme()
@@ -268,21 +353,6 @@ namespace WRD_DataAnalysis
                     //chart.ChartAreas[0].BackColor = _IsDarkTheme ? Color.Black : default;
                 }
             }
-        }
-
-        private void chart1_PostPaint(object sender, ChartPaintEventArgs e)
-        {
-            //if (e.ChartElement is ChartArea)
-            //{
-            //    ChartArea area = e.ChartElement as ChartArea;
-            //    Graphics g = e.ChartGraphics.Graphics;
-
-            //    // Convert Y value to pixel position
-            //    double pixelPosition = area.AxisY.ValueToPixelPosition(1.5);
-
-            //    // Draw a line at Y = 2
-            //    g.DrawLine(new Pen(Color.Blue, 2), area.Position.X, (float)pixelPosition, area.Position.Right, (float)pixelPosition);
-            //}
         }
 
         private void toolStripMenuItem_Theme_Click(object sender, EventArgs e)
