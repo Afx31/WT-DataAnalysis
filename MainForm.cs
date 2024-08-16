@@ -58,6 +58,14 @@ namespace WRD_DataAnalysis
             ChartArea chartArea2 = new ChartArea("Chart Area 2");
             ChartArea chartArea3 = new ChartArea("Chart Area 3");
             ChartArea chartArea4 = new ChartArea("Chart Area 4");
+            
+            // https://stackoverflow.com/questions/32925981/remove-white-and-unnecessary-space-from-chart-control
+            chartArea1.Position = new ElementPosition(0, 0, 100, 100);
+            chartArea2.Position = new ElementPosition(0, 0, 100, 100);
+            chartArea3.Position = new ElementPosition(0, 0, 100, 100);
+            chartArea4.Position = new ElementPosition(0, 0, 100, 100);
+            chartArea1.AxisX.LabelStyle.Format = "0.0";
+
             chart1.ChartAreas.Add(chartArea1);
             chart2.ChartAreas.Add(chartArea2);
             chart3.ChartAreas.Add(chartArea3);
