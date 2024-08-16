@@ -180,13 +180,42 @@ namespace WRD_DataAnalysis
             // done in KMapDataPointsToChart()
 
 
+            // Zoomable
+            chart1.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
+            chart1.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
+            chart1.MouseWheel += chart1_MouseMove;
+            
             //chart1.Dock = DockStyle.Fill;
-            //chart1.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
-            //chart1.ChartAreas[0].AxisY.ScaleView.Zoomable = false;
-            //chart1.ChartAreas[0].CursorX.IsUserEnabled = true;
-            //chart1.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
-            //chart1.ChartAreas[0].CursorY.IsUserEnabled = true;
-            //chart1.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
+
+        }
+
+        public void chart1_MouseMove(object sender, MouseEventArgs e)
+        {
+            var chart = sender as Chart;
+            Axis xAxis = chart.ChartAreas[0].AxisX;
+            int zoomScale = 2;
+
+            try
+            {
+                if (e.Delta < 0)
+                {
+                    xAxis.ScaleView.ZoomReset();
+                }
+                else if (e.Delta > 0)
+                {
+                    double xMinView = xAxis.ScaleView.ViewMinimum;
+                    double xMaxView = xAxis.ScaleView.ViewMaximum;
+                    
+                    double posXStart = xAxis.PixelPositionToValue(e.Location.X) - (xMaxView - xMinView) / zoomScale;
+                    double posXEnd = xAxis.PixelPositionToValue(e.Location.X) + (xMaxView - xMinView) / zoomScale;
+
+                    xAxis.ScaleView.Zoom(posXStart, posXEnd);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex);
+            }
         }
 
         public void ChartPositioningSetup()
@@ -343,7 +372,7 @@ namespace WRD_DataAnalysis
         {
             Chart currentChart = sender as Chart;
 
-            if (currentChart?.ChartAreas[0].AxisX.StripLines.Any() != null)
+            if (currentChart?.ChartAreas[0]?.AxisX.StripLines.Any() != null)
                 currentChart.ChartAreas[0].AxisX.StripLines.Remove(currentChart.ChartAreas[0].AxisX.StripLines[0]);
         }
 
