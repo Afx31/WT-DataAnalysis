@@ -34,15 +34,11 @@ namespace WRD_DataAnalysis
             menuStrip1 = new MenuStrip();
             toolStripMenuItem_Theme = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
+            tableLayoutPanel1 = new TableLayoutPanel();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             menuStrip1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chart2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chart3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chart4).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
@@ -52,7 +48,7 @@ namespace WRD_DataAnalysis
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Theme });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1221, 24);
+            menuStrip1.Size = new Size(1131, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -63,79 +59,50 @@ namespace WRD_DataAnalysis
             toolStripMenuItem_Theme.Text = "Theme";
             toolStripMenuItem_Theme.Click += toolStripMenuItem_Theme_Click;
             // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(chart1, 0, 0);
+            tableLayoutPanel1.ForeColor = Color.Black;
+            tableLayoutPanel1.Location = new Point(12, 39);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 93.30025F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 6.699752F));
+            tableLayoutPanel1.Size = new Size(1107, 442);
+            tableLayoutPanel1.TabIndex = 4;
+            // 
             // chart1
             // 
             chart1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             chart1.BackColor = Color.FromArgb(0, 10, 15);
             chart1.BorderlineColor = Color.FromArgb(45, 45, 45);
-            chart1.Location = new Point(12, 27);
+            chart1.Location = new Point(3, 3);
             chart1.Name = "chart1";
-            chart1.Size = new Size(1185, 200);
+            chart1.Size = new Size(1101, 406);
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
-            chart1.MouseLeave += chart_MouseLeave;
-            chart1.MouseMove += chart_MouseMove;
-            // 
-            // chart2
-            // 
-            chart2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            chart2.BackColor = Color.FromArgb(0, 10, 15);
-            chart2.BorderlineColor = Color.FromArgb(45, 45, 45);
-            chart2.Location = new Point(12, 233);
-            chart2.Name = "chart2";
-            chart2.Size = new Size(1185, 200);
-            chart2.TabIndex = 4;
-            chart2.Text = "chart2";
-            chart2.MouseLeave += chart_MouseLeave;
-            chart2.MouseMove += chart_MouseMove;
-            // 
-            // chart3
-            // 
-            chart3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            chart3.BackColor = Color.FromArgb(0, 10, 15);
-            chart3.BorderlineColor = Color.FromArgb(45, 45, 45);
-            chart3.Location = new Point(12, 439);
-            chart3.Name = "chart3";
-            chart3.Size = new Size(1185, 200);
-            chart3.TabIndex = 5;
-            chart3.Text = "chart3";
-            chart3.MouseLeave += chart_MouseLeave;
-            chart3.MouseMove += chart_MouseMove;
-            // 
-            // chart4
-            // 
-            chart4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            chart4.BackColor = Color.FromArgb(0, 10, 15);
-            chart4.BorderlineColor = Color.FromArgb(45, 45, 45);
-            chart4.Location = new Point(12, 645);
-            chart4.Name = "chart4";
-            chart4.Size = new Size(1185, 200);
-            chart4.TabIndex = 6;
-            chart4.Text = "chart4";
-            chart4.MouseLeave += chart_MouseLeave;
-            chart4.MouseMove += chart_MouseMove;
+            chart1.MouseMove += chart1_MouseMove;
+            chart1.MouseWheel += chart1_MouseWheelMove;
+            chart1.MouseLeave += chart1_MouseLeave;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
-            ClientSize = new Size(1221, 922);
-            Controls.Add(chart1);
-            Controls.Add(chart2);
-            Controls.Add(chart3);
-            Controls.Add(chart4);
+            ClientSize = new Size(1131, 493);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "MainForm";
-            SizeChanged += MainForm_SizeChanged;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chart2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chart3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chart4).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -146,9 +113,7 @@ namespace WRD_DataAnalysis
         private MenuStrip menuStrip1;
         private ToolStripMenuItem toolStripMenuItem_Theme;
         private ToolTip toolTip1;
+        private TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart4;
     }
 }
