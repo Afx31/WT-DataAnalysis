@@ -64,7 +64,12 @@ namespace WRD_DataAnalysis
             chartArea2.Position = new ElementPosition(0, 0, 100, 100);
             chartArea3.Position = new ElementPosition(0, 0, 100, 100);
             chartArea4.Position = new ElementPosition(0, 0, 100, 100);
+            
+            // Axis interval tick decimal formatting
             chartArea1.AxisX.LabelStyle.Format = "0.0";
+            chartArea2.AxisX.LabelStyle.Format = "0.0";
+            chartArea3.AxisX.LabelStyle.Format = "0.0";
+            chartArea4.AxisX.LabelStyle.Format = "0.0";
 
             chart1.ChartAreas.Add(chartArea1);
             chart2.ChartAreas.Add(chartArea2);
