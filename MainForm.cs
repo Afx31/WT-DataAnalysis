@@ -51,7 +51,7 @@ namespace WRD_DataAnalysis
             chart.Name = "chart1";
             //chart.Dock = DockStyle.Fill;
 
-            // -------------------- Chart Areas --------------------
+            #region -------------------- Chart Areas --------------------
             ChartArea chartArea1 = new ChartArea("ChartArea1");
             ChartArea chartArea2 = new ChartArea("ChartArea2");
             ChartArea chartArea3 = new ChartArea("ChartArea3");
@@ -67,21 +67,27 @@ namespace WRD_DataAnalysis
             chartArea2.AxisX.LabelStyle.Enabled = false;
             chartArea3.AxisX.LabelStyle.Enabled = false;
 
+            // Tick adjustments
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisX.MinorTickMark.Enabled = false;
+            chartArea2.AxisX.MajorTickMark.Enabled = false;
+            chartArea2.AxisX.MinorTickMark.Enabled = false;
+            chartArea3.AxisX.MajorTickMark.Enabled = false;
+            chartArea3.AxisX.MinorTickMark.Enabled = false;
+            chartArea4.AxisX.MajorTickMark.Enabled = true;
+            chartArea4.AxisX.MinorTickMark.Enabled = true;
+            chartArea4.AxisX.MajorTickMark.Size = 0.5f;
+            chartArea4.AxisX.MinorTickMark.Size = 0.2f;
+
             // Optional: Hide the X-axis line for the first two chart areas
             chartArea1.AxisX.LineWidth = 0;
             chartArea2.AxisX.LineWidth = 0;
             chartArea3.AxisX.LineWidth = 0;
 
-            // https://stackoverflow.com/questions/32925981/remove-white-and-unnecessary-space-from-chart-control
-            //chartArea1.Position = new ElementPosition(0, 0, 100, 100);
-            //chartArea2.Position = new ElementPosition(0, 0, 100, 100);
-            //chartArea3.Position = new ElementPosition(0, 0, 100, 100);
-            //chartArea4.Position = new ElementPosition(0, 0, 100, 100);
-
-            chartArea1.Position = new ElementPosition(0, 0, 100, 25);
-            chartArea2.Position = new ElementPosition(0, 25, 100, 25);
-            chartArea3.Position = new ElementPosition(0, 50, 100, 25);
-            chartArea4.Position = new ElementPosition(0, 75, 100, 25);
+            chartArea1.Position = new ElementPosition(0, 1, 100, 25); // ElementPosition(0, 0, 100, 25);
+            chartArea2.Position = new ElementPosition(0, 25, 100, 25); // ElementPosition(0, 25, 100, 25);
+            chartArea3.Position = new ElementPosition(0, 49, 100, 25); // ElementPosition(0, 50, 100, 25);
+            chartArea4.Position = new ElementPosition(0, 73, 100, 25); // ElementPosition(0, 75, 100, 25);
 
             // Axis interval tick decimal formatting
             chartArea1.AxisX.LabelStyle.Format = "0.0";
@@ -94,9 +100,9 @@ namespace WRD_DataAnalysis
             chart.ChartAreas.Add(chartArea2);
             chart.ChartAreas.Add(chartArea3);
             chart.ChartAreas.Add(chartArea4);
+            #endregion
 
-
-            // -------------------- Legends --------------------
+            #region -------------------- Legends --------------------
             Legend legend1 = new Legend {
                 Name = "Legend1",
                 DockedToChartArea = "ChartArea1",
@@ -137,8 +143,9 @@ namespace WRD_DataAnalysis
             chart.Legends.Add(legend22);
             chart.Legends.Add(legend3);
             chart.Legends.Add(legend4);
+            #endregion
 
-            // -------------------- Misc --------------------
+            #region -------------------- Misc --------------------
             foreach (ChartArea ca in chart.ChartAreas)
             {
                 // Tick stuff
@@ -170,6 +177,7 @@ namespace WRD_DataAnalysis
                 ca.AxisX.ScaleView.Zoomable = true;
                 ca.AxisY.ScaleView.Zoomable = true;
             }
+            #endregion
         }
 
         private void MapDataPointsToChart(CsvData csvData)
@@ -185,7 +193,8 @@ namespace WRD_DataAnalysis
             };
             for (int i = 0; i < csvData.ListTime.Count; i++)
                 series1.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListRpm[i]);
-            
+            chart1.ChartAreas["ChartArea1"].AxisY.Interval = 1000;
+
 
             var series2 = new Series
             {
@@ -210,6 +219,7 @@ namespace WRD_DataAnalysis
                 series2.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListECT[i]);
                 series22.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
             }
+            chart1.ChartAreas["ChartArea2"].AxisY.Interval = 10;
 
 
             var series3 = new Series
@@ -223,6 +233,7 @@ namespace WRD_DataAnalysis
             };
             for (int i = 0; i < csvData.ListTime.Count; i++)
                 series3.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
+            chart1.ChartAreas["ChartArea3"].AxisY.Interval = 10;
 
 
             var series4 = new Series
@@ -236,6 +247,7 @@ namespace WRD_DataAnalysis
             };
             for (int i = 0; i < csvData.ListTime.Count; i++)
                 series4.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilPressure[i]);
+            chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
 
 
             Chart chart = chart1;
@@ -244,6 +256,15 @@ namespace WRD_DataAnalysis
             chart.Series.Add(series22);
             chart.Series.Add(series3);
             chart.Series.Add(series4);
+
+            foreach (ChartArea ca in chart1.ChartAreas)
+            {
+                //ca.AxisX.Interval = 0.1;
+
+                // Testing - interval spacing
+                ca.AxisX.Interval = 1; // Seconds ~ Probably want 10 seconds with actual data
+                ca.AxisX.MajorGrid.Interval = 1; // Which tick the major grid line will appear on
+            }
         }
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
@@ -334,7 +355,7 @@ namespace WRD_DataAnalysis
             {
                 foreach (ChartArea ca in chart.ChartAreas)
                 {
-                    if (ca?.AxisX.StripLines.Any() != null)
+                    if (ca?.AxisX.StripLines?.Count > 0)
                         ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
                 }
             }
