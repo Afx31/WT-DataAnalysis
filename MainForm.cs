@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Reflection;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -18,7 +19,7 @@ namespace WRD_DataAnalysis
             {
                 this.StartPosition = FormStartPosition.Manual;
                 Screen[] screens = Screen.AllScreens;
-                Point location = screens[2].Bounds.Location;
+                Point location = screens[1].Bounds.Location;
                 this.Left = location.X;
                 this.Top = 100;
                 this.WindowState = FormWindowState.Maximized;
@@ -106,6 +107,7 @@ namespace WRD_DataAnalysis
             Legend legend1 = new Legend {
                 Name = "Legend1",
                 DockedToChartArea = "ChartArea1",
+                Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
                 LegendStyle = LegendStyle.Row
             };
@@ -113,6 +115,7 @@ namespace WRD_DataAnalysis
             {
                 Name = "Legend2",
                 DockedToChartArea = "ChartArea2",
+                Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
                 LegendStyle = LegendStyle.Row
             };
@@ -120,6 +123,7 @@ namespace WRD_DataAnalysis
             {
                 Name = "Legend22",
                 DockedToChartArea = "ChartArea2",
+                Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
                 LegendStyle = LegendStyle.Row
             };
@@ -127,6 +131,7 @@ namespace WRD_DataAnalysis
             {
                 Name = "Legend3",
                 DockedToChartArea = "ChartArea3",
+                Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
                 LegendStyle = LegendStyle.Row
             };
@@ -134,6 +139,7 @@ namespace WRD_DataAnalysis
             {
                 Name = "Legend4",
                 DockedToChartArea = "ChartArea4",
+                Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
                 LegendStyle = LegendStyle.Row
             };
@@ -194,7 +200,6 @@ namespace WRD_DataAnalysis
             for (int i = 0; i < csvData.ListTime.Count; i++)
                 series1.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListRpm[i]);
             chart1.ChartAreas["ChartArea1"].AxisY.Interval = 1000;
-
 
             var series2 = new Series
             {
@@ -275,6 +280,7 @@ namespace WRD_DataAnalysis
             {
                 // Get the current position of the cursor on the grid, relevant to the axis
                 HitTestResult htRes = chart.HitTest(e.X, e.Y);
+
                 if (htRes.ChartArea != null)
                 {
                     // Get cursor position - being lazy and taking from first chart area
@@ -295,6 +301,13 @@ namespace WRD_DataAnalysis
                             BorderWidth = 1,
                             BorderDashStyle = ChartDashStyle.Solid
                         });
+                    }
+
+                    // Update legend with current value on yAxis
+                    foreach (Series series in chart.Series)
+                    {
+                        DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+                        series.LegendText = series.Name + " : " + matchingPoint?.YValues.FirstOrDefault();
                     }
                 }
 
