@@ -1,7 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Reflection;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WRD_DataAnalysis
@@ -30,26 +26,11 @@ namespace WRD_DataAnalysis
 
             InitialChartSetup();
             MapDataPointsToChart(csvData);
-            FormLogic();
-        }
-
-        public void FormLogic()
-        {
-            // Series - used to store data that is to be displayed, along with the attributes of that data
-            // ChartAreas - used to draw one or more charts using one set of axes (with DataPoints)
-
-
-            //foreach (DataPoint dp in series.Points)
-            //{
-            //    if (dp.XValue == 5)
-            //        dp.ToolTip = "test";
-            //}
         }
 
         private void InitialChartSetup()
         {
             Chart chart = chart1;
-            chart.Name = "chart1";
             //chart.Dock = DockStyle.Fill;
 
             #region -------------------- Chart Areas --------------------
@@ -85,10 +66,10 @@ namespace WRD_DataAnalysis
             chartArea2.AxisX.LineWidth = 0;
             chartArea3.AxisX.LineWidth = 0;
 
-            chartArea1.Position = new ElementPosition(0, 1, 100, 25); // ElementPosition(0, 0, 100, 25);
-            chartArea2.Position = new ElementPosition(0, 25, 100, 25); // ElementPosition(0, 25, 100, 25);
-            chartArea3.Position = new ElementPosition(0, 49, 100, 25); // ElementPosition(0, 50, 100, 25);
-            chartArea4.Position = new ElementPosition(0, 73, 100, 25); // ElementPosition(0, 75, 100, 25);
+            chartArea1.Position = new ElementPosition(0, 1, 99.5f, 25); // ElementPosition(0, 1, 100, 25);
+            chartArea2.Position = new ElementPosition(0, 25, 99.5f, 25); // ElementPosition(0, 25, 100, 25);
+            chartArea3.Position = new ElementPosition(0, 49, 99.5f, 25); // ElementPosition(0, 49, 100, 25);
+            chartArea4.Position = new ElementPosition(0, 73, 99.5f, 25); // ElementPosition(0, 73, 100, 25);
 
             // Axis interval tick decimal formatting
             chartArea1.AxisX.LabelStyle.Format = "0.0";
@@ -109,7 +90,9 @@ namespace WRD_DataAnalysis
                 DockedToChartArea = "ChartArea1",
                 Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row
+                LegendStyle = LegendStyle.Row,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent
             };
             Legend legend2 = new Legend
             {
@@ -117,38 +100,46 @@ namespace WRD_DataAnalysis
                 DockedToChartArea = "ChartArea2",
                 Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row
-            };
-            Legend legend22 = new Legend
-            {
-                Name = "Legend22",
-                DockedToChartArea = "ChartArea2",
-                Docking = Docking.Left,
-                IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row
+                LegendStyle = LegendStyle.Row,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent
             };
             Legend legend3 = new Legend
             {
                 Name = "Legend3",
-                DockedToChartArea = "ChartArea3",
+                DockedToChartArea = "ChartArea2",
                 Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row
+                LegendStyle = LegendStyle.Row,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent
             };
             Legend legend4 = new Legend
             {
                 Name = "Legend4",
+                DockedToChartArea = "ChartArea3",
+                Docking = Docking.Left,
+                IsDockedInsideChartArea = true,
+                LegendStyle = LegendStyle.Row,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent
+            };
+            Legend legend5 = new Legend
+            {
+                Name = "Legend5",
                 DockedToChartArea = "ChartArea4",
                 Docking = Docking.Left,
                 IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row
+                LegendStyle = LegendStyle.Row,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent
             };
 
             chart.Legends.Add(legend1);
             chart.Legends.Add(legend2);
-            chart.Legends.Add(legend22);
             chart.Legends.Add(legend3);
             chart.Legends.Add(legend4);
+            chart.Legends.Add(legend5);
             #endregion
 
             #region -------------------- Misc --------------------
@@ -210,11 +201,11 @@ namespace WRD_DataAnalysis
                 ChartType = SeriesChartType.Line,
                 XValueType = ChartValueType.Double
             };
-            var series22 = new Series
+            var series3 = new Series
             {
                 Name = "Oil Temp",
                 ChartArea = "ChartArea2",
-                Legend = "Legend22",
+                Legend = "Legend3",
                 Color = ColorTranslator.FromHtml("#FFC107"),
                 ChartType = SeriesChartType.Line,
                 XValueType = ChartValueType.Double
@@ -222,52 +213,49 @@ namespace WRD_DataAnalysis
             for (int i = 0; i < csvData.ListTime.Count; i++)
             {
                 series2.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListECT[i]);
-                series22.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
+                series3.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
             }
             chart1.ChartAreas["ChartArea2"].AxisY.Interval = 10;
 
 
-            var series3 = new Series
+            var series4 = new Series
             {
                 Name = "Oil Temp2",
                 ChartArea = "ChartArea3",
-                Legend = "Legend3",
+                Legend = "Legend4",
                 Color = ColorTranslator.FromHtml("#2196F3"),
                 ChartType = SeriesChartType.Line,
                 XValueType = ChartValueType.Double
             };
             for (int i = 0; i < csvData.ListTime.Count; i++)
-                series3.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
+                series4.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
             chart1.ChartAreas["ChartArea3"].AxisY.Interval = 10;
 
 
-            var series4 = new Series
+            var series5 = new Series
             {
                 Name = "Oil Pressure",
                 ChartArea = "ChartArea4",
-                Legend = "Legend4",
+                Legend = "Legend5",
                 Color = ColorTranslator.FromHtml("#FFC107"),
                 ChartType = SeriesChartType.Line,
                 XValueType = ChartValueType.Double
             };
             for (int i = 0; i < csvData.ListTime.Count; i++)
-                series4.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilPressure[i]);
+                series5.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilPressure[i]);
             chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
 
 
             Chart chart = chart1;
             chart.Series.Add(series1);
             chart.Series.Add(series2);
-            chart.Series.Add(series22);
             chart.Series.Add(series3);
             chart.Series.Add(series4);
+            chart.Series.Add(series5);
 
             foreach (ChartArea ca in chart1.ChartAreas)
             {
-                //ca.AxisX.Interval = 0.1;
-
-                // Testing - interval spacing
-                ca.AxisX.Interval = 1; // Seconds ~ Probably want 10 seconds with actual data
+                ca.AxisX.Interval = 5; // Seconds ~ Probably want 10 seconds with actual data
                 ca.AxisX.MajorGrid.Interval = 1; // Which tick the major grid line will appear on
             }
         }
@@ -309,11 +297,30 @@ namespace WRD_DataAnalysis
                         DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
                         series.LegendText = series.Name + " : " + matchingPoint?.YValues.FirstOrDefault();
                     }
+
+                    //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
+                    //chart.Series
+                    //    .Where(x => x.ChartArea == ca.Name)
+                    //    .ToList()
+                    //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
+                    //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
                 }
+
 
                 // TODO: configurable
                 if (false)
                 {
+                    // Test 1
+                    {
+                        foreach (DataPoint dp in chart.Series[0].Points)
+                        {
+                            if (dp.YValues[0] == 871)
+                                dp.ToolTip = "test";
+                        }
+                    }
+
+                    // Test 2
+                    {
                     var pos = e.Location;
                     var results = chart.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);
 
@@ -330,6 +337,7 @@ namespace WRD_DataAnalysis
                     }
                 }
             }
+        }
         }
         
         private void chart1_MouseWheelMove(object sender, MouseEventArgs e)
@@ -373,6 +381,7 @@ namespace WRD_DataAnalysis
                 }
             }
         }
+
 
         private void toolStripMenuItem_Theme_Click(object sender, EventArgs e)
         {
