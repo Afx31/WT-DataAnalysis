@@ -4,15 +4,17 @@ namespace WRD_DataAnalysis
 {
     public partial class ChartForm : Form
     {
+        public CsvData _CsvData;
+
         public ChartForm()
         {
             InitializeComponent();
 
-            CsvData csvData = new CsvData();
-            csvData.ReadCsvData(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\data.csv");
+            _CsvData = new CsvData();
+            _CsvData.ReadCsvData(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\data.csv");
 
             InitialChartSetup();
-            MapDataPointsToChart(csvData);
+            MapDataPointsToChart(_CsvData);
         }
 
         private void InitialChartSetup()
@@ -414,5 +416,6 @@ namespace WRD_DataAnalysis
                 }
             }
         }
+
     }
 }

@@ -149,5 +149,20 @@ namespace WRD_DataAnalysis
                 }
             }
         }
+
+        public enum DataValues
+        {
+            RPM = 1,
+            Speed = 2,
+            Gear = 3,
+            Voltage = 4,
+            IAT = 5,
+            ECT = 6,
+            TPS = 7,
+            MAP = 8,
+            LambdaRatio = 9,
+            OilTemperature = 10,
+            OilPressure = 11
+        }
     }
 }

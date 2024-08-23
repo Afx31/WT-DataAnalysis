@@ -53,7 +53,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(chart1);
             Name = "ChartForm";
-            Text = "ChartForm";
+            Text = "Chart Form";
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
         }
