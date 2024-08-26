@@ -108,11 +108,12 @@ namespace WRD_DataAnalysis
         {
             int counter = 1;
 
-            void DoDataPoints(List<int> chartDataPoints, string colour)
+            void DoDataPoints(List<ChartDataConfig> chartDataConfigs)
             {
-                foreach (int dataPoint in chartDataPoints)
+                foreach (ChartDataConfig chartDataConfig in chartDataConfigs)
                 {
-                    CsvData.DataValues enumValue = (CsvData.DataValues)dataPoint;
+                    CsvData.DataValues enumValue = (CsvData.DataValues)chartDataConfig.DataPoint;
+                    ChartDataConfig.Colours colour = (ChartDataConfig.Colours)chartDataConfig.LineColour;
 
                     // Create Legends
                     Legend legend = new Legend
@@ -136,7 +137,7 @@ namespace WRD_DataAnalysis
                         Name = enumValue.ToString(),
                         ChartArea = "ChartArea" + counter.ToString(),
                         Legend = "Legend" + enumValue.ToString(),
-                        Color = ColorTranslator.FromHtml(colour),
+                        Color = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue(colour)),
                         ChartType = SeriesChartType.Line,
                         XValueType = ChartValueType.Double
                     };
@@ -151,10 +152,10 @@ namespace WRD_DataAnalysis
                 counter++;
             }
 
-            DoDataPoints(AppSettings.Chart1DataPoints, "#FF5722");
-            DoDataPoints(AppSettings.Chart2DataPoints, "#4CAF50");
-            DoDataPoints(AppSettings.Chart3DataPoints, "#FFC107");
-            DoDataPoints(AppSettings.Chart4DataPoints, "#2196F3");
+            DoDataPoints(AppSettings.Chart1DataPoints);
+            DoDataPoints(AppSettings.Chart2DataPoints);
+            DoDataPoints(AppSettings.Chart3DataPoints);
+            DoDataPoints(AppSettings.Chart4DataPoints);
 
             foreach (ChartArea ca in chart1.ChartAreas)
             {

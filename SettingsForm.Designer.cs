@@ -29,75 +29,143 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            comboBox4 = new ComboBox();
-            comboBox3 = new ComboBox();
-            comboBox2 = new ComboBox();
-            comboBox1 = new ComboBox();
+            lblLineColour4 = new Label();
+            lblLineColour3 = new Label();
+            lblLineColour2 = new Label();
+            lblLineColour1 = new Label();
+            btnSaveSettings = new Button();
+            cbx_LineColour4 = new ComboBox();
+            cbx_LineColour3 = new ComboBox();
+            cbx_LineColour2 = new ComboBox();
+            cbx_LineColour1 = new ComboBox();
             lbl_Chart4 = new Label();
             lbl_Chart3 = new Label();
             lbl_Chart2 = new Label();
             lbl_Chart1 = new Label();
-            comboBox5 = new ComboBox();
             lbl_Chart5 = new Label();
+            cbx_DataPoint1 = new ComboBox();
+            cbx_DataPoint2 = new ComboBox();
+            cbx_DataPoint3 = new ComboBox();
+            cbx_DataPoint4 = new ComboBox();
+            comboBox5 = new ComboBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(lblLineColour4);
+            groupBox1.Controls.Add(lblLineColour3);
+            groupBox1.Controls.Add(lblLineColour2);
+            groupBox1.Controls.Add(lblLineColour1);
+            groupBox1.Controls.Add(btnSaveSettings);
+            groupBox1.Controls.Add(cbx_LineColour4);
+            groupBox1.Controls.Add(cbx_LineColour3);
+            groupBox1.Controls.Add(cbx_LineColour2);
+            groupBox1.Controls.Add(cbx_LineColour1);
             groupBox1.Controls.Add(lbl_Chart4);
             groupBox1.Controls.Add(lbl_Chart3);
             groupBox1.Controls.Add(lbl_Chart2);
             groupBox1.Controls.Add(lbl_Chart1);
             groupBox1.Controls.Add(lbl_Chart5);
-            groupBox1.Controls.Add(comboBox1);
-            groupBox1.Controls.Add(comboBox2);
-            groupBox1.Controls.Add(comboBox3);
-            groupBox1.Controls.Add(comboBox4);
+            groupBox1.Controls.Add(cbx_DataPoint1);
+            groupBox1.Controls.Add(cbx_DataPoint2);
+            groupBox1.Controls.Add(cbx_DataPoint3);
+            groupBox1.Controls.Add(cbx_DataPoint4);
             groupBox1.Controls.Add(comboBox5);
             groupBox1.ForeColor = Color.FromArgb(204, 204, 204);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(599, 350);
+            groupBox1.Size = new Size(541, 307);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "groupBox1";
             // 
-            // comboBox4
+            // lblLineColour4
             // 
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(149, 155);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(173, 23);
-            comboBox4.TabIndex = 7;
+            lblLineColour4.AutoSize = true;
+            lblLineColour4.Location = new Point(291, 124);
+            lblLineColour4.Name = "lblLineColour4";
+            lblLineColour4.Size = new Size(77, 15);
+            lblLineColour4.TabIndex = 18;
+            lblLineColour4.Text = "Line Colour 4";
             // 
-            // comboBox3
+            // lblLineColour3
             // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(149, 111);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(173, 23);
-            comboBox3.TabIndex = 6;
+            lblLineColour3.AutoSize = true;
+            lblLineColour3.Location = new Point(291, 95);
+            lblLineColour3.Name = "lblLineColour3";
+            lblLineColour3.Size = new Size(77, 15);
+            lblLineColour3.TabIndex = 17;
+            lblLineColour3.Text = "Line Colour 3";
             // 
-            // comboBox2
+            // lblLineColour2
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(149, 71);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(173, 23);
-            comboBox2.TabIndex = 5;
+            lblLineColour2.AutoSize = true;
+            lblLineColour2.Location = new Point(291, 66);
+            lblLineColour2.Name = "lblLineColour2";
+            lblLineColour2.Size = new Size(77, 15);
+            lblLineColour2.TabIndex = 16;
+            lblLineColour2.Text = "Line Colour 2";
             // 
-            // comboBox1
+            // lblLineColour1
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(149, 32);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(173, 23);
-            comboBox1.TabIndex = 4;
+            lblLineColour1.AutoSize = true;
+            lblLineColour1.Location = new Point(291, 36);
+            lblLineColour1.Name = "lblLineColour1";
+            lblLineColour1.Size = new Size(77, 15);
+            lblLineColour1.TabIndex = 15;
+            lblLineColour1.Text = "Line Colour 1";
+            // 
+            // btnSaveSettings
+            // 
+            btnSaveSettings.BackColor = Color.FromArgb(40, 167, 69);
+            btnSaveSettings.FlatAppearance.BorderSize = 0;
+            btnSaveSettings.FlatStyle = FlatStyle.Flat;
+            btnSaveSettings.ForeColor = Color.FromArgb(255, 255, 255);
+            btnSaveSettings.Location = new Point(405, 252);
+            btnSaveSettings.Name = "btnSaveSettings";
+            btnSaveSettings.Size = new Size(108, 31);
+            btnSaveSettings.TabIndex = 14;
+            btnSaveSettings.Text = "Save Settings";
+            btnSaveSettings.UseVisualStyleBackColor = false;
+            btnSaveSettings.Click += btnSaveSettings_Click;
+            // 
+            // cbx_LineColour4
+            // 
+            cbx_LineColour4.FormattingEnabled = true;
+            cbx_LineColour4.Location = new Point(386, 120);
+            cbx_LineColour4.Name = "cbx_LineColour4";
+            cbx_LineColour4.Size = new Size(127, 23);
+            cbx_LineColour4.TabIndex = 13;
+            // 
+            // cbx_LineColour3
+            // 
+            cbx_LineColour3.FormattingEnabled = true;
+            cbx_LineColour3.Location = new Point(386, 91);
+            cbx_LineColour3.Name = "cbx_LineColour3";
+            cbx_LineColour3.Size = new Size(127, 23);
+            cbx_LineColour3.TabIndex = 12;
+            // 
+            // cbx_LineColour2
+            // 
+            cbx_LineColour2.FormattingEnabled = true;
+            cbx_LineColour2.Location = new Point(386, 62);
+            cbx_LineColour2.Name = "cbx_LineColour2";
+            cbx_LineColour2.Size = new Size(127, 23);
+            cbx_LineColour2.TabIndex = 11;
+            // 
+            // cbx_LineColour1
+            // 
+            cbx_LineColour1.FormattingEnabled = true;
+            cbx_LineColour1.Location = new Point(386, 33);
+            cbx_LineColour1.Name = "cbx_LineColour1";
+            cbx_LineColour1.Size = new Size(127, 23);
+            cbx_LineColour1.TabIndex = 10;
             // 
             // lbl_Chart4
             // 
             lbl_Chart4.AutoSize = true;
-            lbl_Chart4.Location = new Point(20, 159);
+            lbl_Chart4.Location = new Point(20, 124);
             lbl_Chart4.Name = "lbl_Chart4";
             lbl_Chart4.Size = new Size(45, 15);
             lbl_Chart4.TabIndex = 3;
@@ -106,7 +174,7 @@
             // lbl_Chart3
             // 
             lbl_Chart3.AutoSize = true;
-            lbl_Chart3.Location = new Point(20, 115);
+            lbl_Chart3.Location = new Point(20, 95);
             lbl_Chart3.Name = "lbl_Chart3";
             lbl_Chart3.Size = new Size(45, 15);
             lbl_Chart3.TabIndex = 2;
@@ -115,7 +183,7 @@
             // lbl_Chart2
             // 
             lbl_Chart2.AutoSize = true;
-            lbl_Chart2.Location = new Point(20, 75);
+            lbl_Chart2.Location = new Point(20, 66);
             lbl_Chart2.Name = "lbl_Chart2";
             lbl_Chart2.Size = new Size(45, 15);
             lbl_Chart2.TabIndex = 1;
@@ -130,14 +198,6 @@
             lbl_Chart1.TabIndex = 0;
             lbl_Chart1.Text = "Chart 1";
             // 
-            // comboBox5
-            // 
-            comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(149, 198);
-            comboBox5.Name = "comboBox5";
-            comboBox5.Size = new Size(173, 23);
-            comboBox5.TabIndex = 9;
-            // 
             // lbl_Chart5
             // 
             lbl_Chart5.AutoSize = true;
@@ -146,6 +206,46 @@
             lbl_Chart5.Size = new Size(45, 15);
             lbl_Chart5.TabIndex = 8;
             lbl_Chart5.Text = "Chart 4";
+            // 
+            // cbx_DataPoint1
+            // 
+            cbx_DataPoint1.FormattingEnabled = true;
+            cbx_DataPoint1.Location = new Point(86, 33);
+            cbx_DataPoint1.Name = "cbx_DataPoint1";
+            cbx_DataPoint1.Size = new Size(173, 23);
+            cbx_DataPoint1.TabIndex = 4;
+            // 
+            // cbx_DataPoint2
+            // 
+            cbx_DataPoint2.FormattingEnabled = true;
+            cbx_DataPoint2.Location = new Point(86, 62);
+            cbx_DataPoint2.Name = "cbx_DataPoint2";
+            cbx_DataPoint2.Size = new Size(173, 23);
+            cbx_DataPoint2.TabIndex = 5;
+            // 
+            // cbx_DataPoint3
+            // 
+            cbx_DataPoint3.FormattingEnabled = true;
+            cbx_DataPoint3.Location = new Point(86, 91);
+            cbx_DataPoint3.Name = "cbx_DataPoint3";
+            cbx_DataPoint3.Size = new Size(173, 23);
+            cbx_DataPoint3.TabIndex = 6;
+            // 
+            // cbx_DataPoint4
+            // 
+            cbx_DataPoint4.FormattingEnabled = true;
+            cbx_DataPoint4.Location = new Point(86, 120);
+            cbx_DataPoint4.Name = "cbx_DataPoint4";
+            cbx_DataPoint4.Size = new Size(173, 23);
+            cbx_DataPoint4.TabIndex = 7;
+            // 
+            // comboBox5
+            // 
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(149, 199);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(173, 23);
+            comboBox5.TabIndex = 9;
             // 
             // SettingsForm
             // 
@@ -170,10 +270,19 @@
         private Label lbl_Chart2;
         private Label lbl_Chart4;
         private Label lbl_Chart5;
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
-        private ComboBox comboBox3;
-        private ComboBox comboBox4;
+        private ComboBox cbx_DataPoint1;
+        private ComboBox cbx_DataPoint2;
+        private ComboBox cbx_DataPoint3;
+        private ComboBox cbx_DataPoint4;
         private ComboBox comboBox5;
+        private ComboBox cbx_LineColour4;
+        private ComboBox cbx_LineColour3;
+        private ComboBox cbx_LineColour2;
+        private ComboBox cbx_LineColour1;
+        private Button btnSaveSettings;
+        private Label lblLineColour4;
+        private Label lblLineColour3;
+        private Label lblLineColour2;
+        private Label lblLineColour1;
     }
 }
