@@ -68,7 +68,7 @@ namespace WRD_DataAnalysis
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //base.OnFormClosing(e);
-            AppSettings.SaveSettings();
+            //AppSettings.SaveSettings();
         }
 
         //private void DoTheme()
