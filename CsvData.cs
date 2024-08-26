@@ -91,11 +91,11 @@ namespace WRD_DataAnalysis
             set => _listLambdaRatio = value;
         }
 
-        private List<string> _listOilTemp = new List<string>();
-        public List<string> ListOilTemp
+        private List<string> _listOilTemperature = new List<string>();
+        public List<string> ListOilTemperature
         {
-            get => _listOilTemp;
-            set => _listOilTemp = value;
+            get => _listOilTemperature;
+            set => _listOilTemperature = value;
         }
 
         private List<string> _listOilPressure = new List<string>();
@@ -143,10 +143,72 @@ namespace WRD_DataAnalysis
                         _listTPS.Add(values[7]);
                         _listMAP.Add(values[8]);
                         _listLambdaRatio.Add(values[9]);
-                        _listOilTemp.Add(values[10]);
+                        _listOilTemperature.Add(values[10]);
                         _listOilPressure.Add(values[11]);
                     }
                 }
+            }
+        }
+
+        public List<string> GetDataPointsList(DataValues dataValue)
+        {
+            switch (dataValue)
+            {
+                case DataValues.RPM:
+                    return ListRpm;
+                case DataValues.Speed:
+                    return ListSpeed;
+                case DataValues.Gear:
+                    return ListGear;
+                case DataValues.Voltage:
+                    return ListVoltage;
+                case DataValues.IAT:
+                    return ListIAT;
+                case DataValues.ECT:
+                    return ListECT;
+                case DataValues.TPS:
+                    return ListTPS;
+                case DataValues.MAP:
+                    return ListMAP;
+                case DataValues.LambdaRatio:
+                    return ListLambdaRatio;
+                case DataValues.OilTemperature:
+                    return ListOilTemperature;
+                case DataValues.OilPressure:
+                    return ListOilPressure;
+                default:
+                    return new List<string>();
+            }
+        }
+
+        public int GetDataPointsInterval(DataValues dataValue)
+        {
+            switch (dataValue)
+            {
+                case DataValues.RPM:
+                    return 1000;
+                case DataValues.Speed:
+                    return 20;
+                case DataValues.Gear:
+                    return 1;
+                case DataValues.Voltage:
+                    return 0;
+                case DataValues.IAT:
+                    return 10;
+                case DataValues.ECT:
+                    return 10;
+                case DataValues.TPS:
+                    return 10;
+                case DataValues.MAP:
+                    return 10;
+                case DataValues.LambdaRatio:
+                    return 10;
+                case DataValues.OilTemperature:
+                    return 10;
+                case DataValues.OilPressure:
+                    return 10;
+                default:
+                    return 0;
             }
         }
 

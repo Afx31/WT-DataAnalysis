@@ -4,6 +4,7 @@ namespace WRD_DataAnalysis
 {
     public partial class ChartForm : Form
     {
+        AppSettings AppSettings = AppSettings.Instance;
         public CsvData _CsvData;
 
         public ChartForm()
@@ -19,9 +20,6 @@ namespace WRD_DataAnalysis
 
         private void InitialChartSetup()
         {
-            Chart chart = chart1;
-            //chart.Dock = DockStyle.Fill;
-
             #region -------------------- Chart Areas --------------------
             ChartArea chartArea1 = new ChartArea("ChartArea1");
             ChartArea chartArea2 = new ChartArea("ChartArea2");
@@ -67,73 +65,12 @@ namespace WRD_DataAnalysis
             chartArea4.AxisX.LabelStyle.Format = "0.0";
 
             // Add the chart areas to the chart
-            chart.ChartAreas.Add(chartArea1);
-            chart.ChartAreas.Add(chartArea2);
-            chart.ChartAreas.Add(chartArea3);
-            chart.ChartAreas.Add(chartArea4);
-            #endregion
+            chart1.ChartAreas.Add(chartArea1);
+            chart1.ChartAreas.Add(chartArea2);
+            chart1.ChartAreas.Add(chartArea3);
+            chart1.ChartAreas.Add(chartArea4);
 
-            #region -------------------- Legends --------------------
-            Legend legend1 = new Legend
-            {
-                Name = "Legend1",
-                DockedToChartArea = "ChartArea1",
-                Docking = Docking.Left,
-                IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row,
-                ForeColor = Color.White,
-                BackColor = Color.Transparent
-            };
-            Legend legend2 = new Legend
-            {
-                Name = "Legend2",
-                DockedToChartArea = "ChartArea2",
-                Docking = Docking.Left,
-                IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row,
-                ForeColor = Color.White,
-                BackColor = Color.Transparent
-            };
-            Legend legend3 = new Legend
-            {
-                Name = "Legend3",
-                DockedToChartArea = "ChartArea2",
-                Docking = Docking.Left,
-                IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row,
-                ForeColor = Color.White,
-                BackColor = Color.Transparent
-            };
-            Legend legend4 = new Legend
-            {
-                Name = "Legend4",
-                DockedToChartArea = "ChartArea3",
-                Docking = Docking.Left,
-                IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row,
-                ForeColor = Color.White,
-                BackColor = Color.Transparent
-            };
-            Legend legend5 = new Legend
-            {
-                Name = "Legend5",
-                DockedToChartArea = "ChartArea4",
-                Docking = Docking.Left,
-                IsDockedInsideChartArea = true,
-                LegendStyle = LegendStyle.Row,
-                ForeColor = Color.White,
-                BackColor = Color.Transparent
-            };
-
-            chart.Legends.Add(legend1);
-            chart.Legends.Add(legend2);
-            chart.Legends.Add(legend3);
-            chart.Legends.Add(legend4);
-            chart.Legends.Add(legend5);
-            #endregion
-
-            #region -------------------- Misc --------------------
-            foreach (ChartArea ca in chart.ChartAreas)
+            foreach (ChartArea ca in chart1.ChartAreas)
             {
                 // Tick stuff
                 //ca.AxisX.MajorGrid.Enabled = true;
@@ -169,79 +106,55 @@ namespace WRD_DataAnalysis
 
         private void MapDataPointsToChart(CsvData csvData)
         {
-            var series1 = new Series
-            {
-                Name = "Rpm",
-                ChartArea = "ChartArea1",
-                Legend = "Legend1",
-                Color = ColorTranslator.FromHtml("#FF5722"),
-                ChartType = SeriesChartType.Line,
-                XValueType = ChartValueType.Double
-            };
-            for (int i = 0; i < csvData.ListTime.Count; i++)
-                series1.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListRpm[i]);
-            chart1.ChartAreas["ChartArea1"].AxisY.Interval = 1000;
+            int counter = 1;
 
-            var series2 = new Series
+            void DoDataPoints(List<int> chartDataPoints, string colour)
             {
-                Name = "ECT",
-                ChartArea = "ChartArea2",
-                Legend = "Legend2",
-                Color = ColorTranslator.FromHtml("#4CAF50"),
-                ChartType = SeriesChartType.Line,
-                XValueType = ChartValueType.Double
-            };
-            var series3 = new Series
-            {
-                Name = "Oil Temp",
-                ChartArea = "ChartArea2",
-                Legend = "Legend3",
-                Color = ColorTranslator.FromHtml("#FFC107"),
-                ChartType = SeriesChartType.Line,
-                XValueType = ChartValueType.Double
-            };
-            for (int i = 0; i < csvData.ListTime.Count; i++)
-            {
-                series2.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListECT[i]);
-                series3.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
+                foreach (int dataPoint in chartDataPoints)
+                {
+                    CsvData.DataValues enumValue = (CsvData.DataValues)dataPoint;
+
+                    // Create Legends
+                    Legend legend = new Legend
+                    {
+                        Name = "Legend" + enumValue.ToString(),
+                        DockedToChartArea = "ChartArea" + counter.ToString(),
+                        Docking = Docking.Left,
+                        IsDockedInsideChartArea = true,
+                        LegendStyle = LegendStyle.Row,
+                        ForeColor = Color.White,
+                        BackColor = Color.Transparent
+                    };
+
+                    chart1.Legends.Add(legend);
+
+
+                    // Create series
+                    Series series = new Series
+                    {
+                        //Name = Enum.GetName(typeof(CsvData.DataValues), dataPoint),
+                        Name = enumValue.ToString(),
+                        ChartArea = "ChartArea" + counter.ToString(),
+                        Legend = "Legend" + enumValue.ToString(),
+                        Color = ColorTranslator.FromHtml(colour),
+                        ChartType = SeriesChartType.Line,
+                        XValueType = ChartValueType.Double
+                    };
+
+                    for (int i = 0; i < csvData.ListTime.Count; i++)
+                        series.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.GetDataPointsList(enumValue)[i]);
+
+                    chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = csvData.GetDataPointsInterval(enumValue);
+                    chart1.Series.Add(series);
+                }
+
+                counter++;
             }
-            chart1.ChartAreas["ChartArea2"].AxisY.Interval = 10;
 
-
-            var series4 = new Series
-            {
-                Name = "Oil Temp2",
-                ChartArea = "ChartArea3",
-                Legend = "Legend4",
-                Color = ColorTranslator.FromHtml("#2196F3"),
-                ChartType = SeriesChartType.Line,
-                XValueType = ChartValueType.Double
-            };
-            for (int i = 0; i < csvData.ListTime.Count; i++)
-                series4.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilTemp[i]);
-            chart1.ChartAreas["ChartArea3"].AxisY.Interval = 10;
-
-
-            var series5 = new Series
-            {
-                Name = "Oil Pressure",
-                ChartArea = "ChartArea4",
-                Legend = "Legend5",
-                Color = ColorTranslator.FromHtml("#FFC107"),
-                ChartType = SeriesChartType.Line,
-                XValueType = ChartValueType.Double
-            };
-            for (int i = 0; i < csvData.ListTime.Count; i++)
-                series5.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.ListOilPressure[i]);
-            chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
-
-
-            Chart chart = chart1;
-            chart.Series.Add(series1);
-            chart.Series.Add(series2);
-            chart.Series.Add(series3);
-            chart.Series.Add(series4);
-            chart.Series.Add(series5);
+            DoDataPoints(AppSettings.Chart1DataPoints, "#FF5722");
+            DoDataPoints(AppSettings.Chart2DataPoints, "#4CAF50");
+            DoDataPoints(AppSettings.Chart3DataPoints, "#FFC107");
+            DoDataPoints(AppSettings.Chart4DataPoints, "#2196F3");
 
             foreach (ChartArea ca in chart1.ChartAreas)
             {
@@ -249,6 +162,7 @@ namespace WRD_DataAnalysis
                 ca.AxisX.MajorGrid.Interval = 1; // Which tick the major grid line will appear on
             }
 
+            // TODO: whats this for again
             //foreach (ChartArea ca in chart1.ChartAreas)
             //{
             //    Axis xAxis = ca.AxisX;

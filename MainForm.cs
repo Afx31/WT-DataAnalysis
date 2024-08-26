@@ -26,13 +26,13 @@ namespace WRD_DataAnalysis
                 this.WindowState = FormWindowState.Normal;
             }
 
-            _ChartForm = new ChartForm()
+            _SettingsForm = new SettingsForm()
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
-            _SettingsForm = new SettingsForm()
+            _ChartForm = new ChartForm()
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,

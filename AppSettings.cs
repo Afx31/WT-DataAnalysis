@@ -8,10 +8,10 @@ namespace WRD_DataAnalysis
 
         public static AppSettings Instance => instance.Value;
 
-        public int Chart1DataPoint { get; set; }
-        public int Chart2DataPoint { get; set; }
-        public int Chart3DataPoint { get; set; }
-        public int Chart4DataPoint { get; set; }
+        public List<int> Chart1DataPoints { get; set; } = new List<int>();
+        public List<int> Chart2DataPoints { get; set; } = new List<int>();
+        public List<int> Chart3DataPoints { get; set; } = new List<int>();
+        public List<int> Chart4DataPoints { get; set; } = new List<int>();
 
         private AppSettings() { }
 
@@ -21,7 +21,9 @@ namespace WRD_DataAnalysis
             if (File.Exists("AppSettings.json"))
             {
                 var json = File.ReadAllText("AppSettings.json");
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
+                var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
+
+                return settings ?? new AppSettings();
             }
 
             return new AppSettings();

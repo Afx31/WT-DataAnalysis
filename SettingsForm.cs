@@ -18,23 +18,32 @@ namespace WRD_DataAnalysis
             comboBox2.SelectedIndexChanged -= comboBox_SelectedIndexChanged;
             comboBox3.SelectedIndexChanged -= comboBox_SelectedIndexChanged;
             comboBox4.SelectedIndexChanged -= comboBox_SelectedIndexChanged;
+            //comboBox5.SelectedIndexChanged -= comboBox_SelectedIndexChanged;
 
             comboBox1.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
             comboBox2.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
             comboBox3.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
             comboBox4.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
+            //comboBox5.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
 
-            comboBox1.SelectedIndex = AppSettings.Chart1DataPoint;
-            comboBox2.SelectedIndex = AppSettings.Chart2DataPoint;
-            comboBox3.SelectedIndex = AppSettings.Chart3DataPoint;
-            comboBox4.SelectedIndex = AppSettings.Chart4DataPoint;
+            if (AppSettings.Chart1DataPoints.Any())
+            {
+                comboBox1.SelectedIndex = AppSettings.Chart1DataPoints[0] - 1;
+                //comboBox11.SelectedIndex = AppSettings.Chart1DataPoints[1] - 1; //test
+                comboBox2.SelectedIndex = AppSettings.Chart2DataPoints[0] - 1;
+                comboBox3.SelectedIndex = AppSettings.Chart3DataPoints[0] - 1;
+                comboBox4.SelectedIndex = AppSettings.Chart4DataPoints[0] - 1;
+
+                //comboBox5.SelectedIndex = AppSettings.Chart2DataPoints[1] - 1;
+            }
 
             comboBox1.SelectedIndexChanged += comboBox_SelectedIndexChanged;
             comboBox2.SelectedIndexChanged += comboBox_SelectedIndexChanged;
             comboBox3.SelectedIndexChanged += comboBox_SelectedIndexChanged;
             comboBox4.SelectedIndexChanged += comboBox_SelectedIndexChanged;
+            //comboBox5.SelectedIndexChanged += comboBox_SelectedIndexChanged;
             #endregion
-            }
+        }
 
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -42,20 +51,40 @@ namespace WRD_DataAnalysis
             {
                 if (currentComboBox == comboBox1)
                 {
-                    AppSettings.Chart1DataPoint = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    if (AppSettings.Chart1DataPoints.Any())
+                        AppSettings.Chart1DataPoints[0] = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    else
+                        AppSettings.Chart1DataPoints.Add((int)(CsvData.DataValues)currentComboBox.SelectedItem);
                 }
                 else if (currentComboBox == comboBox2)
                 {
-                    AppSettings.Chart2DataPoint = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    if (AppSettings.Chart2DataPoints.Any())
+                        AppSettings.Chart2DataPoints[0] = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    else
+                        AppSettings.Chart2DataPoints.Add((int)(CsvData.DataValues)currentComboBox.SelectedItem);
                 }
                 else if (currentComboBox == comboBox3)
                 {
-                    AppSettings.Chart3DataPoint = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    if (AppSettings.Chart3DataPoints.Any())
+                        AppSettings.Chart3DataPoints[0] = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    else
+                        AppSettings.Chart3DataPoints.Add((int)(CsvData.DataValues)currentComboBox.SelectedItem);
                 }
                 else if (currentComboBox == comboBox4)
                 {
-                    AppSettings.Chart4DataPoint = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    if (AppSettings.Chart4DataPoints.Any())
+                        AppSettings.Chart4DataPoints[0] = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                    else
+                        AppSettings.Chart4DataPoints.Add((int)(CsvData.DataValues)currentComboBox.SelectedItem);
                 }
+
+                //else if (currentComboBox == comboBox5)
+                //{
+                //    if (AppSettings.Chart2DataPoints.Any())
+                //        AppSettings.Chart2DataPoints[1] = (int)(CsvData.DataValues)currentComboBox.SelectedItem;
+                //    else
+                //        AppSettings.Chart2DataPoints.Add((int)(CsvData.DataValues)currentComboBox.SelectedItem);
+                //}
             }
         }
     }
