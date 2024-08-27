@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            grp_MainSettings = new GroupBox();
+            grp_ChartDataPoints = new GroupBox();
             grp_Chart4 = new GroupBox();
             cbx_Chart4LineColour1 = new ComboBox();
             lbl_Chart4LineColour4 = new Label();
@@ -98,27 +98,28 @@
             lbl_Chart1DataPoint2 = new Label();
             lbl_Chart1DataPoint3 = new Label();
             btn_SaveSettings = new Button();
-            grp_MainSettings.SuspendLayout();
+            btn_ReloadApplication = new Button();
+            grp_Misc = new GroupBox();
+            grp_ChartDataPoints.SuspendLayout();
             grp_Chart4.SuspendLayout();
             grp_Chart3.SuspendLayout();
             grp_Chart2.SuspendLayout();
             grp_Chart1.SuspendLayout();
             SuspendLayout();
             // 
-            // grp_MainSettings
+            // grp_ChartDataPoints
             // 
-            grp_MainSettings.Controls.Add(grp_Chart4);
-            grp_MainSettings.Controls.Add(grp_Chart3);
-            grp_MainSettings.Controls.Add(grp_Chart2);
-            grp_MainSettings.Controls.Add(grp_Chart1);
-            grp_MainSettings.Controls.Add(btn_SaveSettings);
-            grp_MainSettings.ForeColor = Color.FromArgb(204, 204, 204);
-            grp_MainSettings.Location = new Point(12, 12);
-            grp_MainSettings.Name = "grp_MainSettings";
-            grp_MainSettings.Size = new Size(577, 726);
-            grp_MainSettings.TabIndex = 1;
-            grp_MainSettings.TabStop = false;
-            grp_MainSettings.Text = "Main Settings";
+            grp_ChartDataPoints.Controls.Add(grp_Chart4);
+            grp_ChartDataPoints.Controls.Add(grp_Chart3);
+            grp_ChartDataPoints.Controls.Add(grp_Chart2);
+            grp_ChartDataPoints.Controls.Add(grp_Chart1);
+            grp_ChartDataPoints.ForeColor = Color.FromArgb(204, 204, 204);
+            grp_ChartDataPoints.Location = new Point(12, 12);
+            grp_ChartDataPoints.Name = "grp_ChartDataPoints";
+            grp_ChartDataPoints.Size = new Size(562, 658);
+            grp_ChartDataPoints.TabIndex = 1;
+            grp_ChartDataPoints.TabStop = false;
+            grp_ChartDataPoints.Text = "Chart Data Points";
             // 
             // grp_Chart4
             // 
@@ -139,7 +140,7 @@
             grp_Chart4.Controls.Add(lbl_Chart4DataPoint2);
             grp_Chart4.Controls.Add(lbl_Chart4DataPoint3);
             grp_Chart4.ForeColor = Color.FromArgb(204, 204, 204);
-            grp_Chart4.Location = new Point(17, 496);
+            grp_Chart4.Location = new Point(17, 492);
             grp_Chart4.Name = "grp_Chart4";
             grp_Chart4.Size = new Size(528, 149);
             grp_Chart4.TabIndex = 20;
@@ -301,7 +302,7 @@
             grp_Chart3.Controls.Add(lbl_Chart3DataPoint2);
             grp_Chart3.Controls.Add(lbl_Chart3DataPoint3);
             grp_Chart3.ForeColor = Color.FromArgb(204, 204, 204);
-            grp_Chart3.Location = new Point(17, 341);
+            grp_Chart3.Location = new Point(17, 337);
             grp_Chart3.Name = "grp_Chart3";
             grp_Chart3.Size = new Size(528, 149);
             grp_Chart3.TabIndex = 20;
@@ -463,7 +464,7 @@
             grp_Chart2.Controls.Add(lbl_Chart2DataPoint2);
             grp_Chart2.Controls.Add(lbl_Chart2DataPoint3);
             grp_Chart2.ForeColor = Color.FromArgb(204, 204, 204);
-            grp_Chart2.Location = new Point(17, 186);
+            grp_Chart2.Location = new Point(17, 182);
             grp_Chart2.Name = "grp_Chart2";
             grp_Chart2.Size = new Size(528, 149);
             grp_Chart2.TabIndex = 20;
@@ -625,7 +626,7 @@
             grp_Chart1.Controls.Add(lbl_Chart1DataPoint2);
             grp_Chart1.Controls.Add(lbl_Chart1DataPoint3);
             grp_Chart1.ForeColor = Color.FromArgb(204, 204, 204);
-            grp_Chart1.Location = new Point(17, 31);
+            grp_Chart1.Location = new Point(17, 27);
             grp_Chart1.Name = "grp_Chart1";
             grp_Chart1.Size = new Size(528, 149);
             grp_Chart1.TabIndex = 19;
@@ -774,7 +775,7 @@
             btn_SaveSettings.FlatAppearance.BorderSize = 0;
             btn_SaveSettings.FlatStyle = FlatStyle.Flat;
             btn_SaveSettings.ForeColor = Color.FromArgb(255, 255, 255);
-            btn_SaveSettings.Location = new Point(437, 662);
+            btn_SaveSettings.Location = new Point(729, 639);
             btn_SaveSettings.Name = "btn_SaveSettings";
             btn_SaveSettings.Size = new Size(108, 31);
             btn_SaveSettings.TabIndex = 14;
@@ -782,17 +783,44 @@
             btn_SaveSettings.UseVisualStyleBackColor = false;
             btn_SaveSettings.Click += btn_SaveSettings_Click;
             // 
+            // btn_ReloadApplication
+            // 
+            btn_ReloadApplication.BackColor = Color.FromArgb(0, 123, 255);
+            btn_ReloadApplication.FlatAppearance.BorderSize = 0;
+            btn_ReloadApplication.FlatStyle = FlatStyle.Flat;
+            btn_ReloadApplication.ForeColor = Color.FromArgb(255, 255, 255);
+            btn_ReloadApplication.Location = new Point(857, 639);
+            btn_ReloadApplication.Name = "btn_ReloadApplication";
+            btn_ReloadApplication.Size = new Size(136, 31);
+            btn_ReloadApplication.TabIndex = 21;
+            btn_ReloadApplication.Text = "Reload Application";
+            btn_ReloadApplication.UseVisualStyleBackColor = false;
+            btn_ReloadApplication.Click += btn_ReloadApplication_Click;
+            // 
+            // grp_Misc
+            // 
+            grp_Misc.ForeColor = Color.FromArgb(204, 204, 204);
+            grp_Misc.Location = new Point(592, 13);
+            grp_Misc.Name = "grp_Misc";
+            grp_Misc.Size = new Size(401, 251);
+            grp_Misc.TabIndex = 22;
+            grp_Misc.TabStop = false;
+            grp_Misc.Text = "Misc";
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
-            ClientSize = new Size(645, 794);
-            Controls.Add(grp_MainSettings);
+            ClientSize = new Size(1012, 685);
+            Controls.Add(grp_Misc);
+            Controls.Add(btn_ReloadApplication);
+            Controls.Add(grp_ChartDataPoints);
+            Controls.Add(btn_SaveSettings);
             ForeColor = Color.FromArgb(204, 204, 204);
             Name = "SettingsForm";
             Text = "Settings Form";
-            grp_MainSettings.ResumeLayout(false);
+            grp_ChartDataPoints.ResumeLayout(false);
             grp_Chart4.ResumeLayout(false);
             grp_Chart4.PerformLayout();
             grp_Chart3.ResumeLayout(false);
@@ -806,7 +834,7 @@
 
         #endregion
 
-        private GroupBox grp_MainSettings;
+        private GroupBox grp_ChartDataPoints;
         private Label lbl_Chart1DataPoint1;
         private Label lbl_Chart1DataPoint3;
         private Label lbl_Chart1DataPoint2;
@@ -876,5 +904,7 @@
         private Label lbl_Chart2DataPoint4;
         private Label lbl_Chart2DataPoint2;
         private Label lbl_Chart2DataPoint3;
+        private Button btn_ReloadApplication;
+        private GroupBox grp_Misc;
     }
 }

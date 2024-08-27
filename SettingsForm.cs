@@ -267,5 +267,12 @@ namespace WRD_DataAnalysis
 
             AppSettings.SaveSettings();
         }
+
+        private void btn_ReloadApplication_Click(object sender, EventArgs e)
+        {
+            // Save again juuust in case
+            AppSettings.SaveSettings();
+            Application.Restart();
+        }
     }
 }
