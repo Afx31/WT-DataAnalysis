@@ -13,7 +13,7 @@ namespace WRD_DataAnalysis
 
         public void FormLogic()
         {
-            #region Combo Box's
+            #region Chart Data Points
             cbx_Chart1DataPoint1.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
             cbx_Chart1DataPoint2.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
             cbx_Chart1DataPoint3.DataSource = Enum.GetValues(typeof(CsvData.DataValues));
@@ -85,10 +85,18 @@ namespace WRD_DataAnalysis
                 cbx_Chart4LineColour4.SelectedIndex = AppSettings.Chart4DataPoints[3].LineColour;
             }
             #endregion
+
+            #region Misc
+            cbx_CursorLineColour.DataSource = Enum.GetValues(typeof(ChartDataConfig.Colours));
+
+            if (AppSettings.CursorLineColour != null)
+                cbx_CursorLineColour.SelectedIndex = AppSettings.CursorLineColour;
+            #endregion
         }
 
         private void btn_SaveSettings_Click(object sender, EventArgs e)
         {
+            #region Chart Data Points
             #region Chart 1
             if (AppSettings.Chart1DataPoints.Count == 4)
             {
@@ -264,6 +272,10 @@ namespace WRD_DataAnalysis
                 AppSettings.Chart4DataPoints.Add(chartDataConfig4);
             }
             #endregion
+            #endregion
+
+            // Misc
+            AppSettings.CursorLineColour = (int)(ChartDataConfig.Colours)cbx_CursorLineColour.SelectedItem;
 
             AppSettings.SaveSettings();
         }

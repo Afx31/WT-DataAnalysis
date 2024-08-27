@@ -216,7 +216,7 @@ namespace WRD_DataAnalysis
                         {
                             IntervalOffset = xValue,
                             StripWidth = 0,
-                            BorderColor = Color.Red,
+                            BorderColor = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue((ChartDataConfig.Colours)AppSettings.CursorLineColour)),
                             BorderWidth = 1,
                             BorderDashStyle = ChartDashStyle.Solid
                         });

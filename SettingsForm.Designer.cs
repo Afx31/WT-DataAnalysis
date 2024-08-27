@@ -100,11 +100,14 @@
             btn_SaveSettings = new Button();
             btn_ReloadApplication = new Button();
             grp_Misc = new GroupBox();
+            cbx_CursorLineColour = new ComboBox();
+            lbl_CursorLineColour = new Label();
             grp_ChartDataPoints.SuspendLayout();
             grp_Chart4.SuspendLayout();
             grp_Chart3.SuspendLayout();
             grp_Chart2.SuspendLayout();
             grp_Chart1.SuspendLayout();
+            grp_Misc.SuspendLayout();
             SuspendLayout();
             // 
             // grp_ChartDataPoints
@@ -775,7 +778,7 @@
             btn_SaveSettings.FlatAppearance.BorderSize = 0;
             btn_SaveSettings.FlatStyle = FlatStyle.Flat;
             btn_SaveSettings.ForeColor = Color.FromArgb(255, 255, 255);
-            btn_SaveSettings.Location = new Point(729, 639);
+            btn_SaveSettings.Location = new Point(642, 639);
             btn_SaveSettings.Name = "btn_SaveSettings";
             btn_SaveSettings.Size = new Size(108, 31);
             btn_SaveSettings.TabIndex = 14;
@@ -789,7 +792,7 @@
             btn_ReloadApplication.FlatAppearance.BorderSize = 0;
             btn_ReloadApplication.FlatStyle = FlatStyle.Flat;
             btn_ReloadApplication.ForeColor = Color.FromArgb(255, 255, 255);
-            btn_ReloadApplication.Location = new Point(857, 639);
+            btn_ReloadApplication.Location = new Point(770, 639);
             btn_ReloadApplication.Name = "btn_ReloadApplication";
             btn_ReloadApplication.Size = new Size(136, 31);
             btn_ReloadApplication.TabIndex = 21;
@@ -799,20 +802,39 @@
             // 
             // grp_Misc
             // 
+            grp_Misc.Controls.Add(cbx_CursorLineColour);
+            grp_Misc.Controls.Add(lbl_CursorLineColour);
             grp_Misc.ForeColor = Color.FromArgb(204, 204, 204);
             grp_Misc.Location = new Point(592, 13);
             grp_Misc.Name = "grp_Misc";
-            grp_Misc.Size = new Size(401, 251);
+            grp_Misc.Size = new Size(314, 251);
             grp_Misc.TabIndex = 22;
             grp_Misc.TabStop = false;
             grp_Misc.Text = "Misc";
+            // 
+            // cbx_CursorLineColour
+            // 
+            cbx_CursorLineColour.FormattingEnabled = true;
+            cbx_CursorLineColour.Location = new Point(154, 26);
+            cbx_CursorLineColour.Name = "cbx_CursorLineColour";
+            cbx_CursorLineColour.Size = new Size(127, 23);
+            cbx_CursorLineColour.TabIndex = 16;
+            // 
+            // lbl_CursorLineColour
+            // 
+            lbl_CursorLineColour.AutoSize = true;
+            lbl_CursorLineColour.Location = new Point(23, 29);
+            lbl_CursorLineColour.Name = "lbl_CursorLineColour";
+            lbl_CursorLineColour.Size = new Size(106, 15);
+            lbl_CursorLineColour.TabIndex = 17;
+            lbl_CursorLineColour.Text = "Cursor Line Colour";
             // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
-            ClientSize = new Size(1012, 685);
+            ClientSize = new Size(933, 685);
             Controls.Add(grp_Misc);
             Controls.Add(btn_ReloadApplication);
             Controls.Add(grp_ChartDataPoints);
@@ -829,6 +851,8 @@
             grp_Chart2.PerformLayout();
             grp_Chart1.ResumeLayout(false);
             grp_Chart1.PerformLayout();
+            grp_Misc.ResumeLayout(false);
+            grp_Misc.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -906,5 +930,7 @@
         private Label lbl_Chart2DataPoint3;
         private Button btn_ReloadApplication;
         private GroupBox grp_Misc;
+        private ComboBox cbx_CursorLineColour;
+        private Label lbl_CursorLineColour;
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using static WRD_DataAnalysis.ChartDataConfig;
+
 namespace WRD_DataAnalysis
 {
     public class AppSettings
@@ -12,6 +14,7 @@ namespace WRD_DataAnalysis
         public List<ChartDataConfig> Chart2DataPoints { get; set; } = new List<ChartDataConfig>();
         public List<ChartDataConfig> Chart3DataPoints { get; set; } = new List<ChartDataConfig>();
         public List<ChartDataConfig> Chart4DataPoints { get; set; } = new List<ChartDataConfig>();
+        public int CursorLineColour { get; set; }
 
         private AppSettings() { }
 
