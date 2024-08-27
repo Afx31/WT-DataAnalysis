@@ -214,6 +214,7 @@ namespace WRD_DataAnalysis
 
         public enum DataValues
         {
+            Empty = 0,
             RPM = 1,
             Speed = 2,
             Gear = 3,

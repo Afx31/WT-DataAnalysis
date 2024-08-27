@@ -63,6 +63,7 @@ namespace WRD_DataAnalysis
 
         public enum Colours
         {
+            Empty = 0,
             White = 1,
             Red = 2,
             Green = 3,

@@ -50,39 +50,39 @@ namespace WRD_DataAnalysis
 
             if (AppSettings.Chart1DataPoints.Count != 0)
             {
-                cbx_Chart1DataPoint1.SelectedIndex = AppSettings.Chart1DataPoints[0].DataPoint - 1;
-                cbx_Chart1DataPoint2.SelectedIndex = AppSettings.Chart2DataPoints[0].DataPoint - 1;
-                cbx_Chart1DataPoint3.SelectedIndex = AppSettings.Chart3DataPoints[0].DataPoint - 1;
-                cbx_Chart1DataPoint4.SelectedIndex = AppSettings.Chart4DataPoints[0].DataPoint - 1;
-                cbx_Chart2DataPoint1.SelectedIndex = AppSettings.Chart1DataPoints[0].DataPoint - 1;
-                cbx_Chart2DataPoint2.SelectedIndex = AppSettings.Chart2DataPoints[0].DataPoint - 1;
-                cbx_Chart2DataPoint3.SelectedIndex = AppSettings.Chart3DataPoints[0].DataPoint - 1;
-                cbx_Chart2DataPoint4.SelectedIndex = AppSettings.Chart4DataPoints[0].DataPoint - 1;
-                cbx_Chart3DataPoint1.SelectedIndex = AppSettings.Chart1DataPoints[0].DataPoint - 1;
-                cbx_Chart3DataPoint2.SelectedIndex = AppSettings.Chart2DataPoints[0].DataPoint - 1;
-                cbx_Chart3DataPoint3.SelectedIndex = AppSettings.Chart3DataPoints[0].DataPoint - 1;
-                cbx_Chart3DataPoint4.SelectedIndex = AppSettings.Chart4DataPoints[0].DataPoint - 1;
-                cbx_Chart4DataPoint1.SelectedIndex = AppSettings.Chart1DataPoints[0].DataPoint - 1;
-                cbx_Chart4DataPoint2.SelectedIndex = AppSettings.Chart2DataPoints[0].DataPoint - 1;
-                cbx_Chart4DataPoint3.SelectedIndex = AppSettings.Chart3DataPoints[0].DataPoint - 1;
-                cbx_Chart4DataPoint4.SelectedIndex = AppSettings.Chart4DataPoints[0].DataPoint - 1;
+                cbx_Chart1DataPoint1.SelectedIndex = AppSettings.Chart1DataPoints[0].DataPoint;
+                cbx_Chart1DataPoint2.SelectedIndex = AppSettings.Chart1DataPoints[1].DataPoint;
+                cbx_Chart1DataPoint3.SelectedIndex = AppSettings.Chart1DataPoints[2].DataPoint;
+                cbx_Chart1DataPoint4.SelectedIndex = AppSettings.Chart1DataPoints[3].DataPoint;
+                cbx_Chart2DataPoint1.SelectedIndex = AppSettings.Chart2DataPoints[0].DataPoint;
+                cbx_Chart2DataPoint2.SelectedIndex = AppSettings.Chart2DataPoints[1].DataPoint;
+                cbx_Chart2DataPoint3.SelectedIndex = AppSettings.Chart2DataPoints[2].DataPoint;
+                cbx_Chart2DataPoint4.SelectedIndex = AppSettings.Chart2DataPoints[3].DataPoint;
+                cbx_Chart3DataPoint1.SelectedIndex = AppSettings.Chart3DataPoints[0].DataPoint;
+                cbx_Chart3DataPoint2.SelectedIndex = AppSettings.Chart3DataPoints[1].DataPoint;
+                cbx_Chart3DataPoint3.SelectedIndex = AppSettings.Chart3DataPoints[2].DataPoint;
+                cbx_Chart3DataPoint4.SelectedIndex = AppSettings.Chart3DataPoints[3].DataPoint;
+                cbx_Chart4DataPoint1.SelectedIndex = AppSettings.Chart4DataPoints[0].DataPoint;
+                cbx_Chart4DataPoint2.SelectedIndex = AppSettings.Chart4DataPoints[1].DataPoint;
+                cbx_Chart4DataPoint3.SelectedIndex = AppSettings.Chart4DataPoints[2].DataPoint;
+                cbx_Chart4DataPoint4.SelectedIndex = AppSettings.Chart4DataPoints[3].DataPoint;
 
-                cbx_Chart1LineColour1.SelectedIndex = AppSettings.Chart1DataPoints[0].LineColour - 1;
-                cbx_Chart1LineColour2.SelectedIndex = AppSettings.Chart2DataPoints[0].LineColour - 1;
-                cbx_Chart1LineColour3.SelectedIndex = AppSettings.Chart3DataPoints[0].LineColour - 1;
-                cbx_Chart1LineColour4.SelectedIndex = AppSettings.Chart4DataPoints[0].LineColour - 1;
-                cbx_Chart2LineColour1.SelectedIndex = AppSettings.Chart1DataPoints[0].LineColour - 1;
-                cbx_Chart2LineColour2.SelectedIndex = AppSettings.Chart2DataPoints[0].LineColour - 1;
-                cbx_Chart2LineColour3.SelectedIndex = AppSettings.Chart3DataPoints[0].LineColour - 1;
-                cbx_Chart2LineColour4.SelectedIndex = AppSettings.Chart4DataPoints[0].LineColour - 1;
-                cbx_Chart3LineColour1.SelectedIndex = AppSettings.Chart1DataPoints[0].LineColour - 1;
-                cbx_Chart3LineColour2.SelectedIndex = AppSettings.Chart2DataPoints[0].LineColour - 1;
-                cbx_Chart3LineColour3.SelectedIndex = AppSettings.Chart3DataPoints[0].LineColour - 1;
-                cbx_Chart3LineColour4.SelectedIndex = AppSettings.Chart4DataPoints[0].LineColour - 1;
-                cbx_Chart4LineColour1.SelectedIndex = AppSettings.Chart1DataPoints[0].LineColour - 1;
-                cbx_Chart4LineColour2.SelectedIndex = AppSettings.Chart2DataPoints[0].LineColour - 1;
-                cbx_Chart4LineColour3.SelectedIndex = AppSettings.Chart3DataPoints[0].LineColour - 1;
-                cbx_Chart4LineColour4.SelectedIndex = AppSettings.Chart4DataPoints[0].LineColour - 1;
+                cbx_Chart1LineColour1.SelectedIndex = AppSettings.Chart1DataPoints[0].LineColour;
+                cbx_Chart1LineColour2.SelectedIndex = AppSettings.Chart1DataPoints[1].LineColour;
+                cbx_Chart1LineColour3.SelectedIndex = AppSettings.Chart1DataPoints[2].LineColour;
+                cbx_Chart1LineColour4.SelectedIndex = AppSettings.Chart1DataPoints[3].LineColour;
+                cbx_Chart2LineColour1.SelectedIndex = AppSettings.Chart2DataPoints[0].LineColour;
+                cbx_Chart2LineColour2.SelectedIndex = AppSettings.Chart2DataPoints[1].LineColour;
+                cbx_Chart2LineColour3.SelectedIndex = AppSettings.Chart2DataPoints[2].LineColour;
+                cbx_Chart2LineColour4.SelectedIndex = AppSettings.Chart2DataPoints[3].LineColour;
+                cbx_Chart3LineColour1.SelectedIndex = AppSettings.Chart3DataPoints[0].LineColour;
+                cbx_Chart3LineColour2.SelectedIndex = AppSettings.Chart3DataPoints[1].LineColour;
+                cbx_Chart3LineColour3.SelectedIndex = AppSettings.Chart3DataPoints[2].LineColour;
+                cbx_Chart3LineColour4.SelectedIndex = AppSettings.Chart3DataPoints[3].LineColour;
+                cbx_Chart4LineColour1.SelectedIndex = AppSettings.Chart4DataPoints[0].LineColour;
+                cbx_Chart4LineColour2.SelectedIndex = AppSettings.Chart4DataPoints[1].LineColour;
+                cbx_Chart4LineColour3.SelectedIndex = AppSettings.Chart4DataPoints[2].LineColour;
+                cbx_Chart4LineColour4.SelectedIndex = AppSettings.Chart4DataPoints[3].LineColour;
             }
             #endregion
         }
@@ -152,7 +152,7 @@ namespace WRD_DataAnalysis
             {
                 ChartDataConfig chartDataConfig1 = new ChartDataConfig()
                 {
-                    DataPoint = (int)(CsvData.DataValues)cbx_Chart2DataPoint2.SelectedItem,
+                    DataPoint = (int)(CsvData.DataValues)cbx_Chart2DataPoint1.SelectedItem,
                     LineColour = (int)(ChartDataConfig.Colours)cbx_Chart2LineColour1.SelectedItem
                 };
                 ChartDataConfig chartDataConfig2 = new ChartDataConfig()

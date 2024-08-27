@@ -113,12 +113,15 @@ namespace WRD_DataAnalysis
                 foreach (ChartDataConfig chartDataConfig in chartDataConfigs)
                 {
                     CsvData.DataValues enumValue = (CsvData.DataValues)chartDataConfig.DataPoint;
+                    if (enumValue == CsvData.DataValues.Empty)
+                        continue;
+
                     ChartDataConfig.Colours colour = (ChartDataConfig.Colours)chartDataConfig.LineColour;
 
                     // Create Legends
                     Legend legend = new Legend
                     {
-                        Name = "Legend" + enumValue.ToString(),
+                        Name = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
                         DockedToChartArea = "ChartArea" + counter.ToString(),
                         Docking = Docking.Left,
                         IsDockedInsideChartArea = true,
@@ -133,10 +136,11 @@ namespace WRD_DataAnalysis
                     // Create series
                     Series series = new Series
                     {
-                        //Name = Enum.GetName(typeof(CsvData.DataValues), dataPoint),
-                        Name = enumValue.ToString(),
+                        Name = "Series:" + counter.ToString() + ":" + enumValue.ToString(),
+                        LegendText = enumValue.ToString(),
+                        IsValueShownAsLabel = false,
                         ChartArea = "ChartArea" + counter.ToString(),
-                        Legend = "Legend" + enumValue.ToString(),
+                        Legend = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
                         Color = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue(colour)),
                         ChartType = SeriesChartType.Line,
                         XValueType = ChartValueType.Double
@@ -222,7 +226,7 @@ namespace WRD_DataAnalysis
                     foreach (Series series in chart.Series)
                     {
                         DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
-                        series.LegendText = series.Name + " : " + matchingPoint?.YValues.FirstOrDefault();
+                        series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint?.YValues.FirstOrDefault();
                     }
 
                     //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);

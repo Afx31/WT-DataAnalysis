@@ -21,9 +21,10 @@ namespace WRD_DataAnalysis
                 Point location = screens[1].Bounds.Location;
                 //this.Left = location.X;
                 //this.Top = 100;
-                this.Left = location.X + 1400;
-                this.Top = 400;
+                this.Left = location.X + 1300;
+                this.Top = 200;
                 this.WindowState = FormWindowState.Normal;
+                this.ClientSize = new Size(1200, 800);
             }
 
             _SettingsForm = new SettingsForm()
