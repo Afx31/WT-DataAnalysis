@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
 
-namespace WRD_DataAnalysis
+namespace WT_DataAnalysis
 {
     public partial class ChartForm : Form
     {
