@@ -7,15 +7,17 @@ namespace WRD_DataAnalysis
         AppSettings AppSettings = AppSettings.Instance;
         public CsvData _CsvData;
 
-        public ChartForm()
+        public ChartForm(string filePath)
         {
             InitializeComponent();
 
             _CsvData = new CsvData();
-            _CsvData.ReadCsvData(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\data.csv");
-
-            InitialChartSetup();
-            MapDataPointsToChart(_CsvData);
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                _CsvData.ReadCsvData(filePath);
+                InitialChartSetup();
+                MapDataPointsToChart(_CsvData);
+            }
         }
 
         private void InitialChartSetup()

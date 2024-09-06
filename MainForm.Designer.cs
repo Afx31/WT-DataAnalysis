@@ -32,9 +32,11 @@ namespace WRD_DataAnalysis
         {
             components = new System.ComponentModel.Container();
             menuStrip1 = new MenuStrip();
-            toolStripMenuItem_ChartForm = new ToolStripMenuItem();
-            toolStripMenuItem_SettingsForm = new ToolStripMenuItem();
+            tsmi_ChartForm = new ToolStripMenuItem();
+            tsmi_SettingsForm = new ToolStripMenuItem();
+            tsmi_LoadFile = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
+            ofd_LoadFile = new OpenFileDialog();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -42,26 +44,37 @@ namespace WRD_DataAnalysis
             // 
             menuStrip1.BackColor = Color.FromArgb(45, 45, 45);
             menuStrip1.ForeColor = Color.FromArgb(255, 255, 255);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_ChartForm, toolStripMenuItem_SettingsForm });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { tsmi_LoadFile, tsmi_ChartForm, tsmi_SettingsForm });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1131, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
-            // toolStripMenuItem_ChartForm
+            // tsmi_ChartForm
             // 
-            toolStripMenuItem_ChartForm.Name = "toolStripMenuItem_ChartForm";
-            toolStripMenuItem_ChartForm.Size = new Size(53, 20);
-            toolStripMenuItem_ChartForm.Text = "Charts";
-            toolStripMenuItem_ChartForm.Click += toolStripMenuItem_ChartForm_Click;
+            tsmi_ChartForm.Name = "tsmi_ChartForm";
+            tsmi_ChartForm.Size = new Size(53, 20);
+            tsmi_ChartForm.Text = "Charts";
+            tsmi_ChartForm.Click += toolStripMenuItem_ChartForm_Click;
             // 
-            // toolStripMenuItem_SettingsForm
+            // tsmi_SettingsForm
             // 
-            toolStripMenuItem_SettingsForm.Name = "toolStripMenuItem_SettingsForm";
-            toolStripMenuItem_SettingsForm.Size = new Size(61, 20);
-            toolStripMenuItem_SettingsForm.Text = "Settings";
-            toolStripMenuItem_SettingsForm.Click += toolStripMenuItem_SettingsForm_Click;
+            tsmi_SettingsForm.Name = "tsmi_SettingsForm";
+            tsmi_SettingsForm.Size = new Size(61, 20);
+            tsmi_SettingsForm.Text = "Settings";
+            tsmi_SettingsForm.Click += toolStripMenuItem_SettingsForm_Click;
+            // 
+            // tsmi_LoadFile
+            // 
+            tsmi_LoadFile.Name = "tsmi_LoadFile";
+            tsmi_LoadFile.Size = new Size(66, 20);
+            tsmi_LoadFile.Text = "Load File";
+            tsmi_LoadFile.Click += toolStripMenuItem_LoadFile_Click;
+            // 
+            // ofd_LoadFile
+            // 
+            ofd_LoadFile.FileName = "ofd_LoadFile";
             // 
             // MainForm
             // 
@@ -73,7 +86,7 @@ namespace WRD_DataAnalysis
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
-            Text = "MainForm";
+            Text = "WillTech - Data Acquisition";
             FormClosing += MainForm_FormClosing;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -84,9 +97,11 @@ namespace WRD_DataAnalysis
         #endregion
 
         private Button btn_theme;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem toolStripMenuItem_ChartForm;
-        private ToolStripMenuItem toolStripMenuItem_SettingsForm;
         private ToolTip toolTip1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem tsmi_ChartForm;
+        private ToolStripMenuItem tsmi_SettingsForm;
+        private ToolStripMenuItem tsmi_LoadFile;
+        private OpenFileDialog ofd_LoadFile;
     }
 }
