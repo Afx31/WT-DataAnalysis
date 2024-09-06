@@ -1,5 +1,5 @@
 ﻿
-namespace WRD_DataAnalysis
+namespace WT_DataAnalysis
 {
     public partial class SettingsForm : Form
     {

@@ -1,7 +1,5 @@
 
-using System.Runtime.CompilerServices;
-
-namespace WRD_DataAnalysis
+namespace WT_DataAnalysis
 {
     public partial class MainForm : Form
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace WRD_DataAnalysis
+namespace WT_DataAnalysis
 {
     partial class MainForm
     {
@@ -86,7 +86,7 @@ namespace WRD_DataAnalysis
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
-            Text = "WillTech - Data Acquisition";
+            Text = "WillTech - Data Analysis";
             FormClosing += MainForm_FormClosing;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

@@ -1,4 +1,4 @@
-﻿namespace WRD_DataAnalysis
+﻿namespace WT_DataAnalysis
 {
     partial class SettingsForm
     {

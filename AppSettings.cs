@@ -1,7 +1,7 @@
 ﻿
-using static WRD_DataAnalysis.ChartDataConfig;
+using static WT_DataAnalysis.ChartDataConfig;
 
-namespace WRD_DataAnalysis
+namespace WT_DataAnalysis
 {
     public class AppSettings
     {
