@@ -1,5 +1,5 @@
 
-using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
 
 namespace WRD_DataAnalysis
 {
@@ -14,8 +14,10 @@ namespace WRD_DataAnalysis
             InitializeComponent();
 
             // Debugging properties
+            string debuggingFilePath = "";
             if (true)
             {
+                //debuggingFilePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\data.csv";
                 this.StartPosition = FormStartPosition.Manual;
                 Screen[] screens = Screen.AllScreens;
                 Point location = screens[1].Bounds.Location;
@@ -33,15 +35,46 @@ namespace WRD_DataAnalysis
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
-            _ChartForm = new ChartForm()
+            _ChartForm = new ChartForm(debuggingFilePath)
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
 
-            //this.Load += toolStripMenuItem_ChartForm_Click;
-            this.Load += toolStripMenuItem_SettingsForm_Click;
+            // Sometimes change these based on what we're working on
+            this.Load += toolStripMenuItem_ChartForm_Click;
+            //this.Load += toolStripMenuItem_SettingsForm_Click;
+        }
+
+        private void toolStripMenuItem_LoadFile_Click(object sender, EventArgs e)
+        {
+            if (ofd_LoadFile.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Try read CSV file to confirm it's valid
+                    using (var sr = new StreamReader(ofd_LoadFile.FileName))
+                        sr.ReadToEnd();
+                    
+                    // Remove current instance
+                    _ChartForm.Dispose();
+
+                    _ChartForm = new ChartForm(ofd_LoadFile.FileName)
+                    {
+                        MdiParent = this,
+                        FormBorderStyle = FormBorderStyle.None,
+                        Dock = DockStyle.Fill
+                    };
+
+                    // Reload form
+                    OpenChartForm();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
+                }
+            }
         }
 
         private void toolStripMenuItem_ChartForm_Click(object sender, EventArgs e)
