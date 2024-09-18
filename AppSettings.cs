@@ -15,6 +15,7 @@ namespace WT_DataAnalysis
         public List<ChartDataConfig> Chart3DataPoints { get; set; } = new List<ChartDataConfig>();
         public List<ChartDataConfig> Chart4DataPoints { get; set; } = new List<ChartDataConfig>();
         public int CursorLineColour { get; set; }
+        public bool AutoCursorLine = false;
 
         private AppSettings() { }
 

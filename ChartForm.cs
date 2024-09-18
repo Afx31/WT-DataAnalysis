@@ -195,79 +195,133 @@ namespace WT_DataAnalysis
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
-            Chart chart = chart1;
-
-            if (chart != null)
+            if (AppSettings.AutoCursorLine)
             {
-                // Get the current position of the cursor on the grid, relevant to the axis
-                HitTestResult htRes = chart.HitTest(e.X, e.Y);
+                Chart chart = chart1;
 
-                if (htRes.ChartArea != null)
+                if (chart != null)
                 {
-                    // Get cursor position - being lazy and taking from first chart area
-                    double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                    // Get the current position of the cursor on the grid, relevant to the axis
+                    HitTestResult htRes = chart.HitTest(e.X, e.Y);
 
-                    foreach (ChartArea ca in chart.ChartAreas)
+                    if (htRes.ChartArea != null)
                     {
-                        // Remove the old one first
-                        if (ca.AxisX.StripLines.Any())
-                            ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
+                        // Get cursor position - being lazy and taking from first chart area
+                        double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
 
-                        // Then add the new one
-                        ca.AxisX.StripLines.Add(new StripLine()
+                        foreach (ChartArea ca in chart.ChartAreas)
                         {
-                            IntervalOffset = xValue,
-                            StripWidth = 0,
-                            BorderColor = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue((ChartDataConfig.Colours)AppSettings.CursorLineColour)),
-                            BorderWidth = 1,
-                            BorderDashStyle = ChartDashStyle.Solid
-                        });
-                    }
+                            // Remove the old one first
+                            if (ca.AxisX.StripLines.Any())
+                                ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
 
-                    // Update legend with current value on yAxis
-                    foreach (Series series in chart.Series)
-                    {
-                        DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
-                        series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint?.YValues.FirstOrDefault();
-                    }
-
-                    //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
-                    //chart.Series
-                    //    .Where(x => x.ChartArea == ca.Name)
-                    //    .ToList()
-                    //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
-                    //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
-                }
-
-
-                // TODO: configurable
-                if (false)
-                {
-                    // Test 1
-                    {
-                        foreach (DataPoint dp in chart.Series[0].Points)
-                        {
-                            if (dp.YValues[0] == 871)
-                                dp.ToolTip = "test";
-                        }
-                    }
-
-                    // Test 2
-                    {
-                        var pos = e.Location;
-                        var results = chart.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);
-
-                        foreach (var result in results)
-                        {
-                            if (result.ChartElementType == ChartElementType.DataPoint)
+                            // Then add the new one
+                            ca.AxisX.StripLines.Add(new StripLine()
                             {
-                                var prop = result.Object as DataPoint;
-                                if (prop != null)
+                                IntervalOffset = xValue,
+                                StripWidth = 0,
+                                BorderColor = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue((ChartDataConfig.Colours)AppSettings.CursorLineColour)),
+                                BorderWidth = 1,
+                                BorderDashStyle = ChartDashStyle.Solid
+                            });
+                        }
+
+                        // Update legend with current value on yAxis
+                        foreach (Series series in chart.Series)
+                        {
+                            DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+                            series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint?.YValues.FirstOrDefault();
+                        }
+
+                        //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
+                        //chart.Series
+                        //    .Where(x => x.ChartArea == ca.Name)
+                        //    .ToList()
+                        //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
+                        //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
+                    }
+
+
+                    // TODO: configurable
+                    if (false)
+                    {
+                        // Test 1
+                        {
+                            foreach (DataPoint dp in chart.Series[0].Points)
+                            {
+                                if (dp.YValues[0] == 871)
+                                    dp.ToolTip = "test";
+                            }
+                        }
+
+                        // Test 2
+                        {
+                            var pos = e.Location;
+                            var results = chart.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);
+
+                            foreach (var result in results)
+                            {
+                                if (result.ChartElementType == ChartElementType.DataPoint)
                                 {
-                                    //toolTip1.Show("X=" + prop.XValue + ", Y=" + prop.YValues[0], chart, pos.X, pos.Y - 15);
+                                    var prop = result.Object as DataPoint;
+                                    if (prop != null)
+                                    {
+                                        //toolTip1.Show("X=" + prop.XValue + ", Y=" + prop.YValues[0], chart, pos.X, pos.Y - 15);
+                                    }
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        private void chart1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (!AppSettings.AutoCursorLine)
+            {
+                Chart chart = chart1;
+
+                if (chart != null)
+                {
+                    // Get the current position of the cursor on the grid, relevant to the axis
+                    HitTestResult htRes = chart.HitTest(e.X, e.Y);
+
+                    if (htRes.ChartArea != null)
+                    {
+                        // Get cursor position - being lazy and taking from first chart area
+                        double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+
+                        foreach (ChartArea ca in chart.ChartAreas)
+                        {
+                            // Remove the old one first
+                            if (ca.AxisX.StripLines.Any())
+                                ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
+
+                            // Then add the new one
+                            ca.AxisX.StripLines.Add(new StripLine()
+                            {
+                                IntervalOffset = xValue,
+                                StripWidth = 0,
+                                BorderColor = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue((ChartDataConfig.Colours)AppSettings.CursorLineColour)),
+                                BorderWidth = 1,
+                                BorderDashStyle = ChartDashStyle.Solid
+                            });
+                        }
+
+                        // Update legend with current value on yAxis
+                        foreach (Series series in chart.Series)
+                        {
+                            DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+                            series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint?.YValues.FirstOrDefault();
+                        }
+
+                        //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
+                        //chart.Series
+                        //    .Where(x => x.ChartArea == ca.Name)
+                        //    .ToList()
+                        //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
+                        //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
                     }
                 }
             }

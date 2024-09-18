@@ -91,6 +91,9 @@ namespace WT_DataAnalysis
 
             if (AppSettings.CursorLineColour != null)
                 cbx_CursorLineColour.SelectedIndex = AppSettings.CursorLineColour;
+
+            if (AppSettings.AutoCursorLine != null)
+                chk_AutoCursorLine.Checked = AppSettings.AutoCursorLine;
             #endregion
         }
 

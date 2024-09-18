@@ -45,6 +45,7 @@
             chart1.MouseLeave += chart1_MouseLeave;
             chart1.MouseMove += chart1_MouseMove;
             chart1.MouseWheel += chart1_MouseWheelMove;
+            chart1.MouseClick += chart1_MouseClick;
             // 
             // ChartForm
             // 

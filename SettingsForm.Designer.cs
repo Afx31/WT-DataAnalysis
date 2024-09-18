@@ -102,6 +102,7 @@
             grp_Misc = new GroupBox();
             cbx_CursorLineColour = new ComboBox();
             lbl_CursorLineColour = new Label();
+            chk_AutoCursorLine = new CheckBox();
             grp_ChartDataPoints.SuspendLayout();
             grp_Chart4.SuspendLayout();
             grp_Chart3.SuspendLayout();
@@ -802,6 +803,7 @@
             // 
             // grp_Misc
             // 
+            grp_Misc.Controls.Add(chk_AutoCursorLine);
             grp_Misc.Controls.Add(cbx_CursorLineColour);
             grp_Misc.Controls.Add(lbl_CursorLineColour);
             grp_Misc.ForeColor = Color.FromArgb(204, 204, 204);
@@ -828,6 +830,16 @@
             lbl_CursorLineColour.Size = new Size(106, 15);
             lbl_CursorLineColour.TabIndex = 17;
             lbl_CursorLineColour.Text = "Cursor Line Colour";
+            // 
+            // chk_AutoCursorLine
+            // 
+            chk_AutoCursorLine.AutoSize = true;
+            chk_AutoCursorLine.Location = new Point(25, 65);
+            chk_AutoCursorLine.Name = "chk_AutoCursorLine";
+            chk_AutoCursorLine.Size = new Size(115, 19);
+            chk_AutoCursorLine.TabIndex = 18;
+            chk_AutoCursorLine.Text = "Auto Cursor Line";
+            chk_AutoCursorLine.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -932,5 +944,6 @@
         private GroupBox grp_Misc;
         private ComboBox cbx_CursorLineColour;
         private Label lbl_CursorLineColour;
+        private CheckBox chk_AutoCursorLine;
     }
 }
