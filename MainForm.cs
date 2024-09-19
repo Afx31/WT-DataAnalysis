@@ -58,6 +58,8 @@ namespace WT_DataAnalysis
                     // Remove current instance
                     _ChartForm.Dispose();
 
+                    this.Text += " (" + ofd_LoadFile.SafeFileName + ")";
+
                     _ChartForm = new ChartForm(ofd_LoadFile.FileName)
                     {
                         MdiParent = this,
