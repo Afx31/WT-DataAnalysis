@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms.DataVisualization.Charting;
+﻿using Newtonsoft.Json.Linq;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WT_DataAnalysis
 {
@@ -327,49 +328,71 @@ namespace WT_DataAnalysis
             }
         }
 
+        /// <summary>
+        /// Zoom functionality
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chart1_MouseWheelMove(object sender, MouseEventArgs e)
         {
             Axis xAxis = chart1.ChartAreas[0].AxisX;
-            int zoomScale = 2;
+            double zoomScale = 0.1; //0.05
+            double currentXMinView = xAxis.ScaleView.ViewMinimum;
+            double currentXMaxView = xAxis.ScaleView.ViewMaximum;
+            double posXStart = 0;
+            double posXEnd = 0;
 
             try
             {
-                if (e.Delta < 0)
-                {
-                    xAxis.ScaleView.ZoomReset();
-                }
-                else if (e.Delta > 0)
-                {
-                    double xMinView = xAxis.ScaleView.ViewMinimum;
-                    double xMaxView = xAxis.ScaleView.ViewMaximum;
+                double cursorXValue = xAxis.PixelPositionToValue(e.X);
 
-                    double posXStart = xAxis.PixelPositionToValue(e.Location.X) - (xMaxView - xMinView) / zoomScale;
-                    double posXEnd = xAxis.PixelPositionToValue(e.Location.X) + (xMaxView - xMinView) / zoomScale;
+                if (e.Delta > 0) // Zooming in
+                {                    
+                    // Style 1 - zooms based on cursor position
+                    if (true)
+                    {
+                        double startRange = (cursorXValue - currentXMinView) * zoomScale;
+                        double endRange = (currentXMaxView - cursorXValue) * zoomScale;
+                        posXStart = currentXMinView + startRange;
+                        posXEnd = currentXMaxView - endRange;
+                    }
+
+                    // Style 2 - zooms based on overall size
+                    if (false)
+                    {
+                        double range = (currentXMaxView - currentXMinView) * zoomScale;
+                        posXStart = currentXMinView + range;
+                        posXEnd = currentXMaxView - range;
+                    }
+
+                    // Center the zoom around the current xValue (mouse position)
+                    //xAxis.ScaleView.Zoom(cursorXValue - range / 2, cursorXValue + range / 2);
 
                     xAxis.ScaleView.Zoom(posXStart, posXEnd);
                 }
-
-                // https://stackoverflow.com/questions/75654493/how-to-zoom-a-control-relative-to-the-current-mouse-position
+                else if (e.Delta < 0) // Zooming out
                 {
-                    int imgx = 0;
-                    float zoom = 1;
-                    float oldzoom = zoom;
+                    if (xAxis.ScaleView.IsZoomed)
+                    {
+                        // Style 1 - zooms based on cursor position
+                        if (true)
+                        {
+                            double startRange = (cursorXValue - currentXMinView) * zoomScale;
+                            double endRange = (currentXMaxView - cursorXValue) * zoomScale;
+                            posXStart = currentXMinView - startRange;
+                            posXEnd = currentXMaxView + endRange;
+                        }
 
-                    if (e.Delta > 0)
-                        zoom = Math.Min(zoom + 0.1F, 100F);
+                        // Style 2 - zooms based on overall size
+                        if (false)
+                        {
+                            double range = (currentXMaxView - currentXMinView) * zoomScale;
+                            posXStart = currentXMinView - range;
+                            posXEnd = currentXMaxView + range;
+                        }
 
-                    else if (e.Delta < 0)
-                        zoom = Math.Max(zoom - 0.1F, 0.1F);
-
-                    int x = e.Location.X;    // Where location of the mouse in the pictureframe
-
-                    int oldimagex = (int)(x / oldzoom);  // Where in the IMAGE is it now
-                    int newimagex = (int)(x / zoom);     // Where in the IMAGE will it be when the new zoom i made
-
-                    imgx += newimagex - oldimagex;  // Where to move image to keep focus on one point
-                    xAxis.ScaleView.Zoom(newimagex, oldimagex);
-
-                    Invalidate();
+                        xAxis.ScaleView.Zoom(posXStart, posXEnd);
+                    }
                 }
             }
             catch (Exception ex)
