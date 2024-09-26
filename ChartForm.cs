@@ -164,10 +164,18 @@ namespace WT_DataAnalysis
             DoDataPoints(AppSettings.Chart3DataPoints);
             DoDataPoints(AppSettings.Chart4DataPoints);
 
+            /* TODO: Fix this properly
+             * Using it so we can reference the gear position for the label at the bottom of the screen,
+             * whilst still getitng relevant position based on chart position click
+             */
+            chart1.Series["Series:4:Gear"].Enabled = false;
+            chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
+
             foreach (ChartArea ca in chart1.ChartAreas)
             {
-                ca.AxisX.Interval = 5; // Seconds ~ Probably want 10 seconds with actual data
-                ca.AxisX.MajorGrid.Interval = 1; // Which tick the major grid line will appear on
+                ca.AxisX.Interval = 10; // Seconds
+                ca.AxisX.MajorTickMark.Interval = 10; // Major ticks at every x units
+                
             }
 
             // TODO: whats this for again
@@ -315,6 +323,9 @@ namespace WT_DataAnalysis
                         {
                             DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
                             series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint?.YValues.FirstOrDefault();
+                            
+                            if (series.Name == "Series:4:Gear")
+                                lbl_Gear.Text = matchingPoint?.YValues.FirstOrDefault().ToString();
                         }
 
                         //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
