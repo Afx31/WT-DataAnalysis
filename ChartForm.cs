@@ -51,21 +51,29 @@ namespace WT_DataAnalysis
             chartArea4.AxisX.MajorTickMark.Size = 0.5f;
             chartArea4.AxisX.MinorTickMark.Size = 0.2f;
 
-            // Optional: Hide the X-axis line for the first two chart areas
+            // Optional: Hide the X-axis line for the first two chart areas`
             chartArea1.AxisX.LineWidth = 0;
             chartArea2.AxisX.LineWidth = 0;
             chartArea3.AxisX.LineWidth = 0;
 
-            chartArea1.Position = new ElementPosition(0, 1, 99.5f, 25); // ElementPosition(0, 1, 100, 25);
-            chartArea2.Position = new ElementPosition(0, 25, 99.5f, 25); // ElementPosition(0, 25, 100, 25);
-            chartArea3.Position = new ElementPosition(0, 49, 99.5f, 25); // ElementPosition(0, 49, 100, 25);
-            chartArea4.Position = new ElementPosition(0, 73, 99.5f, 25); // ElementPosition(0, 73, 100, 25);
+            //chartArea1.Position = new ElementPosition(0, 0, 99.5f, 23); // ElementPosition(0, 1, 100, 25);
+            //chartArea2.Position = new ElementPosition(0, 22, 99.5f, 23); // ElementPosition(0, 25, 100, 25);
+            //chartArea3.Position = new ElementPosition(0, 44, 99.5f, 23); // ElementPosition(0, 49, 100, 25);
+            //chartArea4.Position = new ElementPosition(0, 67, 99.5f, 23); // ElementPosition(0, 73, 100, 25);
+            chartArea1.Position = new ElementPosition(0, 0, 99.5f, 24); // ElementPosition(0, 1, 100, 25);
+            chartArea2.Position = new ElementPosition(0, 23, 99.5f, 24); // ElementPosition(0, 25, 100, 25);
+            chartArea3.Position = new ElementPosition(0, 46, 99.5f, 24); // ElementPosition(0, 49, 100, 25);
+            chartArea4.Position = new ElementPosition(0, 70, 99.5f, 24); // ElementPosition(0, 73, 100, 25);
 
             // Axis interval tick decimal formatting
             chartArea1.AxisX.LabelStyle.Format = "0.0";
             chartArea2.AxisX.LabelStyle.Format = "0.0";
             chartArea3.AxisX.LabelStyle.Format = "0.0";
             chartArea4.AxisX.LabelStyle.Format = "0.0";
+            chartArea1.AxisX.Minimum = 0;
+            chartArea2.AxisX.Minimum = 0;
+            chartArea3.AxisX.Minimum = 0;
+            chartArea4.AxisX.Minimum = 0;
 
             // Add the chart areas to the chart
             chart1.ChartAreas.Add(chartArea1);
@@ -328,6 +336,7 @@ namespace WT_DataAnalysis
                                 lbl_Gear.Text = matchingPoint?.YValues.FirstOrDefault().ToString();
                         }
 
+                        // --- No idea
                         //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
                         //chart.Series
                         //    .Where(x => x.ChartArea == ca.Name)
@@ -416,7 +425,7 @@ namespace WT_DataAnalysis
         {
             Chart chart = chart1;
 
-            if (chart != null)
+            if (chart != null && AppSettings.AutoCursorLine)
             {
                 foreach (ChartArea ca in chart.ChartAreas)
                 {
