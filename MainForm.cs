@@ -11,21 +11,22 @@ namespace WT_DataAnalysis
         {
             InitializeComponent();
 
-            // Debugging properties
-            string debuggingFilePath = "";
-            if (true)
+            // ----- Debugging properties -----
+            // debuggingMode set to false means it'll open on default screen 1
+            bool debuggingMode = true;
+            bool debuggingAutoLoadFile = false;
+
+            if (debuggingMode)
             {
-                //debuggingFilePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\data.csv";
                 this.StartPosition = FormStartPosition.Manual;
                 Screen[] screens = Screen.AllScreens;
-                Point location = screens[1].Bounds.Location;
-                //this.Left = location.X;
-                //this.Top = 100;
-                this.Left = location.X + 1300;
-                this.Top = 200;
-                this.WindowState = FormWindowState.Normal;
-                this.ClientSize = new Size(1200, 800);
+                Point location = screens[2].Bounds.Location;
+                this.Left = location.X;
+
+                debuggingAutoLoadFile = true;
             }
+
+            this.WindowState = FormWindowState.Maximized;
 
             _SettingsForm = new SettingsForm()
             {
@@ -33,7 +34,7 @@ namespace WT_DataAnalysis
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
-            _ChartForm = new ChartForm(debuggingFilePath)
+            _ChartForm = new ChartForm("")
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,
@@ -41,8 +42,24 @@ namespace WT_DataAnalysis
             };
 
             // Sometimes change these based on what we're working on
-            this.Load += toolStripMenuItem_ChartForm_Click;
+            //this.Load += toolStripMenuItem_ChartForm_Click;
             //this.Load += toolStripMenuItem_SettingsForm_Click;
+
+            if (debuggingAutoLoadFile)
+            {
+                _ChartForm.Dispose();
+                string testFileName = "";
+
+                _ChartForm = new ChartForm(testFileName)
+                {
+                    MdiParent = this,
+                    FormBorderStyle = FormBorderStyle.None,
+                    Dock = DockStyle.Fill
+                };
+
+                // Reload form
+                OpenChartForm();
+            }
         }
 
         private void toolStripMenuItem_LoadFile_Click(object sender, EventArgs e)
@@ -56,7 +73,7 @@ namespace WT_DataAnalysis
                         sr.ReadToEnd();
                     
                     // Remove current instance
-                    _ChartForm.Dispose();
+                    _ChartForm?.Dispose();
 
                     this.Text += " (" + ofd_LoadFile.SafeFileName + ")";
 
@@ -104,21 +121,5 @@ namespace WT_DataAnalysis
             //base.OnFormClosing(e);
             //AppSettings.SaveSettings();
         }
-
-        //private void DoTheme()
-        //{
-        //_IsDarkTheme = !_IsDarkTheme;
-
-        //this.BackColor = _IsDarkTheme ? Color.DimGray : default;
-
-        //foreach (Control control in this.Controls)
-        //{
-        //    if (control is Chart chart)
-        //    {
-        //        chart.BackColor = _IsDarkTheme ? Color.Gray : default;
-        //        //chart.ChartAreas[0].BackColor = _IsDarkTheme ? Color.Black : default;
-        //    }
-        //}
-        //}
     }
 }

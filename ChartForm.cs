@@ -56,14 +56,10 @@ namespace WT_DataAnalysis
             chartArea2.AxisX.LineWidth = 0;
             chartArea3.AxisX.LineWidth = 0;
 
-            //chartArea1.Position = new ElementPosition(0, 0, 99.5f, 23); // ElementPosition(0, 1, 100, 25);
-            //chartArea2.Position = new ElementPosition(0, 22, 99.5f, 23); // ElementPosition(0, 25, 100, 25);
-            //chartArea3.Position = new ElementPosition(0, 44, 99.5f, 23); // ElementPosition(0, 49, 100, 25);
-            //chartArea4.Position = new ElementPosition(0, 67, 99.5f, 23); // ElementPosition(0, 73, 100, 25);
-            chartArea1.Position = new ElementPosition(0, 0, 99.5f, 24); // ElementPosition(0, 1, 100, 25);
-            chartArea2.Position = new ElementPosition(0, 23, 99.5f, 24); // ElementPosition(0, 25, 100, 25);
-            chartArea3.Position = new ElementPosition(0, 46, 99.5f, 24); // ElementPosition(0, 49, 100, 25);
-            chartArea4.Position = new ElementPosition(0, 70, 99.5f, 24); // ElementPosition(0, 73, 100, 25);
+            chartArea1.Position = new ElementPosition(0, 0, 99.5f, 24); // ElementPosition(0, 0, 99.5f, 23);
+            chartArea2.Position = new ElementPosition(0, 23, 99.5f, 24); // ElementPosition(0, 22, 99.5f, 23);
+            chartArea3.Position = new ElementPosition(0, 46, 99.5f, 24); // ElementPosition(0, 44, 99.5f, 23);
+            chartArea4.Position = new ElementPosition(0, 70, 99.5f, 24); // ElementPosition(0, 67, 99.5f, 23);
 
             // Axis interval tick decimal formatting
             chartArea1.AxisX.LabelStyle.Format = "0.0";
@@ -183,31 +179,30 @@ namespace WT_DataAnalysis
             {
                 ca.AxisX.Interval = 10; // Seconds
                 ca.AxisX.MajorTickMark.Interval = 10; // Major ticks at every x units
+                //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
                 
-            }
 
-            // TODO: whats this for again
-            //foreach (ChartArea ca in chart1.ChartAreas)
+                // ---- X Axis time formatting ----
+                // This works, but once you zoom in it's then all wrong
+                // Initial setup
+                //var tempList = new List<string>();
+                //var tempSpan = new TimeSpan(0, 0, 0);
+                //for (int i = 0; i < csvData.ListTime.Count; i += 10)
             //{
-            //    Axis xAxis = ca.AxisX;
+                //    tempList.Add(tempSpan.ToString(@"mm\.ss"));
+                //    tempSpan = tempSpan.Add(TimeSpan.FromSeconds(10));
+                //}
 
-            //    foreach (var time in csvData.ListTime)
-            //    {
-            //        string[] split = time.Split('.');
-            //        TimeSpan ts = new TimeSpan(0, 0, 0, int.Parse(split[0]), int.Parse(split[1]));
-            //        var t1 = ts.Minutes.ToString() + ":" + ts.Seconds.ToString() + ":" + ts.Milliseconds.ToString();
-
-            //        CustomLabel customLabel1 = new CustomLabel()
-            //        {
-            //            FromPosition = double.Parse(time),
-            //            ToPosition = double.Parse(time) + 0.1,
-            //            Text = t1,
-            //            ForeColor = Color.Green
-            //        };
-
-            //        xAxis.CustomLabels.Add(customLabel1);
-            //    }
+                //// Now assign to X Axis
+                //int start = -5;
+                //int end = 5;
+                //for (int i = 0; i < tempList.Count; i += 1)
+                //{
+                //    ca.AxisX.CustomLabels.Add(start, end, tempList[i]);
+                //    start += 10;
+                //    end += 10;
             //}
+        }
         }
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
