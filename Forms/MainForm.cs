@@ -14,7 +14,7 @@ namespace WT_DataAnalysis
             // ----- Debugging properties -----
             // debuggingMode set to false means it'll open on default screen 1
             bool debuggingMode = true;
-            bool debuggingAutoLoadFile = false;
+            bool debuggingAutoLoadFile = true;
 
             if (debuggingMode)
             {

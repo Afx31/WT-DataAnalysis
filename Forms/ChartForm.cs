@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Windows.Forms.DataVisualization.Charting;
+﻿using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WT_DataAnalysis
 {
@@ -180,7 +179,7 @@ namespace WT_DataAnalysis
                 ca.AxisX.Interval = 10; // Seconds
                 ca.AxisX.MajorTickMark.Interval = 10; // Major ticks at every x units
                 //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
-                
+
 
                 // ---- X Axis time formatting ----
                 // This works, but once you zoom in it's then all wrong
@@ -188,7 +187,7 @@ namespace WT_DataAnalysis
                 //var tempList = new List<string>();
                 //var tempSpan = new TimeSpan(0, 0, 0);
                 //for (int i = 0; i < csvData.ListTime.Count; i += 10)
-            //{
+                //{
                 //    tempList.Add(tempSpan.ToString(@"mm\.ss"));
                 //    tempSpan = tempSpan.Add(TimeSpan.FromSeconds(10));
                 //}
@@ -201,8 +200,8 @@ namespace WT_DataAnalysis
                 //    ca.AxisX.CustomLabels.Add(start, end, tempList[i]);
                 //    start += 10;
                 //    end += 10;
-            //}
-        }
+                //}
+            }
 
             // Do Max values
             var maxRpm = "0";
@@ -210,7 +209,7 @@ namespace WT_DataAnalysis
             {
                 if (int.Parse(value) >= int.Parse(maxRpm))
                     maxRpm = value;
-        }
+            }
 
             lbl_MaxRpm.Text = maxRpm;
         }
@@ -372,7 +371,7 @@ namespace WT_DataAnalysis
                 double cursorXValue = xAxis.PixelPositionToValue(e.X);
 
                 if (e.Delta > 0) // Zooming in
-                {                    
+                {
                     // Style 1 - zooms based on cursor position
                     if (true)
                     {
@@ -419,6 +418,8 @@ namespace WT_DataAnalysis
                         xAxis.ScaleView.Zoom(posXStart, posXEnd);
                     }
                 }
+
+                
             }
             catch (Exception ex)
             {
