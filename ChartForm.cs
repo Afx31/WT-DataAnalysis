@@ -57,9 +57,9 @@ namespace WT_DataAnalysis
             chartArea3.AxisX.LineWidth = 0;
 
             chartArea1.Position = new ElementPosition(0, 0, 99.5f, 24); // ElementPosition(0, 0, 99.5f, 23);
-            chartArea2.Position = new ElementPosition(0, 23, 99.5f, 24); // ElementPosition(0, 22, 99.5f, 23);
-            chartArea3.Position = new ElementPosition(0, 46, 99.5f, 24); // ElementPosition(0, 44, 99.5f, 23);
-            chartArea4.Position = new ElementPosition(0, 70, 99.5f, 24); // ElementPosition(0, 67, 99.5f, 23);
+            chartArea2.Position = new ElementPosition(0, 24, 99.5f, 24); // ElementPosition(0, 22, 99.5f, 23);
+            chartArea3.Position = new ElementPosition(0, 48, 99.5f, 24); // ElementPosition(0, 44, 99.5f, 23);
+            chartArea4.Position = new ElementPosition(0, 73, 99.5f, 24); // ElementPosition(0, 67, 99.5f, 23);
 
             // Axis interval tick decimal formatting
             chartArea1.AxisX.LabelStyle.Format = "0.0";

@@ -69,9 +69,9 @@
             // 
             grp_Gear.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             grp_Gear.Controls.Add(lbl_Gear);
-            grp_Gear.Location = new Point(3, 384);
+            grp_Gear.Location = new Point(3, 390);
             grp_Gear.Name = "grp_Gear";
-            grp_Gear.Size = new Size(77, 62);
+            grp_Gear.Size = new Size(77, 56);
             grp_Gear.TabIndex = 3;
             grp_Gear.TabStop = false;
             grp_Gear.Text = "Gear";
@@ -80,9 +80,9 @@
             // 
             grp_MaxRpm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             grp_MaxRpm.Controls.Add(lbl_MaxRpm);
-            grp_MaxRpm.Location = new Point(86, 384);
+            grp_MaxRpm.Location = new Point(86, 390);
             grp_MaxRpm.Name = "grp_MaxRpm";
-            grp_MaxRpm.Size = new Size(77, 62);
+            grp_MaxRpm.Size = new Size(77, 56);
             grp_MaxRpm.TabIndex = 4;
             grp_MaxRpm.TabStop = false;
             grp_MaxRpm.Text = "Max RPM";
