@@ -203,6 +203,16 @@ namespace WT_DataAnalysis
                 //    end += 10;
             //}
         }
+
+            // Do Max values
+            var maxRpm = "0";
+            foreach (var value in csvData.ListRpm)
+            {
+                if (int.Parse(value) >= int.Parse(maxRpm))
+                    maxRpm = value;
+        }
+
+            lbl_MaxRpm.Text = maxRpm;
         }
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)

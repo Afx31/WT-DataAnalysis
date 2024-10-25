@@ -31,8 +31,11 @@
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             lbl_Gear = new Label();
             grp_Gear = new GroupBox();
+            grp_MaxRpm = new GroupBox();
+            lbl_MaxRpm = new Label();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             grp_Gear.SuspendLayout();
+            grp_MaxRpm.SuspendLayout();
             SuspendLayout();
             // 
             // chart1
@@ -73,11 +76,34 @@
             grp_Gear.TabStop = false;
             grp_Gear.Text = "Gear";
             // 
+            // grp_MaxRpm
+            // 
+            grp_MaxRpm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            grp_MaxRpm.Controls.Add(lbl_MaxRpm);
+            grp_MaxRpm.Location = new Point(86, 384);
+            grp_MaxRpm.Name = "grp_MaxRpm";
+            grp_MaxRpm.Size = new Size(77, 62);
+            grp_MaxRpm.TabIndex = 4;
+            grp_MaxRpm.TabStop = false;
+            grp_MaxRpm.Text = "Max RPM";
+            // 
+            // lbl_MaxRpm
+            // 
+            lbl_MaxRpm.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lbl_MaxRpm.AutoSize = true;
+            lbl_MaxRpm.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_MaxRpm.Location = new Point(4, 14);
+            lbl_MaxRpm.Name = "lbl_MaxRpm";
+            lbl_MaxRpm.Size = new Size(28, 37);
+            lbl_MaxRpm.TabIndex = 1;
+            lbl_MaxRpm.Text = "-";
+            // 
             // ChartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(grp_MaxRpm);
             Controls.Add(grp_Gear);
             Controls.Add(chart1);
             Name = "ChartForm";
@@ -85,6 +111,8 @@
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             grp_Gear.ResumeLayout(false);
             grp_Gear.PerformLayout();
+            grp_MaxRpm.ResumeLayout(false);
+            grp_MaxRpm.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -93,5 +121,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private Label lbl_Gear;
         private GroupBox grp_Gear;
+        private GroupBox grp_MaxRpm;
+        private Label lbl_MaxRpm;
     }
 }
