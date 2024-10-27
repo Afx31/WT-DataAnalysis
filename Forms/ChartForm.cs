@@ -17,6 +17,7 @@ namespace WT_DataAnalysis
                 _CsvData.ReadCsvData(filePath);
                 InitialChartSetup();
                 MapDataPointsToChart(_CsvData);
+                DrawTrackMap(_CsvData.ListLatLon);
             }
         }
 
@@ -167,11 +168,39 @@ namespace WT_DataAnalysis
             DoDataPoints(AppSettings.Chart3DataPoints);
             DoDataPoints(AppSettings.Chart4DataPoints);
 
+            # region Lat/Lon stuff
+            Series seriesLat = new Series()
+            {
+                Name = "Series:4:Lat",
+                ChartArea = "ChartArea4",
+                XValueType = ChartValueType.Double
+            };
+            Series seriesLon = new Series()
+            {
+                Name = "Series:4:Lon",
+                ChartArea = "ChartArea4",
+                XValueType = ChartValueType.Double
+            };
+
+            var listLat = csvData.ListLatLon.Select(x => x.Item1).ToList();
+            var listLon = csvData.ListLatLon.Select(x => x.Item2).ToList();
+
+            for (int i = 0; i < csvData.ListHertzTime.Count; i++)
+                seriesLat.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), listLat[i]);
+            for (int i = 0; i < csvData.ListHertzTime.Count; i++)
+                seriesLon.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), listLon[i]);
+
+            chart1.Series.Add(seriesLat);
+            chart1.Series.Add(seriesLon);
+            #endregion
+
             /* TODO: Fix this properly
              * Using it so we can reference the gear position for the label at the bottom of the screen,
              * whilst still getitng relevant position based on chart position click
              */
             chart1.Series["Series:4:Gear"].Enabled = false;
+            chart1.Series["Series:4:Lat"].Enabled = false;
+            chart1.Series["Series:4:Lon"].Enabled = false;
             chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
 
             foreach (ChartArea ca in chart1.ChartAreas)
@@ -214,9 +243,112 @@ namespace WT_DataAnalysis
             lbl_MaxRpm.Text = maxRpm;
         }
 
+        private void DrawTrackMap(List<Tuple<double, double>> listLatLon)
+        {
+            ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
+
+            chartAreaTrackMap.AxisX.Minimum = 152.028940;
+            chartAreaTrackMap.AxisX.Maximum = 152.040025;
+            chartAreaTrackMap.AxisY.Minimum = -28.265911;
+            chartAreaTrackMap.AxisY.Maximum = -28.255305;
+
+            chartAreaTrackMap.Position.Height = 100;
+            chartAreaTrackMap.Position.Width = 100;
+
+            // Don't run if needing to debug coordinates positioning
+            if (true)
+            {
+                chartAreaTrackMap.AxisX.MajorGrid.Enabled = false;
+                chartAreaTrackMap.AxisY.MajorGrid.Enabled = false;
+
+                chartAreaTrackMap.AxisX.MajorTickMark.Enabled = false;
+                chartAreaTrackMap.AxisY.MajorTickMark.Enabled = false;
+                chartAreaTrackMap.AxisX.MinorTickMark.Enabled = false;
+                chartAreaTrackMap.AxisY.MinorTickMark.Enabled = false;
+
+                chartAreaTrackMap.AxisX.LabelStyle.Enabled = false;
+                chartAreaTrackMap.AxisY.LabelStyle.Enabled = false;
+            }
+
+            chart_TrackMap.ChartAreas.Add(chartAreaTrackMap);
+
+            Series series = new Series("TrackMapSeries");
+            series.ChartType = SeriesChartType.Point;
+
+            foreach (var coord in listLatLon)
+            {
+                series.Points.AddXY(coord.Item2, coord.Item1);
+            }
+
+            chart_TrackMap.Series.Add(series);
+        }
+
+        private void MoveTrackMapCurrentPosition(double lat, double lon)
+        {
+            // First clear the previous marker
+            if (previousMarkerDataPoint >= 0)
+            {
+                DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
+                point.MarkerColor = default;
+                point.MarkerSize = default;
+                point.MarkerStyle = default;
+            }
+
+            for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
+            {
+                DataPoint point = chart_TrackMap.Series[0].Points[i];
+                
+                if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
+                {
+                    // TODO: This works but the blue line goes through circle
+                    //point.MarkerColor = Color.Red;
+                    //point.MarkerSize = 20;
+                    //point.MarkerStyle = MarkerStyle.Circle;
+                    
+                    //point.Color = Color.Red;
+
+                    // TODO: This is the shitty workaround
+                    // Remove the current series if it exists
+                    if (previousMarkerDataPoint >= 0)
+                    {
+                        Series removeSeries = chart_TrackMap.Series[1];
+                        chart_TrackMap.Series.Remove(removeSeries);
+                    }
+
+                    Series series = new Series("DataMarker");
+                    series.Points.AddXY(lon, lat);
+
+                    series.Points[0].MarkerColor = Color.Red;
+                    series.Points[0].MarkerSize = 20;
+                    series.Points[0].MarkerStyle = MarkerStyle.Circle;
+                    series.Points[0].Color = Color.Red;
+
+                    chart_TrackMap.Series.Add(series);
+
+                    previousMarkerDataPoint = i;
+                    break;
+                }
+            }
+        }
+
+        bool isDragging = false;
+
+        private void chart1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                isDragging = true;
+        }
+
+        private void chart1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                isDragging = false;
+        }
+
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (AppSettings.AutoCursorLine)
+            //if (AppSettings.AutoCursorLine)
+            if (isDragging)
             {
                 Chart chart = chart1;
 
@@ -230,7 +362,8 @@ namespace WT_DataAnalysis
                         // Get cursor position - being lazy and taking from first chart area
                         double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
 
-                        foreach (ChartArea ca in chart.ChartAreas)
+                        //foreach (ChartArea ca in chart.ChartAreas)
+                        Parallel.ForEach(chart.ChartAreas, ca =>
                         {
                             // Remove the old one first
                             if (ca.AxisX.StripLines.Any())
@@ -245,15 +378,32 @@ namespace WT_DataAnalysis
                                 BorderWidth = 1,
                                 BorderDashStyle = ChartDashStyle.Solid
                             });
-                        }
+                        });
 
+                        double currentLat = 0.0;
+                        double currentLon = 0.0;
                         // Update legend with current value on yAxis
-                        foreach (Series series in chart.Series)
+
+                        //foreach (Series series in chart.Series)
+                        Parallel.ForEach(chart.Series, series =>
                         {
                             DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+                            if (matchingPoint != null)
+                            {
                             series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint?.YValues.FirstOrDefault();
-                        }
 
+                                //if (series.Name == "Series:4:Gear")
+                                //    lbl_Gear.Text = matchingPoint?.YValues.FirstOrDefault().ToString();
+
+                                if (series.Name == "Series:4:Lat")
+                                    currentLat = (double)matchingPoint?.YValues.FirstOrDefault();
+
+                                if (series.Name == "Series:4:Lon")
+                                    currentLon = (double)matchingPoint?.YValues.FirstOrDefault();
+                        }
+                        });
+
+                        MoveTrackMapCurrentPosition(currentLat, currentLon);
                         //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
                         //chart.Series
                         //    .Where(x => x.ChartArea == ca.Name)
@@ -330,6 +480,9 @@ namespace WT_DataAnalysis
                             });
                         }
 
+                        double currentLat = 0.0;
+                        double currentLon = 0.0;
+
                         // Update legend with current value on yAxis
                         foreach (Series series in chart.Series)
                         {
@@ -338,7 +491,15 @@ namespace WT_DataAnalysis
                             
                             if (series.Name == "Series:4:Gear")
                                 lbl_Gear.Text = matchingPoint?.YValues.FirstOrDefault().ToString();
+
+                            if (series.Name == "Series:4:Lat")
+                                currentLat = (double)matchingPoint?.YValues.FirstOrDefault();
+
+                            if (series.Name == "Series:4:Lon")
+                                currentLon = (double)matchingPoint?.YValues.FirstOrDefault();
                         }
+
+                        MoveTrackMapCurrentPosition(currentLat, currentLon);
 
                         // --- No idea
                         //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);

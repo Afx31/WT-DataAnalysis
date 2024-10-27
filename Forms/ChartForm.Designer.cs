@@ -33,9 +33,11 @@
             grp_Gear = new GroupBox();
             grp_MaxRpm = new GroupBox();
             lbl_MaxRpm = new Label();
+            chart_TrackMap = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             grp_Gear.SuspendLayout();
             grp_MaxRpm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chart_TrackMap).BeginInit();
             SuspendLayout();
             // 
             // chart1
@@ -53,6 +55,8 @@
             chart1.MouseLeave += chart1_MouseLeave;
             chart1.MouseMove += chart1_MouseMove;
             chart1.MouseWheel += chart1_MouseWheelMove;
+            chart1.MouseDown += chart1_MouseDown;
+            chart1.MouseUp += chart1_MouseUp;
             // 
             // lbl_Gear
             // 
@@ -98,11 +102,21 @@
             lbl_MaxRpm.TabIndex = 1;
             lbl_MaxRpm.Text = "-";
             // 
+            // chart_TrackMap
+            // 
+            chart_TrackMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            chart_TrackMap.Location = new Point(495, 146);
+            chart_TrackMap.Name = "chart_TrackMap";
+            chart_TrackMap.Size = new Size(300, 300);
+            chart_TrackMap.TabIndex = 5;
+            chart_TrackMap.Text = "chart_TrackMap";
+            // 
             // ChartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(chart_TrackMap);
             Controls.Add(grp_MaxRpm);
             Controls.Add(grp_Gear);
             Controls.Add(chart1);
@@ -113,6 +127,7 @@
             grp_Gear.PerformLayout();
             grp_MaxRpm.ResumeLayout(false);
             grp_MaxRpm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chart_TrackMap).EndInit();
             ResumeLayout(false);
         }
 
@@ -123,5 +138,6 @@
         private GroupBox grp_Gear;
         private GroupBox grp_MaxRpm;
         private Label lbl_MaxRpm;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_TrackMap;
     }
 }
