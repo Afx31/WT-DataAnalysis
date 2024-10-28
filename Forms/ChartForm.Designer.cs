@@ -52,7 +52,7 @@
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
             chart1.MouseClick += chart1_MouseClick;
-            chart1.MouseLeave += chart1_MouseLeave;
+            //chart1.MouseLeave += chart1_MouseLeave;
             chart1.MouseMove += chart1_MouseMove;
             chart1.MouseWheel += chart1_MouseWheelMove;
             chart1.MouseDown += chart1_MouseDown;
