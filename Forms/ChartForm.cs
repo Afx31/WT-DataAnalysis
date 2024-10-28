@@ -6,6 +6,8 @@ namespace WT_DataAnalysis
     {
         AppSettings AppSettings = AppSettings.Instance;
         public CsvData _CsvData;
+        int previousMarkerDataPoint = -1;
+        bool isDragging = false;
 
         public ChartForm(string filePath)
         {
@@ -254,6 +256,7 @@ namespace WT_DataAnalysis
 
             chartAreaTrackMap.Position.Height = 100;
             chartAreaTrackMap.Position.Width = 100;
+            chartAreaTrackMap.BackColor = Color.DarkGray;
 
             // Don't run if needing to debug coordinates positioning
             if (true)
@@ -274,11 +277,10 @@ namespace WT_DataAnalysis
 
             Series series = new Series("TrackMapSeries");
             series.ChartType = SeriesChartType.Point;
+            series.Color = Color.White;
 
             foreach (var coord in listLatLon)
-            {
                 series.Points.AddXY(coord.Item2, coord.Item1);
-            }
 
             chart_TrackMap.Series.Add(series);
         }
