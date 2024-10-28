@@ -205,6 +205,34 @@ namespace WT_DataAnalysis
             chart1.Series["Series:4:Lon"].Enabled = false;
             chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
 
+
+            #region --- Lap segregation ---
+            List<Tuple<string, int>> lapList = new List<Tuple<string, int>>();
+            for (int i = 1; i < csvData.ListLapCount.Count; i++)
+            {
+                // If previous isn't == this one, then it's a new lap
+                if (csvData.ListLapCount[i - 1] != csvData.ListLapCount[i])
+                    lapList.Add(new Tuple<string, int>(csvData.ListHertzTime[i], csvData.ListLapCount[i]));
+            }
+
+            foreach (ChartArea ca in chart1.ChartAreas)
+            {
+                foreach (var lap in lapList)
+                {
+                    ca.AxisX.StripLines.Add(new StripLine()
+                    {
+                        IntervalOffset = Convert.ToDouble(lap.Item1),
+                        StripWidth = 0,
+                        BorderColor = Color.Gray,
+                        BorderWidth = 1,
+                        BorderDashStyle = ChartDashStyle.Solid,
+                        Text = "Lap: " + lap.Item2.ToString(),
+                        ForeColor = Color.Gray
+                    });
+                }
+            }
+            #endregion
+
             foreach (ChartArea ca in chart1.ChartAreas)
             {
                 ca.AxisX.Interval = 10; // Seconds
@@ -351,8 +379,8 @@ namespace WT_DataAnalysis
                         Parallel.ForEach(chart.ChartAreas, ca =>
                         {
                             // Remove the old one first
-                        if (ca.AxisX.StripLines.Count > 0)
-                                ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
+                        StripLine cursorStripLine = ca.AxisX.StripLines.FirstOrDefault(x => x.Text == "") as StripLine;
+                        ca.AxisX.StripLines.Remove(cursorStripLine);
 
                             // Then add the new one
                             ca.AxisX.StripLines.Add(new StripLine()
