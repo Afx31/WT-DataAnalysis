@@ -210,7 +210,6 @@ namespace WT_DataAnalysis
             List<Tuple<string, int>> lapList = new List<Tuple<string, int>>();
             for (int i = 1; i < csvData.ListLapCount.Count; i++)
             {
-                // If previous isn't == this one, then it's a new lap
                 if (csvData.ListLapCount[i - 1] != csvData.ListLapCount[i])
                     lapList.Add(new Tuple<string, int>(csvData.ListHertzTime[i], csvData.ListLapCount[i]));
             }
@@ -379,7 +378,7 @@ namespace WT_DataAnalysis
                         Parallel.ForEach(chart.ChartAreas, ca =>
                         {
                             // Remove the old one first
-                        StripLine cursorStripLine = ca.AxisX.StripLines.FirstOrDefault(x => x.Text == "") as StripLine;
+                        StripLine cursorStripLine = ca.AxisX.StripLines.FirstOrDefault(x => x.Text == "");
                         ca.AxisX.StripLines.Remove(cursorStripLine);
 
                             // Then add the new one
