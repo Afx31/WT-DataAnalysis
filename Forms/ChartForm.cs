@@ -155,8 +155,8 @@ namespace WT_DataAnalysis
                         XValueType = ChartValueType.Double
                     };
 
-                    for (int i = 0; i < csvData.ListTime.Count; i++)
-                        series.Points.AddXY(double.Parse(csvData.ListTime[i]), csvData.GetDataPointsList(enumValue)[i]);
+                    for (int i = 0; i < csvData.ListHertzTime.Count; i++)
+                        series.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), csvData.GetDataPointsList(enumValue)[i]);
 
                     chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = csvData.GetDataPointsInterval(enumValue);
                     chart1.Series.Add(series);
@@ -217,7 +217,7 @@ namespace WT_DataAnalysis
                 // Initial setup
                 //var tempList = new List<string>();
                 //var tempSpan = new TimeSpan(0, 0, 0);
-                //for (int i = 0; i < csvData.ListTime.Count; i += 10)
+                //for (int i = 0; i < csvData.ListHertzTime.Count; i += 10)
                 //{
                 //    tempList.Add(tempSpan.ToString(@"mm\.ss"));
                 //    tempSpan = tempSpan.Add(TimeSpan.FromSeconds(10));

@@ -28,11 +28,11 @@ namespace WT_DataAnalysis
             set => _headingsDataTypes = value;
         }
 
-        private List<string> _listTime = new List<string>();
-        public List<string> ListTime
+        private List<string> _listHertzTime = new List<string>();
+        public List<string> ListHertzTime
         {
-            get => _listTime;
-            set => _listTime = value;
+            get => _listHertzTime;
+            set => _listHertzTime = value;
         }
 
         private List<string> _listRpm = new List<string>();
@@ -159,7 +159,7 @@ namespace WT_DataAnalysis
                     }
                     else
                     {
-                        _listTime.Add(values[0]);
+                        _listHertzTime.Add(values[0]);
                         _listRpm.Add(values[1]);
                         _listSpeed.Add(values[2]);
                         _listGear.Add(values[3]);
