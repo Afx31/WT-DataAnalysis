@@ -28,11 +28,11 @@ namespace WT_DataAnalysis
             set => _headingsDataTypes = value;
         }
 
-        private List<string> _listTime = new List<string>();
-        public List<string> ListTime
+        private List<string> _listHertzTime = new List<string>();
+        public List<string> ListHertzTime
         {
-            get => _listTime;
-            set => _listTime = value;
+            get => _listHertzTime;
+            set => _listHertzTime = value;
         }
 
         private List<string> _listRpm = new List<string>();
@@ -111,6 +111,20 @@ namespace WT_DataAnalysis
             get => _listOilPressure;
             set => _listOilPressure = value;
         }
+
+        private List<Tuple<double, double>> _listLatLon = new List<Tuple<double, double>>();
+        public List<Tuple<double, double>> ListLatLon
+        {
+            get => _listLatLon;
+            set => _listLatLon = value;
+        }
+
+        private List<int> _listLapCount = new List<int>();
+        public List<int> ListLapCount
+        {
+            get => _listLapCount;
+            set => _listLapCount = value;
+        }
         #endregion
 
         public CsvData()
@@ -145,7 +159,7 @@ namespace WT_DataAnalysis
                     }
                     else
                     {
-                        _listTime.Add(values[0]);
+                        _listHertzTime.Add(values[0]);
                         _listRpm.Add(values[1]);
                         _listSpeed.Add(values[2]);
                         _listGear.Add(values[3]);
@@ -157,6 +171,8 @@ namespace WT_DataAnalysis
                         _listLambdaRatio.Add(values[9]);
                         _listOilTemperature.Add(values[10]);
                         _listOilPressure.Add(values[11]);
+                        _listLatLon.Add(new Tuple<double, double>(Convert.ToDouble(values[12]), Convert.ToDouble(values[13])));
+                        _listLapCount.Add(int.Parse(values[14]));
                     }
                 }
             }
