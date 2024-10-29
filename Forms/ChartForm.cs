@@ -261,15 +261,21 @@ namespace WT_DataAnalysis
                 //}
             }
 
-            // Do Max values
-            var maxRpm = "0";
-            foreach (var value in csvData.ListRpm)
-            {
-                if (int.Parse(value) >= int.Parse(maxRpm))
-                    maxRpm = value;
-            }
+            #region Max values
+            int maxRpm = csvData.ListRpm.Select(int.Parse).Max();
+            int maxSpeed = csvData.ListSpeed.Select(int.Parse).Max();
+            int maxECT = csvData.ListECT.Select(int.Parse).Max();
+            int maxIAT = csvData.ListIAT.Select(int.Parse).Max();
+            int maxOilTemp = csvData.ListOilTemperature.Select(int.Parse).Max();
+            int maxOilPressure = csvData.ListOilPressure.Select(int.Parse).Max();
 
-            lbl_MaxRpm.Text = maxRpm;
+            lbl_MaxRpm.Text = maxRpm.ToString();
+            lbl_MaxSpeed.Text = maxSpeed.ToString();
+            lbl_MaxECT.Text = maxECT.ToString();
+            lbl_MaxIAT.Text = maxIAT.ToString();
+            lbl_MaxOilTemp.Text = maxOilTemp.ToString();
+            lbl_MaxOilPressure.Text = maxOilPressure.ToString();
+            #endregion
         }
 
         private void DrawTrackMap(List<Tuple<double, double>> listLatLon)
