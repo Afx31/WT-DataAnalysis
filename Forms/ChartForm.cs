@@ -379,11 +379,6 @@ namespace WT_DataAnalysis
 
                 if (chart != null)
                 {
-                    // Get the current position of the cursor on the grid, relevant to the axis
-                    HitTestResult htRes = chart.HitTest(e.X, e.Y);
-
-                    if (htRes.ChartArea != null)
-                    {
                         // Get cursor position - being lazy and taking from first chart area
                         double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
 
@@ -445,13 +440,13 @@ namespace WT_DataAnalysis
                         //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
                     }
                             }
-                        }
 
         private void chart1_MouseDown(object sender, MouseEventArgs e)
                         {
             if (e.Button == MouseButtons.Left)
                 isDragging = true;
         }
+
         private void chart1_MouseUp(object sender, MouseEventArgs e)
                             {
             if (e.Button == MouseButtons.Left)
