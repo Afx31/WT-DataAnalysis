@@ -208,35 +208,100 @@ namespace WT_DataAnalysis
 
 
             #region --- Lap segregation ---
-            List<Tuple<string, int>> lapList = new List<Tuple<string, int>>();
-            for (int i = 1; i < csvData.ListLapCount.Count; i++)
+            if (false)
             {
-                if (csvData.ListLapCount[i - 1] != csvData.ListLapCount[i])
-                    lapList.Add(new Tuple<string, int>(csvData.ListHertzTime[i], csvData.ListLapCount[i]));
+                //List<Tuple<string, int>> lapList = new List<Tuple<string, int>>();
+                //for (int i = 1; i < csvData.ListLapCount.Count; i++)
+                //{
+                //    if (csvData.ListLapCount[i - 1] != csvData.ListLapCount[i])
+                //        lapList.Add(new Tuple<string, int>(csvData.ListHertzTime[i], csvData.ListLapCount[i]));
+                //}
+
+                //foreach (ChartArea ca in chart1.ChartAreas)
+                //{
+                //    foreach (var lap in lapList)
+                //    {
+                //        ca.AxisX.StripLines.Add(new StripLine()
+                //        {
+                //            IntervalOffset = Convert.ToDouble(lap.Item1),
+                //            StripWidth = 0,
+                //            BorderColor = Color.Gray,
+                //            BorderWidth = 1,
+                //            BorderDashStyle = ChartDashStyle.Solid,
+                //            Text = "Lap: " + lap.Item2.ToString(),
+                //            ForeColor = Color.Gray
+                //        });
+                //    }
+                //}
             }
 
-            foreach (ChartArea ca in chart1.ChartAreas)
+            // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly
+            if (true)
             {
-                foreach (var lap in lapList)
+                bool isFinishLine(double min, double max, double current)
                 {
-                    ca.AxisX.StripLines.Add(new StripLine()
+                    return current >= min && current <= max;
+                }
+
+                double thisTrackLatMin = 0;
+                double thisTrackLatMax = 0;
+                double thisTrackLonMin = 0;
+                double thisTrackLonMax = 0;
+
+                switch (csvData.Track)
+                {
+                    case "smsp":
+                        thisTrackLatMin = -33.803825;
+                        thisTrackLatMax = -33.803653;
+                        thisTrackLonMin = 150.870923;
+                        thisTrackLonMax = 150.870962;
+                        break;
+                    case "morganpark":
+                        thisTrackLatMin = -28.262069;
+                        thisTrackLatMax = -28.262085;
+                        thisTrackLonMin = 152.036327;
+                        thisTrackLonMax = 152.036430;
+                        break;
+                }
+
+                int lapCounter = 1;
+
+                List<Tuple<string, string>> lapList = new List<Tuple<string, string>>();
+                lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[1], "Out"));
+                for (int i = 0; i < csvData.ListLatLon.Count; i++)
+                {
+                    if (isFinishLine(thisTrackLatMin, thisTrackLatMax, csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, csvData.ListLatLon[i].Item2))
                     {
-                        IntervalOffset = Convert.ToDouble(lap.Item1),
-                        StripWidth = 0,
-                        BorderColor = Color.Gray,
-                        BorderWidth = 1,
-                        BorderDashStyle = ChartDashStyle.Solid,
-                        Text = "Lap: " + lap.Item2.ToString(),
-                        ForeColor = Color.Gray
-                    });
+                        lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[i], lapCounter.ToString()));
+                        lapCounter++;
+                    }
+                }
+
+                foreach (ChartArea ca in chart1.ChartAreas)
+                {
+                    foreach (var lap in lapList)
+                    {
+                        ca.AxisX.StripLines.Add(new StripLine()
+                        {
+                            IntervalOffset = Convert.ToDouble(lap.Item1),
+                            StripWidth = 0,
+                            BorderColor = Color.Gray,
+                            BorderWidth = 1,
+                            BorderDashStyle = ChartDashStyle.Solid,
+                            Text = "Lap: " + lap.Item2.ToString(),
+                            ForeColor = Color.Gray,
+                            TextOrientation = TextOrientation.Horizontal,
+                            TextAlignment = StringAlignment.Near
+                        });
+                    }
                 }
             }
             #endregion
 
             foreach (ChartArea ca in chart1.ChartAreas)
             {
-                ca.AxisX.Interval = 10; // Seconds
-                ca.AxisX.MajorTickMark.Interval = 10; // Major ticks at every x units
+                ca.AxisX.Interval = 20; // Seconds mark
+                ca.AxisX.MajorTickMark.Interval = 20; // Major ticks at every x units
                 //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
 
 
@@ -286,10 +351,10 @@ namespace WT_DataAnalysis
             switch (_CsvData.Track)
             {
                 case "smsp":
-            chartAreaTrackMap.AxisX.Minimum = 150.864046;
-            chartAreaTrackMap.AxisX.Maximum = 150.878478;
-            chartAreaTrackMap.AxisY.Minimum = -33.809579;
-            chartAreaTrackMap.AxisY.Maximum = -33.802297;
+                    chartAreaTrackMap.AxisX.Minimum = 150.864046;
+                    chartAreaTrackMap.AxisX.Maximum = 150.878478;
+                    chartAreaTrackMap.AxisY.Minimum = -33.809579;
+                    chartAreaTrackMap.AxisY.Maximum = -33.802297;
                     break;
                 case "morganpark":
                     chartAreaTrackMap.AxisX.Minimum = 152.028940;
