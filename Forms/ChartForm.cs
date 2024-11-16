@@ -283,17 +283,21 @@ namespace WT_DataAnalysis
         {
             ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
 
-            // SMSP
+            switch (_CsvData.Track)
+            {
+                case "smsp":
             chartAreaTrackMap.AxisX.Minimum = 150.864046;
             chartAreaTrackMap.AxisX.Maximum = 150.878478;
             chartAreaTrackMap.AxisY.Minimum = -33.809579;
             chartAreaTrackMap.AxisY.Maximum = -33.802297;
-
-            // MP
-            //chartAreaTrackMap.AxisX.Minimum = 152.028940;
-            //chartAreaTrackMap.AxisX.Maximum = 152.040025;
-            //chartAreaTrackMap.AxisY.Minimum = -28.265911;
-            //chartAreaTrackMap.AxisY.Maximum = -28.255305;
+                    break;
+                case "morganpark":
+                    chartAreaTrackMap.AxisX.Minimum = 152.028940;
+                    chartAreaTrackMap.AxisX.Maximum = 152.040025;
+                    chartAreaTrackMap.AxisY.Minimum = -28.265911;
+                    chartAreaTrackMap.AxisY.Maximum = -28.255305;
+                    break;
+            }
 
             chartAreaTrackMap.Position.Height = 100;
             chartAreaTrackMap.Position.Width = 100;
