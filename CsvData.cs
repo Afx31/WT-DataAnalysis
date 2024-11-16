@@ -4,11 +4,18 @@ namespace WT_DataAnalysis
     public class CsvData
     {
         #region Properties
-        private string[] _fileDate = new string[1];
-        public string[] FileDate
+        private string _fileDate;
+        public string FileDate
         {
             get => _fileDate;
             set => _fileDate = value;
+        }
+
+        private string _track;
+        public string Track
+        {
+            get => _track;
+            set => _track = value;
         }
 
         private string[] _headings = new string[20];
@@ -141,7 +148,8 @@ namespace WT_DataAnalysis
 
                     if (lineCounter == 1)
                     {
-                        _fileDate = values;
+                        _fileDate = values[0];
+                        _track = values[1];
                         lineCounter++;
                     }
                     else if (lineCounter == 2)
