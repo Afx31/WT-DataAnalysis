@@ -200,7 +200,8 @@ namespace WT_DataAnalysis
              * Using it so we can reference the gear position for the label at the bottom of the screen,
              * whilst still getitng relevant position based on chart position click
              */
-            chart1.Series["Series:4:Gear"].Enabled = false;
+            if (chart1.Series.Any(x => x.Name == "Series4:4:Gear"))
+                chart1.Series["Series:4:Gear"].Enabled = false;
             chart1.Series["Series:4:Lat"].Enabled = false;
             chart1.Series["Series:4:Lon"].Enabled = false;
             chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
@@ -402,7 +403,7 @@ namespace WT_DataAnalysis
 
                         double currentLat = 0.0;
                         double currentLon = 0.0;
-                    string gearValue = "";
+                        string gearValue = "";
 
                         // Update legend with current value on yAxis
                         //foreach (Series series in chart.Series)

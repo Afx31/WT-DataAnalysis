@@ -20,7 +20,7 @@ namespace WT_DataAnalysis
             {
                 this.StartPosition = FormStartPosition.Manual;
                 Screen[] screens = Screen.AllScreens;
-                Point location = screens[2].Bounds.Location;
+                Point location = screens[0].Bounds.Location;
                 this.Left = location.X;
 
                 debuggingAutoLoadFile = true;
