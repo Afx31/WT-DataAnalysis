@@ -447,7 +447,7 @@ namespace WT_DataAnalysis
             {
                 Chart chart = chart1;
 
-                if (chart != null)
+            if (chart != null && e.X > 0)
                 {
                         // Get cursor position - being lazy and taking from first chart area
                         double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
