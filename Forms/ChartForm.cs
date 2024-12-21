@@ -264,17 +264,12 @@ namespace WT_DataAnalysis
                         break;
                 }
 
-                int lapCounter = 1;
-
                 List<Tuple<string, string>> lapList = new List<Tuple<string, string>>();
                 lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[1], "Out"));
                 for (int i = 0; i < csvData.ListLatLon.Count; i++)
                 {
                     if (isFinishLine(thisTrackLatMin, thisTrackLatMax, csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, csvData.ListLatLon[i].Item2))
-                    {
-                        lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[i], lapCounter.ToString()));
-                        lapCounter++;
-                    }
+                        lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
                 }
 
                 foreach (ChartArea ca in chart1.ChartAreas)
