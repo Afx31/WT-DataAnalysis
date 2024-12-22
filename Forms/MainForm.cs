@@ -1,9 +1,12 @@
+using WT_DataAnalysis.Forms;
+
 namespace WT_DataAnalysis;
 
 public partial class MainForm : Form
 {
     //private bool _IsDarkTheme = true;
     private ChartForm _ChartForm;
+    private ScatterPlotForm _ScatterPlotForm;
     private SettingsForm _SettingsForm;
     public CsvData CsvData;
 
@@ -49,53 +52,31 @@ public MainForm()
     }
 }
 
-private void toolStripMenuItem_LoadFile_Click(object sender, EventArgs e)
+    private void OpenChartForm()
 {
-    if (ofd_LoadFile.ShowDialog() == DialogResult.OK)
-    {
-        try
-        {
-            // Try read CSV file to confirm it's valid
-            using (var sr = new StreamReader(ofd_LoadFile.FileName))
-                sr.ReadToEnd();
+        this._SettingsForm?.Hide();
             
-            // Remove current instance
-            _ChartForm?.Dispose();
-
-            this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
-
-                if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
-                    CsvData.ReadCsvData(ofd_LoadFile.FileName);
-
+        if (_ChartForm == null)
+        {
                 _ChartForm = new ChartForm(CsvData)
                 {
                     MdiParent = this,
                     FormBorderStyle = FormBorderStyle.None,
                     Dock = DockStyle.Fill
                 };
+        }
 
-            // Reload form
-            OpenChartForm();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
-        }
-    }
+        this._ChartForm?.Show();
 }
 
-private void toolStripMenuItem_ChartForm_Click(object sender, EventArgs e)
-{
-    OpenChartForm();
-}
-
-    private void OpenChartForm()
+    private void OpenScatterPlotForm()
     {
+        this._ChartForm?.Hide();
         this._SettingsForm?.Hide();
 
-        if (_ChartForm == null)
+        if (_ScatterPlotForm == null)
         {
-            _ChartForm = new ChartForm(CsvData)
+            _ScatterPlotForm = new ScatterPlotForm(CsvData)
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,
@@ -103,13 +84,8 @@ private void toolStripMenuItem_ChartForm_Click(object sender, EventArgs e)
             };
         }
 
-        this._ChartForm?.Show();
+        _ScatterPlotForm.Show();
     }
-
-private void toolStripMenuItem_SettingsForm_Click(object sender, EventArgs e)
-{
-    OpenSettingsForm();
-}
 
     private void OpenSettingsForm()
     {
@@ -130,4 +106,55 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     //base.OnFormClosing(e);
     //AppSettings.SaveSettings();
 }
+
+    private void toolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+
+        switch (menuItem?.Name)
+        {
+            case "tsmi_LoadFile":
+                if (ofd_LoadFile.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Try read CSV file to confirm it's valid
+                        using (var sr = new StreamReader(ofd_LoadFile.FileName))
+                            sr.ReadToEnd();
+
+                        // Remove current instance
+                        _ChartForm?.Dispose();
+
+                        this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
+
+                        if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
+                            CsvData.ReadCsvData(ofd_LoadFile.FileName);
+
+                        _ChartForm = new ChartForm(CsvData)
+                        {
+                            MdiParent = this,
+                            FormBorderStyle = FormBorderStyle.None,
+                            Dock = DockStyle.Fill
+                        };
+
+                        // Reload form
+                        OpenChartForm();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
+                    }
+                }
+                break;
+            case "tsmi_ChartForm":
+                OpenChartForm();
+                break;
+            case "tsmi_ScatterPlotForm":
+                OpenScatterPlotForm();
+                break;
+            case "tsmi_SettingsForm":
+                OpenSettingsForm();
+                break;
+        }
+    }
 }
