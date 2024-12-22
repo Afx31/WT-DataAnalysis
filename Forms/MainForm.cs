@@ -14,7 +14,7 @@ namespace WT_DataAnalysis
             // ----- Debugging properties -----
             // debuggingMode set to false means it'll open on default screen 1
             bool debuggingMode = true;
-            bool debuggingAutoLoadFile = true;
+            bool debuggingAutoLoadFile = false;
 
             if (debuggingMode)
             {
@@ -22,24 +22,24 @@ namespace WT_DataAnalysis
                 Screen[] screens = Screen.AllScreens;
                 Point location = screens[0].Bounds.Location;
                 this.Left = location.X;
-
-                debuggingAutoLoadFile = true;
             }
 
             this.WindowState = FormWindowState.Maximized;
 
-            _SettingsForm = new SettingsForm()
-            {
-                MdiParent = this,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
-            _ChartForm = new ChartForm("")
-            {
-                MdiParent = this,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
+            // TODO: Lets leave this out for now, maybe come back to later
+            
+            //_SettingsForm = new SettingsForm()
+            //{
+            //    MdiParent = this,
+            //    FormBorderStyle = FormBorderStyle.None,
+            //    Dock = DockStyle.Fill
+            //};
+            //_ChartForm = new ChartForm("")
+            //{
+            //    MdiParent = this,
+            //    FormBorderStyle = FormBorderStyle.None,
+            //    Dock = DockStyle.Fill
+            //};
 
             // Sometimes change these based on what we're working on
             //this.Load += toolStripMenuItem_ChartForm_Click;
@@ -101,8 +101,8 @@ namespace WT_DataAnalysis
 
         private void OpenChartForm()
         {
-            this._SettingsForm.Hide();
-            this._ChartForm.Show();
+            this._SettingsForm?.Hide();
+            this._ChartForm?.Show();
         }
 
         private void toolStripMenuItem_SettingsForm_Click(object sender, EventArgs e)
@@ -112,8 +112,8 @@ namespace WT_DataAnalysis
 
         private void OpenSettingsForm()
         {
-            this._ChartForm.Hide();
-            this._SettingsForm.Show();
+            this._ChartForm?.Hide();
+            this._SettingsForm?.Show();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

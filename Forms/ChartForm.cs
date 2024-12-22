@@ -599,7 +599,29 @@ namespace WT_DataAnalysis
                     }
                 }
 
+                // TODO: Need to test this
+                // https://stackoverflow.com/questions/75654493/how-to-zoom-a-control-relative-to-the-current-mouse-position
+                {
+                    //int imgx = 0;
+                    //float zoom = 1;
+                    //float oldzoom = zoom;
+
+                    //if (e.Delta > 0)
+                    //    zoom = Math.Min(zoom + 0.1F, 100F);
+
+                    //else if (e.Delta < 0)
+                    //    zoom = Math.Max(zoom - 0.1F, 0.1F);
+
+                    //int x = e.Location.X;    // Where location of the mouse in the pictureframe
                 
+                    //int oldimagex = (int)(x / oldzoom);  // Where in the IMAGE is it now
+                    //int newimagex = (int)(x / zoom);     // Where in the IMAGE will it be when the new zoom i made
+
+                    //imgx += newimagex - oldimagex;  // Where to move image to keep focus on one point
+                    //xAxis.ScaleView.Zoom(newimagex, oldimagex);
+
+                    //Invalidate();
+                }
             }
             catch (Exception ex)
             {
