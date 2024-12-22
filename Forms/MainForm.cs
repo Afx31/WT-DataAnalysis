@@ -6,6 +6,7 @@ namespace WT_DataAnalysis
         //private bool _IsDarkTheme = true;
         private ChartForm _ChartForm;
         private SettingsForm _SettingsForm;
+        public CsvData CsvData;
 
         public MainForm()
         {
@@ -25,21 +26,7 @@ namespace WT_DataAnalysis
             }
 
             this.WindowState = FormWindowState.Maximized;
-
-            // TODO: Lets leave this out for now, maybe come back to later
-            
-            //_SettingsForm = new SettingsForm()
-            //{
-            //    MdiParent = this,
-            //    FormBorderStyle = FormBorderStyle.None,
-            //    Dock = DockStyle.Fill
-            //};
-            //_ChartForm = new ChartForm("")
-            //{
-            //    MdiParent = this,
-            //    FormBorderStyle = FormBorderStyle.None,
-            //    Dock = DockStyle.Fill
-            //};
+            CsvData = new CsvData();
 
             // Sometimes change these based on what we're working on
             //this.Load += toolStripMenuItem_ChartForm_Click;
@@ -47,10 +34,11 @@ namespace WT_DataAnalysis
 
             if (debuggingAutoLoadFile)
             {
-                _ChartForm.Dispose();
-                string testFileName = "";
+                string fileName = "";
 
-                _ChartForm = new ChartForm(testFileName)
+                CsvData.ReadCsvData(fileName);
+
+                _ChartForm = new ChartForm(CsvData)
                 {
                     MdiParent = this,
                     FormBorderStyle = FormBorderStyle.None,
@@ -77,7 +65,10 @@ namespace WT_DataAnalysis
 
                     this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
 
-                    _ChartForm = new ChartForm(ofd_LoadFile.FileName)
+                    if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
+                        CsvData.ReadCsvData(ofd_LoadFile.FileName);
+
+                    _ChartForm = new ChartForm(CsvData)
                     {
                         MdiParent = this,
                         FormBorderStyle = FormBorderStyle.None,
@@ -102,6 +93,17 @@ namespace WT_DataAnalysis
         private void OpenChartForm()
         {
             this._SettingsForm?.Hide();
+
+            if (_ChartForm == null)
+            {
+                _ChartForm = new ChartForm(CsvData)
+                {
+                    MdiParent = this,
+                    FormBorderStyle = FormBorderStyle.None,
+                    Dock = DockStyle.Fill
+                };
+            }
+
             this._ChartForm?.Show();
         }
 
@@ -113,6 +115,14 @@ namespace WT_DataAnalysis
         private void OpenSettingsForm()
         {
             this._ChartForm?.Hide();
+
+            _SettingsForm = new SettingsForm()
+            {
+                MdiParent = this,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
+
             this._SettingsForm?.Show();
         }
 

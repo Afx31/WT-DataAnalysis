@@ -5,21 +5,20 @@ namespace WT_DataAnalysis
     public partial class ChartForm : Form
     {
         AppSettings AppSettings = AppSettings.Instance;
-        public CsvData _CsvData;
+        private CsvData _csvData;
         int previousMarkerDataPoint = -1;
         bool isDragging = false;
 
-        public ChartForm(string filePath)
+        public ChartForm(CsvData csvData)
         {
             InitializeComponent();
 
-            _CsvData = new CsvData();
-            if (!string.IsNullOrEmpty(filePath))
+            if (csvData != null)
             {
-                _CsvData.ReadCsvData(filePath);
+                _csvData = csvData;
                 InitialChartSetup();
-                MapDataPointsToChart(_CsvData);
-                DrawTrackMap(_CsvData.ListLatLon);
+                MapDataPointsToChart();
+                DrawTrackMap();
             }
         }
 
@@ -113,7 +112,7 @@ namespace WT_DataAnalysis
             #endregion
         }
 
-        private void MapDataPointsToChart(CsvData csvData)
+        private void MapDataPointsToChart()
         {
             int counter = 1;
 
@@ -155,10 +154,10 @@ namespace WT_DataAnalysis
                         XValueType = ChartValueType.Double
                     };
 
-                    for (int i = 0; i < csvData.ListHertzTime.Count; i++)
-                        series.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), csvData.GetDataPointsList(enumValue)[i]);
+                    for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
+                        series.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), _csvData.GetDataPointsList(enumValue)[i]);
 
-                    chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = csvData.GetDataPointsInterval(enumValue);
+                    chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
                     chart1.Series.Add(series);
                 }
 
@@ -184,13 +183,13 @@ namespace WT_DataAnalysis
                 XValueType = ChartValueType.Double
             };
 
-            var listLat = csvData.ListLatLon.Select(x => x.Item1).ToList();
-            var listLon = csvData.ListLatLon.Select(x => x.Item2).ToList();
+            var listLat = _csvData.ListLatLon.Select(x => x.Item1).ToList();
+            var listLon = _csvData.ListLatLon.Select(x => x.Item2).ToList();
 
-            for (int i = 0; i < csvData.ListHertzTime.Count; i++)
-                seriesLat.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), listLat[i]);
-            for (int i = 0; i < csvData.ListHertzTime.Count; i++)
-                seriesLon.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), listLon[i]);
+            for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
+                seriesLat.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), listLat[i]);
+            for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
+                seriesLon.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), listLon[i]);
 
             chart1.Series.Add(seriesLat);
             chart1.Series.Add(seriesLon);
@@ -248,7 +247,7 @@ namespace WT_DataAnalysis
                 double thisTrackLonMin = 0;
                 double thisTrackLonMax = 0;
 
-                switch (csvData.Track)
+                switch (_csvData.Track)
                 {
                     case "smsp":
                         thisTrackLatMin = -33.803825;
@@ -265,11 +264,11 @@ namespace WT_DataAnalysis
                 }
 
                 List<Tuple<string, string>> lapList = new List<Tuple<string, string>>();
-                lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[1], "Out"));
-                for (int i = 0; i < csvData.ListLatLon.Count; i++)
+                lapList.Add(new Tuple<string, string>(_csvData.ListHertzTime[1], "Out"));
+                for (int i = 0; i < _csvData.ListLatLon.Count; i++)
                 {
-                    if (isFinishLine(thisTrackLatMin, thisTrackLatMax, csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, csvData.ListLatLon[i].Item2))
-                        lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
+                    if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLatLon[i].Item2))
+                        lapList.Add(new Tuple<string, string>(_csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
                 }
 
                 foreach (ChartArea ca in chart1.ChartAreas)
@@ -305,7 +304,7 @@ namespace WT_DataAnalysis
                 // Initial setup
                 //var tempList = new List<string>();
                 //var tempSpan = new TimeSpan(0, 0, 0);
-                //for (int i = 0; i < csvData.ListHertzTime.Count; i += 10)
+                //for (int i = 0; i < _csvData.ListHertzTime.Count; i += 10)
                 //{
                 //    tempList.Add(tempSpan.ToString(@"mm\.ss"));
                 //    tempSpan = tempSpan.Add(TimeSpan.FromSeconds(10));
@@ -323,12 +322,12 @@ namespace WT_DataAnalysis
             }
 
             #region Max values
-            int maxRpm = csvData.ListRpm.Select(int.Parse).Max();
-            int maxSpeed = csvData.ListSpeed.Select(int.Parse).Max();
-            int maxECT = csvData.ListECT.Select(int.Parse).Max();
-            int maxIAT = csvData.ListIAT.Select(int.Parse).Max();
-            int maxOilTemp = csvData.ListOilTemperature.Select(int.Parse).Max();
-            int maxOilPressure = csvData.ListOilPressure.Select(int.Parse).Max();
+            int maxRpm = _csvData.ListRpm.Select(int.Parse).Max();
+            int maxSpeed = _csvData.ListSpeed.Select(int.Parse).Max();
+            int maxECT = _csvData.ListECT.Select(int.Parse).Max();
+            int maxIAT = _csvData.ListIAT.Select(int.Parse).Max();
+            int maxOilTemp = _csvData.ListOilTemperature.Select(int.Parse).Max();
+            int maxOilPressure = _csvData.ListOilPressure.Select(int.Parse).Max();
 
             lbl_MaxRpm.Text = maxRpm.ToString();
             lbl_MaxSpeed.Text = maxSpeed.ToString();
@@ -339,11 +338,11 @@ namespace WT_DataAnalysis
             #endregion
         }
 
-        private void DrawTrackMap(List<Tuple<double, double>> listLatLon)
+        private void DrawTrackMap()
         {
             ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
 
-            switch (_CsvData.Track)
+            switch (_csvData.Track)
             {
                 case "smsp":
                     chartAreaTrackMap.AxisX.Minimum = 150.864046;
@@ -384,7 +383,7 @@ namespace WT_DataAnalysis
             series.ChartType = SeriesChartType.Point;
             series.Color = Color.White;
 
-            foreach (var coord in listLatLon)
+            foreach (var coord in _csvData.ListLatLon)
                 series.Points.AddXY(coord.Item2, coord.Item1);
 
             chart_TrackMap.Series.Add(series);
