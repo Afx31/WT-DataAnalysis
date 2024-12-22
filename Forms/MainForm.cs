@@ -1,3 +1,4 @@
+namespace WT_DataAnalysis;
 
 namespace WT_DataAnalysis
 {
@@ -8,29 +9,29 @@ namespace WT_DataAnalysis
         private SettingsForm _SettingsForm;
         public CsvData CsvData;
 
-        public MainForm()
+    public MainForm()
+    {
+        InitializeComponent();
+
+        // ----- Debugging properties -----
+        // debuggingMode set to false means it'll open on default screen 1
+        bool debuggingMode = true;
+        bool debuggingAutoLoadFile = false;
+
+        if (debuggingMode)
         {
-            InitializeComponent();
-
-            // ----- Debugging properties -----
-            // debuggingMode set to false means it'll open on default screen 1
-            bool debuggingMode = true;
-            bool debuggingAutoLoadFile = false;
-
-            if (debuggingMode)
-            {
-                this.StartPosition = FormStartPosition.Manual;
-                Screen[] screens = Screen.AllScreens;
-                Point location = screens[0].Bounds.Location;
-                this.Left = location.X;
-            }
+            this.StartPosition = FormStartPosition.Manual;
+            Screen[] screens = Screen.AllScreens;
+            Point location = screens[0].Bounds.Location;
+            this.Left = location.X;
+        }
 
             this.WindowState = FormWindowState.Maximized;
             CsvData = new CsvData();
 
-            // Sometimes change these based on what we're working on
-            //this.Load += toolStripMenuItem_ChartForm_Click;
-            //this.Load += toolStripMenuItem_SettingsForm_Click;
+        // Sometimes change these based on what we're working on
+        //this.Load += toolStripMenuItem_ChartForm_Click;
+        //this.Load += toolStripMenuItem_SettingsForm_Click;
 
             if (debuggingAutoLoadFile)
             {
@@ -45,25 +46,25 @@ namespace WT_DataAnalysis
                     Dock = DockStyle.Fill
                 };
 
-                // Reload form
-                OpenChartForm();
-            }
+            // Reload form
+            OpenChartForm();
         }
+    }
 
-        private void toolStripMenuItem_LoadFile_Click(object sender, EventArgs e)
+    private void toolStripMenuItem_LoadFile_Click(object sender, EventArgs e)
+    {
+        if (ofd_LoadFile.ShowDialog() == DialogResult.OK)
         {
-            if (ofd_LoadFile.ShowDialog() == DialogResult.OK)
+            try
             {
-                try
-                {
-                    // Try read CSV file to confirm it's valid
-                    using (var sr = new StreamReader(ofd_LoadFile.FileName))
-                        sr.ReadToEnd();
-                    
-                    // Remove current instance
-                    _ChartForm?.Dispose();
+                // Try read CSV file to confirm it's valid
+                using (var sr = new StreamReader(ofd_LoadFile.FileName))
+                    sr.ReadToEnd();
+                
+                // Remove current instance
+                _ChartForm?.Dispose();
 
-                    this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
+                this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
 
                     if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
                         CsvData.ReadCsvData(ofd_LoadFile.FileName);
@@ -75,20 +76,20 @@ namespace WT_DataAnalysis
                         Dock = DockStyle.Fill
                     };
 
-                    // Reload form
-                    OpenChartForm();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
-                }
+                // Reload form
+                OpenChartForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
             }
         }
+    }
 
-        private void toolStripMenuItem_ChartForm_Click(object sender, EventArgs e)
-        {
-            OpenChartForm();
-        }
+    private void toolStripMenuItem_ChartForm_Click(object sender, EventArgs e)
+    {
+        OpenChartForm();
+    }
 
         private void OpenChartForm()
         {
@@ -107,10 +108,10 @@ namespace WT_DataAnalysis
             this._ChartForm?.Show();
         }
 
-        private void toolStripMenuItem_SettingsForm_Click(object sender, EventArgs e)
-        {
-            OpenSettingsForm();
-        }
+    private void toolStripMenuItem_SettingsForm_Click(object sender, EventArgs e)
+    {
+        OpenSettingsForm();
+    }
 
         private void OpenSettingsForm()
         {
@@ -126,10 +127,9 @@ namespace WT_DataAnalysis
             this._SettingsForm?.Show();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //base.OnFormClosing(e);
-            //AppSettings.SaveSettings();
-        }
+    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        //base.OnFormClosing(e);
+        //AppSettings.SaveSettings();
     }
 }
