@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
@@ -37,21 +36,22 @@
             // 
             chart1.BackColor = Color.FromArgb(0, 10, 15);
             chart1.BorderlineColor = Color.FromArgb(45, 45, 45);
-            chartArea1.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea1);
-            chart1.Location = new Point(1, 1);
+            chart1.Location = new Point(0, 0);
+            chart1.Margin = new Padding(0);
             chart1.Name = "chart1";
-            chart1.Size = new Size(800, 448);
+            chart1.Size = new Size(1075, 450);
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
+            //chart1.MouseClick += Chart1_MouseClick;
+            chart1.MouseMove += Chart1_MouseMove;
             // 
-            // ScatterPlotscs
+            // ScatterPlotForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(chart1);
-            Name = "ScatterPlotscs";
+            Name = "ScatterPlotForm";
             Text = "ScatterPlotscs";
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
