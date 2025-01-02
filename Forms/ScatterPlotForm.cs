@@ -4,7 +4,7 @@ namespace WT_DataAnalysis.Forms;
 
 public partial class ScatterPlotForm : Form
 {
-    private CsvData _csvData;
+    private readonly CsvData _csvData;
 
     public ScatterPlotForm(CsvData csvData)
     {
@@ -189,41 +189,7 @@ public partial class ScatterPlotForm : Form
         chart1.Series.Add(series);
     }
 
-    private void Chart1_MouseClick(object sender, MouseEventArgs e)
-    {
-        if (chart1 != null && e.X > 0)
-        {
-            ChartArea ca = chart1.ChartAreas[0];
-
-            if (ca.AxisX.StripLines.Count > 0)
-                ca.AxisX.StripLines.RemoveAt(0);
-            if (ca.AxisY.StripLines.Count > 0)
-                ca.AxisY.StripLines.RemoveAt(0);
-
-            double xValue = ca.AxisX.PixelPositionToValue(e.X);
-            double yValue = ca.AxisY.PixelPositionToValue(e.Y);
-
-            ca.AxisX.StripLines.Add(new StripLine()
-            {
-                IntervalOffset = xValue,
-                StripWidth = 0,
-                BorderColor = Color.Yellow,
-                BorderWidth = 1,
-                BorderDashStyle = ChartDashStyle.Solid
-            });
-
-            ca.AxisY.StripLines.Add(new StripLine()
-            {
-                IntervalOffset = yValue,
-                StripWidth = 0,
-                BorderColor = Color.Yellow,
-                BorderWidth = 1,
-                BorderDashStyle = ChartDashStyle.Solid
-            });
-        }
-    }
-
-    private void Chart1_MouseMove(object sender, MouseEventArgs e)
+    private void Chart1_MouseMoveOrClick(object sender, MouseEventArgs e)
     {
         if (chart1 != null && e.X > 0)
         {

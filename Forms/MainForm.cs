@@ -48,7 +48,8 @@ public MainForm()
             };
 
         // Reload form
-        OpenChartForm();
+            //OpenChartForm();
+            //OpenScatterPlotForm();
     }
 }
 
@@ -71,18 +72,18 @@ public MainForm()
 
     private void OpenScatterPlotForm()
     {
-        this._ChartForm?.Hide();
-        this._SettingsForm?.Hide();
+        _ChartForm?.Hide();
+        _SettingsForm?.Hide();
 
-        if (_ScatterPlotForm == null)
-        {
+        if (_ScatterPlotForm != null)
+            _ScatterPlotForm.Dispose();
+
             _ScatterPlotForm = new ScatterPlotForm(CsvData)
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
-        }
 
         _ScatterPlotForm.Show();
     }
@@ -118,12 +119,17 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                 {
                     try
                     {
+                        // First dispose of any existing CSV data
+                        if (CsvData != null)
+                            CsvData = new CsvData();
+
                         // Try read CSV file to confirm it's valid
                         using (var sr = new StreamReader(ofd_LoadFile.FileName))
                             sr.ReadToEnd();
 
                         // Remove current instance
                         _ChartForm?.Dispose();
+                        _ScatterPlotForm?.Dispose();
 
                         this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
 

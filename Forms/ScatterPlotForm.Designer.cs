@@ -42,8 +42,8 @@
             chart1.Size = new Size(1075, 450);
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
-            //chart1.MouseClick += Chart1_MouseClick;
-            chart1.MouseMove += Chart1_MouseMove;
+            //chart1.MouseClick += Chart1_MouseMoveOrClick;
+            chart1.MouseMove += Chart1_MouseMoveOrClick;
             // 
             // ScatterPlotForm
             // 
