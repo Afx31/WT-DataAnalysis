@@ -5,21 +5,20 @@ namespace WT_DataAnalysis;
 public partial class ChartForm : Form
 {
     AppSettings AppSettings = AppSettings.Instance;
-    public CsvData _CsvData;
+    private CsvData _csvData;
     int previousMarkerDataPoint = -1;
     bool isDragging = false;
 
-    public ChartForm(string filePath)
+    public ChartForm(CsvData csvData)
     {
         InitializeComponent();
 
-        _CsvData = new CsvData();
-        if (!string.IsNullOrEmpty(filePath))
+        if (csvData != null)
         {
-            _CsvData.ReadCsvData(filePath);
+            _csvData = csvData;
             InitialChartSetup();
-            MapDataPointsToChart(_CsvData);
-            DrawTrackMap(_CsvData.ListLatLon);
+            MapDataPointsToChart();
+            DrawTrackMap();
         }
     }
 
@@ -113,7 +112,7 @@ public partial class ChartForm : Form
         #endregion
     }
 
-    private void MapDataPointsToChart(CsvData csvData)
+    private void MapDataPointsToChart()
     {
         int counter = 1;
 
@@ -155,10 +154,10 @@ public partial class ChartForm : Form
                     XValueType = ChartValueType.Double
                 };
 
-                for (int i = 0; i < csvData.ListHertzTime.Count; i++)
-                    series.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), csvData.GetDataPointsList(enumValue)[i]);
+                for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
+                    series.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), _csvData.GetDataPointsList(enumValue)[i]);
 
-                chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = csvData.GetDataPointsInterval(enumValue);
+                chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
                 chart1.Series.Add(series);
             }
 
@@ -170,7 +169,7 @@ public partial class ChartForm : Form
         DoDataPoints(AppSettings.Chart3DataPoints);
         DoDataPoints(AppSettings.Chart4DataPoints);
 
-        # region Lat/Lon stuff
+        #region Lat/Lon stuff
         Series seriesLat = new Series()
         {
             Name = "Series:4:Lat",
@@ -184,13 +183,13 @@ public partial class ChartForm : Form
             XValueType = ChartValueType.Double
         };
 
-        var listLat = csvData.ListLatLon.Select(x => x.Item1).ToList();
-        var listLon = csvData.ListLatLon.Select(x => x.Item2).ToList();
+        var listLat = _csvData.ListLatLon.Select(x => x.Item1).ToList();
+        var listLon = _csvData.ListLatLon.Select(x => x.Item2).ToList();
 
-        for (int i = 0; i < csvData.ListHertzTime.Count; i++)
-            seriesLat.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), listLat[i]);
-        for (int i = 0; i < csvData.ListHertzTime.Count; i++)
-            seriesLon.Points.AddXY(double.Parse(csvData.ListHertzTime[i]), listLon[i]);
+        for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
+            seriesLat.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), listLat[i]);
+        for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
+            seriesLon.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), listLon[i]);
 
         chart1.Series.Add(seriesLat);
         chart1.Series.Add(seriesLon);
@@ -248,7 +247,7 @@ public partial class ChartForm : Form
             double thisTrackLonMin = 0;
             double thisTrackLonMax = 0;
 
-            switch (csvData.Track)
+            switch (_csvData.Track)
             {
                 case "smsp":
                     thisTrackLatMin = -33.803825;
@@ -265,11 +264,11 @@ public partial class ChartForm : Form
             }
 
             List<Tuple<string, string>> lapList = new List<Tuple<string, string>>();
-            lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[1], "Out"));
-            for (int i = 0; i < csvData.ListLatLon.Count; i++)
+            lapList.Add(new Tuple<string, string>(_csvData.ListHertzTime[1], "Out"));
+            for (int i = 0; i < _csvData.ListLatLon.Count; i++)
             {
-                if (isFinishLine(thisTrackLatMin, thisTrackLatMax, csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, csvData.ListLatLon[i].Item2))
-                    lapList.Add(new Tuple<string, string>(csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
+                if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLatLon[i].Item2))
+                    lapList.Add(new Tuple<string, string>(_csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
             }
 
             foreach (ChartArea ca in chart1.ChartAreas)
@@ -297,7 +296,7 @@ public partial class ChartForm : Form
         {
             ca.AxisX.Interval = 20; // Seconds mark
             ca.AxisX.MajorTickMark.Interval = 20; // Major ticks at every x units
-            //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
+                                                  //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
 
 
             // ---- X Axis time formatting ----
@@ -305,7 +304,7 @@ public partial class ChartForm : Form
             // Initial setup
             //var tempList = new List<string>();
             //var tempSpan = new TimeSpan(0, 0, 0);
-            //for (int i = 0; i < csvData.ListHertzTime.Count; i += 10)
+            //for (int i = 0; i < _csvData.ListHertzTime.Count; i += 10)
             //{
             //    tempList.Add(tempSpan.ToString(@"mm\.ss"));
             //    tempSpan = tempSpan.Add(TimeSpan.FromSeconds(10));
@@ -323,12 +322,12 @@ public partial class ChartForm : Form
         }
 
         #region Max values
-        int maxRpm = csvData.ListRpm.Select(int.Parse).Max();
-        int maxSpeed = csvData.ListSpeed.Select(int.Parse).Max();
-        int maxECT = csvData.ListECT.Select(int.Parse).Max();
-        int maxIAT = csvData.ListIAT.Select(int.Parse).Max();
-        int maxOilTemp = csvData.ListOilTemperature.Select(int.Parse).Max();
-        int maxOilPressure = csvData.ListOilPressure.Select(int.Parse).Max();
+        int maxRpm = _csvData.ListRpm.Select(int.Parse).Max();
+        int maxSpeed = _csvData.ListSpeed.Select(int.Parse).Max();
+        int maxECT = _csvData.ListECT.Select(int.Parse).Max();
+        int maxIAT = _csvData.ListIAT.Select(int.Parse).Max();
+        int maxOilTemp = _csvData.ListOilTemperature.Select(int.Parse).Max();
+        int maxOilPressure = _csvData.ListOilPressure.Select(int.Parse).Max();
 
         lbl_MaxRpm.Text = maxRpm.ToString();
         lbl_MaxSpeed.Text = maxSpeed.ToString();
@@ -339,11 +338,11 @@ public partial class ChartForm : Form
         #endregion
     }
 
-    private void DrawTrackMap(List<Tuple<double, double>> listLatLon)
+    private void DrawTrackMap()
     {
         ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
 
-        switch (_CsvData.Track)
+        switch (_csvData.Track)
         {
             case "smsp":
                 chartAreaTrackMap.AxisX.Minimum = 150.864046;
@@ -384,7 +383,7 @@ public partial class ChartForm : Form
         series.ChartType = SeriesChartType.Point;
         series.Color = Color.White;
 
-        foreach (var coord in listLatLon)
+        foreach (var coord in _csvData.ListLatLon)
             series.Points.AddXY(coord.Item2, coord.Item1);
 
         chart_TrackMap.Series.Add(series);
@@ -404,14 +403,14 @@ public partial class ChartForm : Form
         for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
         {
             DataPoint point = chart_TrackMap.Series[0].Points[i];
-            
+
             if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
             {
                 // TODO: This works but the blue line goes through circle
                 //point.MarkerColor = Color.Red;
                 //point.MarkerSize = 20;
                 //point.MarkerStyle = MarkerStyle.Circle;
-                
+
                 //point.Color = Color.Red;
 
                 // TODO: This is the shitty workaround
@@ -439,94 +438,94 @@ public partial class ChartForm : Form
     }
 
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
-        {
-            Chart chart = chart1;
+    {
+        Chart chart = chart1;
 
         if (chart != null && e.X > 0)
+        {
+            // Get cursor position - being lazy and taking from first chart area
+            double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+
+            //foreach (ChartArea ca in chart.ChartAreas)
+            Parallel.ForEach(chart.ChartAreas, ca =>
             {
-                    // Get cursor position - being lazy and taking from first chart area
-                    double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+                // Remove the old one first
+                StripLine cursorStripLine = ca.AxisX.StripLines.FirstOrDefault(x => x.Text == "");
+                ca.AxisX.StripLines.Remove(cursorStripLine);
 
-                    //foreach (ChartArea ca in chart.ChartAreas)
-                    Parallel.ForEach(chart.ChartAreas, ca =>
-                    {
-                        // Remove the old one first
-                    StripLine cursorStripLine = ca.AxisX.StripLines.FirstOrDefault(x => x.Text == "");
-                    ca.AxisX.StripLines.Remove(cursorStripLine);
+                // Then add the new one
+                ca.AxisX.StripLines.Add(new StripLine()
+                {
+                    IntervalOffset = xValue,
+                    StripWidth = 0,
+                    BorderColor = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue((ChartDataConfig.Colours)AppSettings.CursorLineColour)),
+                    BorderWidth = 1,
+                    BorderDashStyle = ChartDashStyle.Solid
+                });
+            });
 
-                        // Then add the new one
-                        ca.AxisX.StripLines.Add(new StripLine()
-                        {
-                            IntervalOffset = xValue,
-                            StripWidth = 0,
-                            BorderColor = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue((ChartDataConfig.Colours)AppSettings.CursorLineColour)),
-                            BorderWidth = 1,
-                            BorderDashStyle = ChartDashStyle.Solid
-                        });
-                    });
+            double currentLat = 0.0;
+            double currentLon = 0.0;
+            string gearValue = "";
 
-                    double currentLat = 0.0;
-                    double currentLon = 0.0;
-                    string gearValue = "";
+            // Update legend with current value on yAxis
+            //foreach (Series series in chart.Series)
+            Parallel.ForEach(chart.Series, series =>
+            {
+                DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
 
-                    // Update legend with current value on yAxis
-                    //foreach (Series series in chart.Series)
-                    Parallel.ForEach(chart.Series, series =>
-                    {
-                        DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+                if (matchingPoint != null)
+                {
+                    series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint.YValues.FirstOrDefault();
 
-                        if (matchingPoint != null)
-                        {
-                        series.LegendText = series.Legend.Split(':')[2] + " : " + matchingPoint.YValues.FirstOrDefault();
+                    if (series.Name == "Series:4:Gear")
+                        gearValue = matchingPoint.YValues.FirstOrDefault().ToString();
 
-                        if (series.Name == "Series:4:Gear")
-                            gearValue = matchingPoint.YValues.FirstOrDefault().ToString();
+                    if (series.Name == "Series:4:Lat")
+                        currentLat = (double)matchingPoint.YValues.FirstOrDefault();
 
-                            if (series.Name == "Series:4:Lat")
-                            currentLat = (double)matchingPoint.YValues.FirstOrDefault();
-
-                            if (series.Name == "Series:4:Lon")
-                            currentLon = (double)matchingPoint.YValues.FirstOrDefault();
-                    }
-                    });
-
-                // TODO: Suss this later
-                // Have to move this out for some reason because of the multi threading.
-                lbl_Gear.Text = gearValue;
-
-                    MoveTrackMapCurrentPosition(currentLat, currentLon);
-
-                // TODO: No idea what this was for
-                    //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
-                    //chart.Series
-                    //    .Where(x => x.ChartArea == ca.Name)
-                    //    .ToList()
-                    //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
-                    //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
+                    if (series.Name == "Series:4:Lon")
+                        currentLon = (double)matchingPoint.YValues.FirstOrDefault();
                 }
-                        }
+            });
+
+            // TODO: Suss this later
+            // Have to move this out for some reason because of the multi threading.
+            lbl_Gear.Text = gearValue;
+
+            MoveTrackMapCurrentPosition(currentLat, currentLon);
+
+            // TODO: No idea what this was for
+            //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
+            //chart.Series
+            //    .Where(x => x.ChartArea == ca.Name)
+            //    .ToList()
+            //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
+            //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
+        }
+    }
 
     private void chart1_MouseDown(object sender, MouseEventArgs e)
-                    {
+    {
         if (e.Button == MouseButtons.Left)
             isDragging = true;
     }
 
     private void chart1_MouseUp(object sender, MouseEventArgs e)
-                        {
+    {
         if (e.Button == MouseButtons.Left)
             isDragging = false;
-                                }
+    }
 
     private void chart1_MouseMove(object sender, MouseEventArgs e)
     {
         //if (AppSettings.AutoCursorLine)
         if (isDragging)
             DoCurrentCursorPositionDataEvalution(sender, e);
-                    }
+    }
 
     private void chart1_MouseClick(object sender, MouseEventArgs e)
-                    {
+    {
         //if (!AppSettings.AutoCursorLine)
         if (true) // TODO: doing this for now, for the click and drag setup
             DoCurrentCursorPositionDataEvalution(sender, e);
@@ -613,7 +612,7 @@ public partial class ChartForm : Form
                 //    zoom = Math.Max(zoom - 0.1F, 0.1F);
 
                 //int x = e.Location.X;    // Where location of the mouse in the pictureframe
-            
+
                 //int oldimagex = (int)(x / oldzoom);  // Where in the IMAGE is it now
                 //int newimagex = (int)(x / zoom);     // Where in the IMAGE will it be when the new zoom i made
 
