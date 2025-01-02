@@ -55,7 +55,7 @@ public MainForm()
 
     private void OpenChartForm()
 {
-        this._SettingsForm?.Hide();
+        _SettingsForm?.Hide();
             
         if (_ChartForm == null)
         {
@@ -67,16 +67,14 @@ public MainForm()
                 };
         }
 
-        this._ChartForm?.Show();
+        _ChartForm?.Show();
 }
 
     private void OpenScatterPlotForm()
     {
         _ChartForm?.Hide();
         _SettingsForm?.Hide();
-
-        if (_ScatterPlotForm != null)
-            _ScatterPlotForm.Dispose();
+        _ScatterPlotForm?.Dispose();
 
             _ScatterPlotForm = new ScatterPlotForm(CsvData)
             {
@@ -90,7 +88,7 @@ public MainForm()
 
     private void OpenSettingsForm()
     {
-        this._ChartForm?.Hide();
+        _ChartForm?.Hide();
 
         _SettingsForm = new SettingsForm()
         {
@@ -99,7 +97,7 @@ public MainForm()
             Dock = DockStyle.Fill
         };
 
-        this._SettingsForm?.Show();
+        _SettingsForm?.Show();
     }
 
 private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -131,7 +129,7 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                         _ChartForm?.Dispose();
                         _ScatterPlotForm?.Dispose();
 
-                        this.Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
+                        Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
 
                         if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
                             CsvData.ReadCsvData(ofd_LoadFile.FileName);
