@@ -115,6 +115,7 @@ public partial class ChartForm : Form
     private void MapDataPointsToChart()
     {
         int counter = 1;
+        double[] hertzTimeArr = _csvData.ListHertzTime.ToArray();
 
         void DoDataPoints(List<ChartDataConfig> chartDataConfigs)
         {
@@ -154,9 +155,7 @@ public partial class ChartForm : Form
                     XValueType = ChartValueType.Double
                 };
 
-                for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
-                    series.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), _csvData.GetDataPointsList(enumValue)[i]);
-
+                series.Points.DataBindXY(hertzTimeArr, _csvData.GetDataPointsList(enumValue));
                 chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
                 chart1.Series.Add(series);
             }
@@ -183,14 +182,10 @@ public partial class ChartForm : Form
             XValueType = ChartValueType.Double
         };
 
-        var listLat = _csvData.ListLatLon.Select(x => x.Item1).ToList();
-        var listLon = _csvData.ListLatLon.Select(x => x.Item2).ToList();
-
-        for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
-            seriesLat.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), listLat[i]);
-        for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
-            seriesLon.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), listLon[i]);
-
+        double[] listLat = _csvData.ListLatLon.Select(x => x.Item1).ToArray();
+        double[] listLon = _csvData.ListLatLon.Select(x => x.Item2).ToArray();
+        seriesLat.Points.DataBindXY(hertzTimeArr, listLat);
+        seriesLon.Points.DataBindXY(hertzTimeArr, listLon);
         chart1.Series.Add(seriesLat);
         chart1.Series.Add(seriesLon);
         #endregion
@@ -263,12 +258,12 @@ public partial class ChartForm : Form
                     break;
             }
 
-            List<Tuple<string, string>> lapList = new List<Tuple<string, string>>();
-            lapList.Add(new Tuple<string, string>(_csvData.ListHertzTime[1], "Out"));
+            List<Tuple<double, string>> lapList = new List<Tuple<double, string>>();
+            lapList.Add(new Tuple<double, string>(_csvData.ListHertzTime[1], "Out"));
             for (int i = 0; i < _csvData.ListLatLon.Count; i++)
             {
                 if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLatLon[i].Item2))
-                    lapList.Add(new Tuple<string, string>(_csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
+                    lapList.Add(new Tuple<double, string>(_csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
             }
 
             foreach (ChartArea ca in chart1.ChartAreas)
@@ -322,12 +317,12 @@ public partial class ChartForm : Form
         }
 
         #region Max values
-        int maxRpm = _csvData.ListRpm.Select(int.Parse).Max();
-        int maxSpeed = _csvData.ListSpeed.Select(int.Parse).Max();
-        int maxECT = _csvData.ListECT.Select(int.Parse).Max();
-        int maxIAT = _csvData.ListIAT.Select(int.Parse).Max();
-        int maxOilTemp = _csvData.ListOilTemperature.Select(int.Parse).Max();
-        int maxOilPressure = _csvData.ListOilPressure.Select(int.Parse).Max();
+        double maxRpm = _csvData.ListRpm.Max();
+        double maxSpeed = _csvData.ListSpeed.Max();
+        double maxECT = _csvData.ListECT.Max();
+        double maxIAT = _csvData.ListIAT.Max();
+        double maxOilTemp = _csvData.ListOilTemperature.Max();
+        double maxOilPressure = _csvData.ListOilPressure.Max();
 
         lbl_MaxRpm.Text = maxRpm.ToString();
         lbl_MaxSpeed.Text = maxSpeed.ToString();

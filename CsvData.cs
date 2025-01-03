@@ -31,85 +31,85 @@ public class CsvData
         set => _headingsDataTypes = value;
     }
 
-    private List<string> _listHertzTime = new List<string>();
-    public List<string> ListHertzTime
+    private List<double> _listHertzTime = new List<double>();
+    public List<double> ListHertzTime
     {
         get => _listHertzTime;
         set => _listHertzTime = value;
     }
 
-    private List<string> _listRpm = new List<string>();
-    public List<string> ListRpm
+    private List<double> _listRpm = new List<double>();
+    public List<double> ListRpm
     {
         get => _listRpm;
         set => _listRpm = value;
     }
 
-    private List<string> _listSpeed = new List<string>();
-    public List<string> ListSpeed
+    private List<double> _listSpeed = new List<double>();
+    public List<double> ListSpeed
     {
         get => _listSpeed;
         set => _listSpeed = value;
     }
 
-    private List<string> _listGear = new List<string>();
-    public List<string> ListGear
+    private List<double> _listGear = new List<double>();
+    public List<double> ListGear
     {
         get => _listGear;
         set => _listGear = value;
     }
 
-    private List<string> _listVoltage = new List<string>();
-    public List<string> ListVoltage
+    private List<double> _listVoltage = new List<double>();
+    public List<double> ListVoltage
     {
         get => _listVoltage;
         set => _listVoltage = value;
     }
 
-    private List<string> _listIAT = new List<string>();
-    public List<string> ListIAT
+    private List<double> _listIAT = new List<double>();
+    public List<double> ListIAT
     {
         get => _listIAT;
         set => _listIAT = value;
     }
 
-    private List<string> _listECT = new List<string>();
-    public List<string> ListECT
+    private List<double> _listECT = new List<double>();
+    public List<double> ListECT
     {
         get => _listECT;
         set => _listECT = value;
     }
 
-    private List<string> _listTPS = new List<string>();
-    public List<string> ListTPS
+    private List<double> _listTPS = new List<double>();
+    public List<double> ListTPS
     {
         get => _listTPS;
         set => _listTPS = value;
     }
 
-    private List<string> _listMAP = new List<string>();
-    public List<string> ListMAP
+    private List<double> _listMAP = new List<double>();
+    public List<double> ListMAP
     {
         get => _listMAP;
         set => _listMAP = value;
     }
 
-    private List<string> _listLambdaRatio = new List<string>();
-    public List<string> ListLambdaRatio
+    private List<double> _listLambdaRatio = new List<double>();
+    public List<double> ListLambdaRatio
     {
         get => _listLambdaRatio;
         set => _listLambdaRatio = value;
     }
 
-    private List<string> _listOilTemperature = new List<string>();
-    public List<string> ListOilTemperature
+    private List<double> _listOilTemperature = new List<double>();
+    public List<double> ListOilTemperature
     {
         get => _listOilTemperature;
         set => _listOilTemperature = value;
     }
 
-    private List<string> _listOilPressure = new List<string>();
-    public List<string> ListOilPressure
+    private List<double> _listOilPressure = new List<double>();
+    public List<double> ListOilPressure
     {
         get => _listOilPressure;
         set => _listOilPressure = value;
@@ -163,53 +163,53 @@ public class CsvData
                 }
                 else
                 {
-                    _listHertzTime.Add(values[0]);
-                    _listRpm.Add(values[1]);
-                    _listSpeed.Add(values[2]);
-                    _listGear.Add(values[3]);
-                    _listVoltage.Add(values[4]);
-                    _listIAT.Add(values[5]);
-                    _listECT.Add(values[6]);
-                    _listTPS.Add(values[7]);
-                    _listMAP.Add(values[8]);
-                    _listLambdaRatio.Add(values[9]);
-                    _listOilTemperature.Add(values[10]);
-                    _listOilPressure.Add(values[11]);
-                    _listLatLon.Add(new Tuple<double, double>(Convert.ToDouble(values[12]), Convert.ToDouble(values[13])));
+                    _listHertzTime.Add(double.Parse(values[0]));
+                    _listRpm.Add(double.Parse(values[1]));
+                    _listSpeed.Add(double.Parse(values[2]));
+                    _listGear.Add(double.Parse(values[3]));
+                    _listVoltage.Add(double.Parse(values[4]));
+                    _listIAT.Add(double.Parse(values[5]));
+                    _listECT.Add(double.Parse(values[6]));
+                    _listTPS.Add(double.Parse(values[7]));
+                    _listMAP.Add(double.Parse(values[8]));
+                    _listLambdaRatio.Add(double.Parse(values[9]));
+                    _listOilTemperature.Add(double.Parse(values[10]));
+                    _listOilPressure.Add(double.Parse(values[11]));
+                    _listLatLon.Add(new Tuple<double, double>(double.Parse(values[12]), double.Parse(values[13])));
                     _listLapCount.Add(int.Parse(values[14]));
                 }
             }
         }
     }
 
-    public List<string> GetDataPointsList(DataValues dataValue)
+    public double[] GetDataPointsList(DataValues dataValue)
     {
         switch (dataValue)
         {
             case DataValues.RPM:
-                return ListRpm;
+                return ListRpm.ToArray();
             case DataValues.Speed:
-                return ListSpeed;
+                return ListSpeed.ToArray();
             case DataValues.Gear:
-                return ListGear;
+                return ListGear.ToArray();
             case DataValues.Voltage:
-                return ListVoltage;
+                return ListVoltage.ToArray();
             case DataValues.IAT:
-                return ListIAT;
+                return ListIAT.ToArray();
             case DataValues.ECT:
-                return ListECT;
+                return ListECT.ToArray();
             case DataValues.TPS:
-                return ListTPS;
+                return ListTPS.ToArray();
             case DataValues.MAP:
-                return ListMAP;
+                return ListMAP.ToArray();
             case DataValues.LambdaRatio:
-                return ListLambdaRatio;
+                return ListLambdaRatio.ToArray();
             case DataValues.OilTemperature:
-                return ListOilTemperature;
+                return ListOilTemperature.ToArray();
             case DataValues.OilPressure:
-                return ListOilPressure;
+                return ListOilPressure.ToArray();
             default:
-                return new List<string>();
+                return null;
         }
     }
 

@@ -145,10 +145,10 @@ public partial class ScatterPlotForm : Form
 
         for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
         {
-            series.Points.AddXY(double.Parse(_csvData.ListHertzTime[i]), _csvData.ListOilPressure[i]);
+            series.Points.AddXY(_csvData.ListHertzTime[i], _csvData.ListOilPressure[i]);
 
             Color colourToUse = Color.White;
-            switch(double.Parse(_csvData.ListRpm[i]))
+            switch(_csvData.ListRpm[i])
             {
                 //case <= 1000:
                 //    colourToUse = ColorTranslator.FromHtml("#0000FF");
