@@ -151,7 +151,7 @@ public partial class ChartForm : Form
                     ChartArea = "ChartArea" + counter.ToString(),
                     Legend = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
                     Color = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue(colour)),
-                    ChartType = SeriesChartType.Line,
+                    ChartType = SeriesChartType.FastLine,
                     XValueType = ChartValueType.Double
                 };
 
@@ -374,9 +374,11 @@ public partial class ChartForm : Form
 
         chart_TrackMap.ChartAreas.Add(chartAreaTrackMap);
 
-        Series series = new Series("TrackMapSeries");
-        series.ChartType = SeriesChartType.Point;
-        series.Color = Color.White;
+        Series series = new Series("TrackMapSeries")
+        {
+            ChartType = SeriesChartType.FastPoint,
+            Color = Color.White
+        };
 
         foreach (var coord in _csvData.ListLatLon)
             series.Points.AddXY(coord.Item2, coord.Item1);
@@ -417,8 +419,8 @@ public partial class ChartForm : Form
                 }
 
                 Series series = new Series("DataMarker");
+                series.ChartType = SeriesChartType.Point;
                 series.Points.AddXY(lon, lat);
-
                 series.Points[0].MarkerColor = Color.Red;
                 series.Points[0].MarkerSize = 20;
                 series.Points[0].MarkerStyle = MarkerStyle.Circle;

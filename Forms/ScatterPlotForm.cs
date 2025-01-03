@@ -137,7 +137,7 @@ public partial class ScatterPlotForm : Form
             IsValueShownAsLabel = false,
             ChartArea = "ScatterPlotChartArea",
             //Color = ColorTranslator.FromHtml("#FF5722"),
-            ChartType = SeriesChartType.Point,
+            ChartType = SeriesChartType.FastPoint,
             MarkerStyle = MarkerStyle.Circle,
             MarkerSize = 4,
             XValueType = ChartValueType.Double
