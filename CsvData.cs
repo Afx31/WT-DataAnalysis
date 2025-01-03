@@ -115,12 +115,26 @@ public class CsvData
         set => _listOilPressure = value;
     }
 
-    private List<Tuple<double, double>> _listLatLon = new List<Tuple<double, double>>();
-    public List<Tuple<double, double>> ListLatLon
+    private List<double> _listLat = new List<double>();
+    public List<double> ListLat
     {
-        get => _listLatLon;
-        set => _listLatLon = value;
+        get => _listLat;
+        set => _listLat = value;
     }
+
+    private List<double> _listLon = new List<double>();
+    public List<double> ListLon
+    {
+        get => _listLon;
+        set => _listLon = value;
+    }
+
+    //private List<Tuple<double, double>> _listLatLon = new List<Tuple<double, double>>();
+    //public List<Tuple<double, double>> ListLatLon
+    //{
+    //    get => _listLatLon;
+    //    set => _listLatLon = value;
+    //}
 
     private List<int> _listLapCount = new List<int>();
     public List<int> ListLapCount
@@ -175,7 +189,9 @@ public class CsvData
                     _listLambdaRatio.Add(double.Parse(values[9]));
                     _listOilTemperature.Add(double.Parse(values[10]));
                     _listOilPressure.Add(double.Parse(values[11]));
-                    _listLatLon.Add(new Tuple<double, double>(double.Parse(values[12]), double.Parse(values[13])));
+                    //_listLatLon.Add(new Tuple<double, double>(double.Parse(values[12]), double.Parse(values[13])));
+                    _listLat.Add(double.Parse(values[12]));
+                    _listLon.Add(double.Parse(values[13]));
                     _listLapCount.Add(int.Parse(values[14]));
                 }
             }

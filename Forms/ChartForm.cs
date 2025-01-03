@@ -182,8 +182,8 @@ public partial class ChartForm : Form
             XValueType = ChartValueType.Double
         };
 
-        double[] listLat = _csvData.ListLatLon.Select(x => x.Item1).ToArray();
-        double[] listLon = _csvData.ListLatLon.Select(x => x.Item2).ToArray();
+        double[] listLat = _csvData.ListLat.ToArray();
+        double[] listLon = _csvData.ListLon.ToArray();
         seriesLat.Points.DataBindXY(hertzTimeArr, listLat);
         seriesLon.Points.DataBindXY(hertzTimeArr, listLon);
         chart1.Series.Add(seriesLat);
@@ -259,11 +259,11 @@ public partial class ChartForm : Form
             }
 
             List<Tuple<double, string>> lapList = new List<Tuple<double, string>>();
-            lapList.Add(new Tuple<double, string>(_csvData.ListHertzTime[1], "Out"));
-            for (int i = 0; i < _csvData.ListLatLon.Count; i++)
+            lapList.Add(new Tuple<double, string>(hertzTimeArr[1], "Out"));
+            for (int i = 0; i < hertzTimeArr.Length; i++)
             {
-                if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLatLon[i].Item1) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLatLon[i].Item2))
-                    lapList.Add(new Tuple<double, string>(_csvData.ListHertzTime[i], (lapList.Count + 1).ToString()));
+                if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLat[i]) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLon[i]))
+                    lapList.Add(new Tuple<double, string>(hertzTimeArr[i], (lapList.Count + 1).ToString()));
             }
 
             foreach (ChartArea ca in chart1.ChartAreas)
@@ -378,10 +378,7 @@ public partial class ChartForm : Form
             ChartType = SeriesChartType.FastPoint,
             Color = Color.White
         };
-        
-        foreach (var coord in _csvData.ListLatLon)
-            series.Points.AddXY(coord.Item2, coord.Item1);
-
+        series.Points.DataBindXY(_csvData.ListLon.ToArray(), _csvData.ListLat.ToArray());
         chart_TrackMap.Series.Add(series);
     }
 
