@@ -5,7 +5,7 @@ namespace WT_DataAnalysis;
 public partial class ChartForm : Form
 {
     AppSettings AppSettings = AppSettings.Instance;
-    private CsvData _csvData;
+    private readonly CsvData _csvData;
     int previousMarkerDataPoint = -1;
     bool isDragging = false;
 
@@ -291,8 +291,7 @@ public partial class ChartForm : Form
         {
             ca.AxisX.Interval = 20; // Seconds mark
             ca.AxisX.MajorTickMark.Interval = 20; // Major ticks at every x units
-                                                  //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
-
+            //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
 
             // ---- X Axis time formatting ----
             // This works, but once you zoom in it's then all wrong
@@ -379,7 +378,7 @@ public partial class ChartForm : Form
             ChartType = SeriesChartType.FastPoint,
             Color = Color.White
         };
-
+        
         foreach (var coord in _csvData.ListLatLon)
             series.Points.AddXY(coord.Item2, coord.Item1);
 
@@ -433,18 +432,16 @@ public partial class ChartForm : Form
             }
         }
     }
-
+    
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
     {
-        Chart chart = chart1;
-
-        if (chart != null && e.X > 0)
+        if (chart1 != null && e.X > 0)
         {
             // Get cursor position - being lazy and taking from first chart area
-            double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+            double xValue = chart1.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
 
             //foreach (ChartArea ca in chart.ChartAreas)
-            Parallel.ForEach(chart.ChartAreas, ca =>
+            Parallel.ForEach(chart1.ChartAreas, ca =>
             {
                 // Remove the old one first
                 StripLine cursorStripLine = ca.AxisX.StripLines.FirstOrDefault(x => x.Text == "");
@@ -466,8 +463,8 @@ public partial class ChartForm : Form
             string gearValue = "";
 
             // Update legend with current value on yAxis
-            //foreach (Series series in chart.Series)
-            Parallel.ForEach(chart.Series, series =>
+            //foreach (Series series in chart1.Series)
+            Parallel.ForEach(chart1.Series, series =>
             {
                 DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
 

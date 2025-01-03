@@ -48,7 +48,7 @@ public MainForm()
             };
 
         // Reload form
-            //OpenChartForm();
+            OpenChartForm();
             //OpenScatterPlotForm();
     }
 }
