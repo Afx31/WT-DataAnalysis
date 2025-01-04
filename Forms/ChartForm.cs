@@ -112,6 +112,131 @@ public partial class ChartForm : Form
         #endregion
     }
 
+    private void MapDataPointsToChart(int displayThisSpecificLap)
+    {
+        // Load in lap 1's data points
+        // Re-render the chart to suit
+        double thisLapsStartingHertz = 0.0;
+
+        if (_csvData.DictLapCount.ContainsKey(displayThisSpecificLap))
+            thisLapsStartingHertz = _csvData.DictLapCount[displayThisSpecificLap];
+
+        // we know the specific lap, and the hertz that lap starts
+        // so we want to grab all the data points for it
+        // we can +1 for the next lap, get its hertz, then -0.1 for the last hertz for this lap
+
+        // this'll error for the last lap, out of bounds obviously (just do starting 1, then -1)
+        double thisLapsEndingHertz = 0.0;
+        if (_csvData.DictLapCount.ContainsKey(displayThisSpecificLap + 1))
+            thisLapsEndingHertz = Math.Round(_csvData.DictLapCount[displayThisSpecificLap + 1] - 0.1, 1);
+
+        // lookup the hertz index in the ListHertzTime, then range those
+        int startIndex = _csvData.ListHertzTime.IndexOf(thisLapsStartingHertz);
+        int endIndex = _csvData.ListHertzTime.IndexOf(thisLapsEndingHertz);
+        double[] thisLapsHertzRange = _csvData.ListHertzTime.GetRange(startIndex, endIndex - startIndex + 1).ToArray();
+        
+        // Cleanup to reload
+        while (chart1.Series.Count > 0)
+        {
+            chart1.Series.RemoveAt(0);
+        }
+
+        double[] GetRelevantDataForThisHertzRange(double[] fullList)
+        {
+            List<double> retrievedList = new();
+            
+            for (int i = startIndex; i <= endIndex; i++)
+                retrievedList.Add((double)fullList.GetValue(i));
+
+            return retrievedList.ToArray();
+        }
+
+        int counter = 1;
+        void DoDataPoints(List<ChartDataConfig> chartDataConfigs)
+        {
+            foreach (ChartDataConfig chartDataConfig in chartDataConfigs)
+            {
+                CsvData.DataValues enumValue = (CsvData.DataValues)chartDataConfig.DataPoint;
+                if (enumValue == CsvData.DataValues.Empty)
+                    continue;
+
+                ChartDataConfig.Colours colour = (ChartDataConfig.Colours)chartDataConfig.LineColour;
+
+                // Create Legends
+                Legend legend = new Legend
+                {
+                    Name = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
+                    DockedToChartArea = "ChartArea" + counter.ToString(),
+                    Docking = Docking.Left,
+                    IsDockedInsideChartArea = true,
+                    LegendStyle = LegendStyle.Row,
+                    ForeColor = Color.White,
+                    BackColor = Color.Transparent
+                };
+
+                // Create series
+                Series series = new Series
+                {
+                    Name = "Series:" + counter.ToString() + ":" + enumValue.ToString(),
+                    LegendText = enumValue.ToString(),
+                    IsValueShownAsLabel = false,
+                    ChartArea = "ChartArea" + counter.ToString(),
+                    Legend = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
+                    Color = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue(colour)),
+                    ChartType = SeriesChartType.FastLine,
+                    XValueType = ChartValueType.Double
+                };
+
+                series.Points.DataBindXY(thisLapsHertzRange, GetRelevantDataForThisHertzRange(_csvData.GetDataPointsList(enumValue)));
+                chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
+                chart1.Series.Add(series);
+            }
+
+            counter++;
+        }
+
+        DoDataPoints(AppSettings.Chart1DataPoints);
+        DoDataPoints(AppSettings.Chart2DataPoints);
+        DoDataPoints(AppSettings.Chart3DataPoints);
+        DoDataPoints(AppSettings.Chart4DataPoints);
+
+        foreach (ChartArea ca in chart1.ChartAreas)
+        {
+            ca.AxisX.Minimum = double.NaN;
+            ca.AxisX.Maximum = double.NaN;
+            ca.RecalculateAxesScale();
+        }
+
+        #region Lat/Lon stuff
+        Series seriesLat = new Series()
+        {
+            Name = "Series:4:Lat",
+            ChartArea = "ChartArea4",
+            XValueType = ChartValueType.Double
+        };
+        Series seriesLon = new Series()
+        {
+            Name = "Series:4:Lon",
+            ChartArea = "ChartArea4",
+            XValueType = ChartValueType.Double
+        };
+
+        seriesLat.Points.DataBindXY(thisLapsHertzRange, GetRelevantDataForThisHertzRange(_csvData.ListLat.ToArray()));
+        seriesLon.Points.DataBindXY(thisLapsHertzRange, GetRelevantDataForThisHertzRange(_csvData.ListLon.ToArray()));
+        chart1.Series.Add(seriesLat);
+        chart1.Series.Add(seriesLon);
+        #endregion
+
+
+        if (chart1.Series.Any(x => x.Name == "Series4:4:Gear"))
+            chart1.Series["Series:4:Gear"].Enabled = false;
+        chart1.Series["Series:4:Lat"].Enabled = false;
+        chart1.Series["Series:4:Lon"].Enabled = false;
+        chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
+
+        
+    }
+
     private void MapDataPointsToChart()
     {
         int counter = 1;
@@ -263,7 +388,7 @@ public partial class ChartForm : Form
             for (int i = 0; i < hertzTimeArr.Length; i++)
             {
                 if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLat[i]) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLon[i]))
-                    lapList.Add(new Tuple<double, string>(hertzTimeArr[i], (lapList.Count + 1).ToString()));
+                    lapList.Add(new Tuple<double, string>(hertzTimeArr[i], (lapList.Count).ToString()));
             }
 
             foreach (ChartArea ca in chart1.ChartAreas)
@@ -429,7 +554,7 @@ public partial class ChartForm : Form
             }
         }
     }
-    
+
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
     {
         if (chart1 != null && e.X > 0)
@@ -631,6 +756,13 @@ public partial class ChartForm : Form
                     ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
             }
         }
+    }
+
+    private void btn_Lap1_Click(object sender, EventArgs e)
+    {
+        // TODO: do a dynamically built combobox based on lapcount
+        int buttonClickValue = 2;
+        MapDataPointsToChart(buttonClickValue);
     }
 
 }
