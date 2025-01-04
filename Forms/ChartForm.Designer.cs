@@ -44,9 +44,6 @@
             lbl_MaxOilTemp = new Label();
             grp_MaxOilPressure = new GroupBox();
             lbl_MaxOilPressure = new Label();
-            btn_Lap1 = new Button();
-            btn_Lap2 = new Button();
-            groupBox1 = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             grp_Gear.SuspendLayout();
             grp_MaxRpm.SuspendLayout();
@@ -56,7 +53,6 @@
             grp_MaxIAT.SuspendLayout();
             grp_MaxOilTemp.SuspendLayout();
             grp_MaxOilPressure.SuspendLayout();
-            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // chart1
@@ -236,43 +232,11 @@
             lbl_MaxOilPressure.TabIndex = 1;
             lbl_MaxOilPressure.Text = "---";
             // 
-            // btn_Lap1
-            // 
-            btn_Lap1.Location = new Point(6, 16);
-            btn_Lap1.Name = "btn_Lap1";
-            btn_Lap1.Size = new Size(75, 23);
-            btn_Lap1.TabIndex = 6;
-            btn_Lap1.Text = "Lap 1";
-            btn_Lap1.UseVisualStyleBackColor = true;
-            btn_Lap1.Click += btn_Lap1_Click;
-            // 
-            // btn_Lap2
-            // 
-            btn_Lap2.Location = new Point(6, 43);
-            btn_Lap2.Name = "btn_Lap2";
-            btn_Lap2.Size = new Size(75, 23);
-            btn_Lap2.TabIndex = 7;
-            btn_Lap2.Text = "Lap 2";
-            btn_Lap2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            groupBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            groupBox1.Controls.Add(btn_Lap1);
-            groupBox1.Controls.Add(btn_Lap2);
-            groupBox1.Location = new Point(86, 380);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(111, 66);
-            groupBox1.TabIndex = 4;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Gear";
-            // 
             // ChartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1075, 450);
-            Controls.Add(groupBox1);
             Controls.Add(grp_MaxOilPressure);
             Controls.Add(grp_MaxOilTemp);
             Controls.Add(grp_MaxIAT);
@@ -300,7 +264,6 @@
             grp_MaxOilTemp.PerformLayout();
             grp_MaxOilPressure.ResumeLayout(false);
             grp_MaxOilPressure.PerformLayout();
-            groupBox1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -322,8 +285,5 @@
         private Label lbl_MaxOilTemp;
         private GroupBox grp_MaxOilPressure;
         private Label lbl_MaxOilPressure;
-        private Button btn_Lap1;
-        private Button btn_Lap2;
-        private GroupBox groupBox1;
     }
 }

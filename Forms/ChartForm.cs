@@ -112,7 +112,7 @@ public partial class ChartForm : Form
         #endregion
     }
 
-    private void MapDataPointsToChart(int displayThisSpecificLap)
+    public void MapDataPointsToChart(int displayThisSpecificLap)
     {
         // Load in lap 1's data points
         // Re-render the chart to suit
@@ -237,7 +237,7 @@ public partial class ChartForm : Form
         
     }
 
-    private void MapDataPointsToChart()
+    public void MapDataPointsToChart()
     {
         int counter = 1;
         double[] hertzTimeArr = _csvData.ListHertzTime.ToArray();
@@ -756,13 +756,6 @@ public partial class ChartForm : Form
                     ca.AxisX.StripLines.Remove(ca.AxisX.StripLines[0]);
             }
         }
-    }
-
-    private void btn_Lap1_Click(object sender, EventArgs e)
-    {
-        // TODO: do a dynamically built combobox based on lapcount
-        int buttonClickValue = 2;
-        MapDataPointsToChart(buttonClickValue);
     }
 
 }
