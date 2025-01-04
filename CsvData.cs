@@ -129,18 +129,14 @@ public class CsvData
         set => _listLon = value;
     }
 
-    //private List<Tuple<double, double>> _listLatLon = new List<Tuple<double, double>>();
-    //public List<Tuple<double, double>> ListLatLon
-    //{
-    //    get => _listLatLon;
-    //    set => _listLatLon = value;
-    //}
-
-    private List<int> _listLapCount = new List<int>();
-    public List<int> ListLapCount
+    /// <summary>
+    /// Key = lap itself | Value = hertz value at the start of that lap
+    /// </summary>
+    private Dictionary<int, double> _dictLapCount = new Dictionary<int, double>();
+    public Dictionary<int, double> DictLapCount
     {
-        get => _listLapCount;
-        set => _listLapCount = value;
+        get => _dictLapCount;
+        set => _dictLapCount = value;
     }
     #endregion
 
@@ -153,6 +149,7 @@ public class CsvData
         using (StreamReader reader = new StreamReader(filePath))
         {
             int lineCounter = 1;
+            string previousLapCounter = "-1";
 
             while (!reader.EndOfStream)
             {
@@ -189,10 +186,19 @@ public class CsvData
                     _listLambdaRatio.Add(double.Parse(values[9]));
                     _listOilTemperature.Add(double.Parse(values[10]));
                     _listOilPressure.Add(double.Parse(values[11]));
-                    //_listLatLon.Add(new Tuple<double, double>(double.Parse(values[12]), double.Parse(values[13])));
                     _listLat.Add(double.Parse(values[12]));
                     _listLon.Add(double.Parse(values[13]));
-                    _listLapCount.Add(int.Parse(values[14]));
+
+                    if (!previousLapCounter.Equals(values[14]))
+                    {
+                        _dictLapCount.Add(int.Parse(values[14]), double.Parse(values[0]));
+                        previousLapCounter = values[14];
+
+                        // TODO - fix this hack
+                        // Default first one to 0.1 hertz start, works better with the chart
+                        if (_dictLapCount.Count == 1)
+                            _dictLapCount[0] = 0.1;
+                    }
                 }
             }
         }
