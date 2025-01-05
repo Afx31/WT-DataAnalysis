@@ -437,54 +437,6 @@ public partial class ChartForm : Form
         chart_TrackMap.Series.Add(series);
     }
 
-    private void MoveTrackMapCurrentPosition(double lat, double lon)
-    {
-        // First clear the previous marker
-        //if (previousMarkerDataPoint >= 0)
-        //{
-        //    DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
-        //    point.MarkerColor = default;
-        //    point.MarkerSize = default;
-        //    point.MarkerStyle = default;
-        //}
-
-        for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
-        {
-            DataPoint point = chart_TrackMap.Series[0].Points[i];
-            
-            if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
-            {
-                // TODO: This works but the blue line goes through circle
-                //point.MarkerColor = Color.Red;
-                //point.MarkerSize = 20;
-                //point.MarkerStyle = MarkerStyle.Circle;
-
-                //point.Color = Color.Red;
-
-                // TODO: This is the shitty workaround
-                // Remove the current series if it exists
-                if (previousMarkerDataPoint >= 0 && chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
-                {
-                    Series removeSeries = chart_TrackMap.Series[1];
-                    chart_TrackMap.Series.Remove(removeSeries);
-                }
-
-                Series series = new Series("DataMarker");
-                series.ChartType = SeriesChartType.Point;
-                series.Points.AddXY(lon, lat);
-                series.Points[0].MarkerColor = Color.Red;
-                series.Points[0].MarkerSize = 20;
-                series.Points[0].MarkerStyle = MarkerStyle.Circle;
-                series.Points[0].Color = Color.Red;
-
-                chart_TrackMap.Series.Add(series);
-
-                previousMarkerDataPoint = i;
-                break;
-            }
-        }
-    }
-
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
     {
         if (chart1 != null && e.X > 0)
@@ -550,6 +502,54 @@ public partial class ChartForm : Form
             //    .ToList()
             //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
             //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
+        }
+    }
+
+    private void MoveTrackMapCurrentPosition(double lat, double lon)
+    {
+        // First clear the previous marker
+        //if (previousMarkerDataPoint >= 0)
+        //{
+        //    DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
+        //    point.MarkerColor = default;
+        //    point.MarkerSize = default;
+        //    point.MarkerStyle = default;
+        //}
+
+        for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
+        {
+            DataPoint point = chart_TrackMap.Series[0].Points[i];
+
+            if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
+            {
+                // TODO: This works but the blue line goes through circle
+                //point.MarkerColor = Color.Red;
+                //point.MarkerSize = 20;
+                //point.MarkerStyle = MarkerStyle.Circle;
+
+                //point.Color = Color.Red;
+
+                // TODO: This is the shitty workaround
+                // Remove the current series if it exists
+                if (previousMarkerDataPoint >= 0 && chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
+                {
+                    Series removeSeries = chart_TrackMap.Series[1];
+                    chart_TrackMap.Series.Remove(removeSeries);
+                }
+
+                Series series = new Series("DataMarker");
+                series.ChartType = SeriesChartType.Point;
+                series.Points.AddXY(lon, lat);
+                series.Points[0].MarkerColor = Color.Red;
+                series.Points[0].MarkerSize = 20;
+                series.Points[0].MarkerStyle = MarkerStyle.Circle;
+                series.Points[0].Color = Color.Red;
+
+                chart_TrackMap.Series.Add(series);
+
+                previousMarkerDataPoint = i;
+                break;
+            }
         }
     }
 
