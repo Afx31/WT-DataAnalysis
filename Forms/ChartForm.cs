@@ -249,174 +249,30 @@ public partial class ChartForm : Form
         chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
 
 
-    }
-
-    public void MapDataPointsToChart()
+        if (loadAllLaps)
     {
-        int counter = 1;
-        double[] hertzTimeArr = _csvData.ListHertzTime.ToArray();
-
-        void DoDataPoints(List<ChartDataConfig> chartDataConfigs)
-        {
-            foreach (ChartDataConfig chartDataConfig in chartDataConfigs)
-            {
-                CsvData.DataValues enumValue = (CsvData.DataValues)chartDataConfig.DataPoint;
-                if (enumValue == CsvData.DataValues.Empty)
-                    continue;
-
-                ChartDataConfig.Colours colour = (ChartDataConfig.Colours)chartDataConfig.LineColour;
-
-                // Create Legends
-                Legend legend = new Legend
-                {
-                    Name = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
-                    DockedToChartArea = "ChartArea" + counter.ToString(),
-                    Docking = Docking.Left,
-                    IsDockedInsideChartArea = true,
-                    LegendStyle = LegendStyle.Row,
-                    ForeColor = Color.White,
-                    BackColor = Color.Transparent
-                };
-
-                chart1.Legends.Add(legend);
-
-
-                // Create series
-                Series series = new Series
-                {
-                    Name = "Series:" + counter.ToString() + ":" + enumValue.ToString(),
-                    LegendText = enumValue.ToString(),
-                    IsValueShownAsLabel = false,
-                    ChartArea = "ChartArea" + counter.ToString(),
-                    Legend = "Legend:" + counter.ToString() + ":" + enumValue.ToString(),
-                    Color = ColorTranslator.FromHtml(ChartDataConfig.GetColourValue(colour)),
-                    ChartType = SeriesChartType.FastLine,
-                    XValueType = ChartValueType.Double
-                };
-
-                series.Points.DataBindXY(hertzTimeArr, _csvData.GetDataPointsList(enumValue));
-                chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
-                chart1.Series.Add(series);
-            }
-
-            counter++;
-        }
-
-        DoDataPoints(AppSettings.Chart1DataPoints);
-        DoDataPoints(AppSettings.Chart2DataPoints);
-        DoDataPoints(AppSettings.Chart3DataPoints);
-        DoDataPoints(AppSettings.Chart4DataPoints);
-
-        #region Lat/Lon stuff
-        Series seriesLat = new Series()
-        {
-            Name = "Series:4:Lat",
-            ChartArea = "ChartArea4",
-            XValueType = ChartValueType.Double
-        };
-        Series seriesLon = new Series()
-        {
-            Name = "Series:4:Lon",
-            ChartArea = "ChartArea4",
-            XValueType = ChartValueType.Double
-        };
-
-        double[] listLat = _csvData.ListLat.ToArray();
-        double[] listLon = _csvData.ListLon.ToArray();
-        seriesLat.Points.DataBindXY(hertzTimeArr, listLat);
-        seriesLon.Points.DataBindXY(hertzTimeArr, listLon);
-        chart1.Series.Add(seriesLat);
-        chart1.Series.Add(seriesLon);
-        #endregion
-
-        /* TODO: Fix this properly
-         * Using it so we can reference the gear position for the label at the bottom of the screen,
-         * whilst still getitng relevant position based on chart position click
-         */
-        if (chart1.Series.Any(x => x.Name == "Series4:4:Gear"))
-            chart1.Series["Series:4:Gear"].Enabled = false;
-        chart1.Series["Series:4:Lat"].Enabled = false;
-        chart1.Series["Series:4:Lon"].Enabled = false;
-        chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
-
-
-        #region --- Lap segregation ---
-        if (false)
-        {
-            //List<Tuple<string, int>> lapList = new List<Tuple<string, int>>();
-            //for (int i = 1; i < csvData.ListLapCount.Count; i++)
-            //{
-            //    if (csvData.ListLapCount[i - 1] != csvData.ListLapCount[i])
-            //        lapList.Add(new Tuple<string, int>(csvData.ListHertzTime[i], csvData.ListLapCount[i]));
-            //}
-
-            //foreach (ChartArea ca in chart1.ChartAreas)
-            //{
-            //    foreach (var lap in lapList)
-            //    {
-            //        ca.AxisX.StripLines.Add(new StripLine()
-            //        {
-            //            IntervalOffset = Convert.ToDouble(lap.Item1),
-            //            StripWidth = 0,
-            //            BorderColor = Color.Gray,
-            //            BorderWidth = 1,
-            //            BorderDashStyle = ChartDashStyle.Solid,
-            //            Text = "Lap: " + lap.Item2.ToString(),
-            //            ForeColor = Color.Gray
-            //        });
-            //    }
-            //}
-        }
-
-        // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly
-        if (true)
-        {
-            bool isFinishLine(double min, double max, double current)
-            {
-                return current >= min && current <= max;
-            }
-
-            double thisTrackLatMin = 0;
-            double thisTrackLatMax = 0;
-            double thisTrackLonMin = 0;
-            double thisTrackLonMax = 0;
-
-            switch (_csvData.Track)
-            {
-                case "smsp":
-                    thisTrackLatMin = -33.803825;
-                    thisTrackLatMax = -33.803653;
-                    thisTrackLonMin = 150.870923;
-                    thisTrackLonMax = 150.870962;
-                    break;
-                case "morganpark":
-                    thisTrackLatMin = -28.262069;
-                    thisTrackLatMax = -28.262085;
-                    thisTrackLonMin = 152.036327;
-                    thisTrackLonMax = 152.036430;
-                    break;
-            }
-
-            List<Tuple<double, string>> lapList = new List<Tuple<double, string>>();
-            lapList.Add(new Tuple<double, string>(hertzTimeArr[1], "Out"));
-            for (int i = 0; i < hertzTimeArr.Length; i++)
-            {
-                if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLat[i]) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLon[i]))
-                    lapList.Add(new Tuple<double, string>(hertzTimeArr[i], (lapList.Count).ToString()));
-            }
-
             foreach (ChartArea ca in chart1.ChartAreas)
+        {
+                foreach (var lap in _csvData.DictLapData)
             {
-                foreach (var lap in lapList)
-                {
+                    string lapText = "";
+                    int maxLaps = _csvData.DictLapData.Count;
+
+                    if (lap.Key == 0)
+                        lapText = "Out Lap";
+                    else if (lap.Key == maxLaps - 1)
+                        lapText = "In Lap";
+                    else
+                        lapText = "Lap " + lap.Key.ToString();
+
                     ca.AxisX.StripLines.Add(new StripLine()
                     {
-                        IntervalOffset = Convert.ToDouble(lap.Item1),
+                        IntervalOffset = lap.Value.Item1,
                         StripWidth = 0,
                         BorderColor = Color.Gray,
                         BorderWidth = 1,
                         BorderDashStyle = ChartDashStyle.Solid,
-                        Text = "Lap: " + lap.Item2.ToString(),
+                        Text = lapText,
                         ForeColor = Color.Gray,
                         TextOrientation = TextOrientation.Horizontal,
                         TextAlignment = StringAlignment.Near
@@ -424,7 +280,6 @@ public partial class ChartForm : Form
                 }
             }
         }
-        #endregion
 
         foreach (ChartArea ca in chart1.ChartAreas)
         {
@@ -469,6 +324,34 @@ public partial class ChartForm : Form
         lbl_MaxOilTemp.Text = maxOilTemp.ToString();
         lbl_MaxOilPressure.Text = maxOilPressure.ToString();
         #endregion
+
+        // TESTING
+        // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly
+        // USED this to work out the laps for the data we have, then updated the lap in the data.
+        // It's also testing the GPS stuff for the dash, so maybe handy to keep it somewhere
+        if (false)
+        {
+            double thisTrackLatMin = 0;
+            double thisTrackLatMax = 0;
+            double thisTrackLonMin = 0;
+            double thisTrackLonMax = 0;
+            double previousLat = 0.0;
+            double previousLon = 0.0;
+
+            switch (_csvData.Track)
+            {
+                case "smsp":
+                    thisTrackLatMin = -33.803825;
+                    thisTrackLatMax = -33.803653;
+                    thisTrackLonMin = 150.870923;
+                    thisTrackLonMax = 150.870962;
+                    break;
+                case "morganpark":
+                    thisTrackLatMin = -28.262069;
+                    thisTrackLatMax = -28.262085;
+                    thisTrackLonMin = 152.036327;
+                    thisTrackLonMax = 152.036430;
+                    break;
     }
 
     private void DrawTrackMap()
