@@ -354,6 +354,55 @@ public partial class ChartForm : Form
                     break;
     }
 
+            bool FinishLineCheck(double x1, double y1, double x2, double y2, // Finish line points (start - finish)
+                                double x3, double y3, double x4, double y4)  // Movement path points (previous - current)
+            {
+                // Represent the finish line as a line segment defined by two GPS points.
+                // Use a geometric algorithm to determine if your movement path crosses this line.
+
+                // ** We calculate the intersection point on both the finish line AND movement line                
+                // - FinishLine = line across the track (min to max points)
+                // - MovementPath = previous location to current location
+
+                double denominator = (x3 - x4) * (y1 - y2) - (y3 - y4) * (x1 - x2);
+
+                // If denominator is 0, the lines are parallel or coincident
+                if (Math.Abs(denominator) < 1e-10)
+                    return false;
+
+                // Calculate the numerators
+                double tNumerator = (x3 - x1) * (y1 - y2) - (y3 - y1) * (x1 - x2);
+                double uNumerator = (x3 - x1) * (y3 - y4) - (y3 - y1) * (x3 - x4);
+
+                // Solve for t and u
+                // t - Parametric value along the finish line segment
+                // u - Parametric value along the movement path
+                double t = tNumerator / denominator;
+                double u = uNumerator / denominator;
+
+                // Check if the intersection happens on both segments
+                return (t >= 0 && t <= 1) && (u >= 0 && u <= 1);
+            }
+
+
+            List<Tuple<double, string>> lapList = new List<Tuple<double, string>>();
+            lapList.Add(new Tuple<double, string>(hertzTimeArr[1], "Out"));
+
+            for (int i = 0; i < _csvData.ListLat.Count; i++)
+            {
+                if (FinishLineCheck(thisTrackLatMin, thisTrackLonMin, thisTrackLatMax, thisTrackLonMax,
+                                    previousLat, previousLon, _csvData.ListLat[i], _csvData.ListLon[i]))
+                {
+                    lapList.Add(new Tuple<double, string>(hertzTimeArr[i], lapList.Count.ToString()));
+                    i += 100; // Hack, otherwise it'll pick up the next 10 items as its 10hz. Dash will skip over this anyways
+                }
+
+                previousLat = _csvData.ListLat[i];
+                previousLon = _csvData.ListLon[i];
+            }
+        }
+    }
+
     private void DrawTrackMap()
     {
         ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
