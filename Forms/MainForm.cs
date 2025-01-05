@@ -39,6 +39,7 @@ public MainForm()
             string fileName = "";
 
             CsvData.ReadCsvData(fileName);
+            SetupLapCountComboBox();
 
             _ChartForm = new ChartForm(CsvData)
             {
@@ -52,6 +53,24 @@ public MainForm()
             //OpenScatterPlotForm();
     }
 }
+
+    private void SetupLapCountComboBox()
+    {
+        int maxLaps = CsvData.DictLapData.Count;
+        for (int i = 0; i < maxLaps; i++)
+        {
+            string item = "";
+
+            if (i == 0)
+                item = "Out Lap";
+            else if (i == maxLaps - 1)
+                item = "In Lap";
+            else
+                item = "Lap " + i.ToString();
+            
+            tsmi_LapSelector.Items.Add(item);
+        }
+    }
 
     private void OpenChartForm()
 {
@@ -132,7 +151,10 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                         Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
 
                         if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
+                        {
                             CsvData.ReadCsvData(ofd_LoadFile.FileName);
+                            SetupLapCountComboBox();
+                        }
 
                         _ChartForm = new ChartForm(CsvData)
                         {
@@ -160,5 +182,16 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                 OpenSettingsForm();
                 break;
         }
+    }
+
+    private void tsmi_LapSelector_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int selectedLap = 0;
+        if (tsmi_LapSelector.SelectedItem != "All Laps")
+            selectedLap = tsmi_LapSelector.Items.IndexOf(tsmi_LapSelector.SelectedItem) - 1;
+        else
+            selectedLap = 9999; // TODO: Hacky, fix one decade
+
+        _ChartForm.MapDataPointsToChart(selectedLap);
     }
 }

@@ -67,9 +67,6 @@
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
             chart1.MouseClick += chart1_MouseClick;
-            //chart1.MouseDown += chart1_MouseDown;
-            //chart1.MouseMove += chart1_MouseMove;
-            //chart1.MouseUp += chart1_MouseUp;
             chart1.MouseWheel += chart1_MouseWheelMove;
             // 
             // lbl_Gear
@@ -119,9 +116,9 @@
             // chart_TrackMap
             // 
             chart_TrackMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            chart_TrackMap.Location = new Point(770, 146);
+            chart_TrackMap.Location = new Point(875, 250);
             chart_TrackMap.Name = "chart_TrackMap";
-            chart_TrackMap.Size = new Size(300, 300);
+            chart_TrackMap.Size = new Size(200, 200);
             chart_TrackMap.TabIndex = 5;
             chart_TrackMap.Text = "chart_TrackMap";
             // 

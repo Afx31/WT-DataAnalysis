@@ -17,7 +17,7 @@ public partial class ChartForm : Form
         {
             _csvData = csvData;
             InitialChartSetup();
-            MapDataPointsToChart();
+            MapDataPointsToChart(9999);
             DrawTrackMap();
         }
     }
@@ -112,11 +112,52 @@ public partial class ChartForm : Form
         #endregion
     }
 
-    private void MapDataPointsToChart()
+    public void MapDataPointsToChart(int displayThisSpecificLap)
     {
-        int counter = 1;
-        double[] hertzTimeArr = _csvData.ListHertzTime.ToArray();
+        bool loadAllLaps = false;
+        int startIndex = 0;
+        int endIndex = 0;
+        List<double> loadThisHertzRange = new List<double>();
 
+        // Display all laps
+        if (displayThisSpecificLap == 9999)
+        {
+            loadAllLaps = true;
+        }
+        else if (_csvData.DictLapData.ContainsKey(displayThisSpecificLap))
+        {
+            var currLap = _csvData.DictLapData[displayThisSpecificLap];
+            double thisLapsStartingHertz = currLap.Item1;
+            double thisLapsEndingHertz = currLap.Item2;
+
+            // Lookup the hertz index in the ListHertzTime, then range those
+            startIndex = _csvData.ListHertzTime.IndexOf(thisLapsStartingHertz);
+            endIndex = _csvData.ListHertzTime.IndexOf(thisLapsEndingHertz);
+            loadThisHertzRange = _csvData.ListHertzTime.GetRange(startIndex, endIndex - startIndex + 1);
+        }
+
+        // Cleanup for changing chart
+        while (chart1.Series.Count > 0)
+            chart1.Series.RemoveAt(0);
+        while (chart1.Legends.Count > 0)
+            chart1.Legends.RemoveAt(0);
+        if (chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
+        {
+            Series removeSeries = chart_TrackMap.Series[1];
+            chart_TrackMap.Series.Remove(removeSeries);
+        }
+
+        double[] GetRelevantDataForThisHertzRange(double[] fullList)
+        {
+            List<double> retrievedList = new List<double>();
+
+            for (int i = startIndex; i <= endIndex; i++)
+                retrievedList.Add((double)fullList.GetValue(i));
+
+            return retrievedList.ToArray();
+        }
+
+        int counter = 1;
         void DoDataPoints(List<ChartDataConfig> chartDataConfigs)
         {
             foreach (ChartDataConfig chartDataConfig in chartDataConfigs)
@@ -141,7 +182,6 @@ public partial class ChartForm : Form
 
                 chart1.Legends.Add(legend);
 
-
                 // Create series
                 Series series = new Series
                 {
@@ -155,7 +195,11 @@ public partial class ChartForm : Form
                     XValueType = ChartValueType.Double
                 };
 
-                series.Points.DataBindXY(hertzTimeArr, _csvData.GetDataPointsList(enumValue));
+                if (loadAllLaps)
+                    series.Points.DataBindXY(_csvData.ListHertzTime.ToArray(), _csvData.GetDataPointsList(enumValue));
+                else
+                    series.Points.DataBindXY(loadThisHertzRange.ToArray(), GetRelevantDataForThisHertzRange(_csvData.GetDataPointsList(enumValue)));
+
                 chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
                 chart1.Series.Add(series);
             }
@@ -168,116 +212,42 @@ public partial class ChartForm : Form
         DoDataPoints(AppSettings.Chart3DataPoints);
         DoDataPoints(AppSettings.Chart4DataPoints);
 
-        #region Lat/Lon stuff
-        Series seriesLat = new Series()
+        foreach (ChartArea ca in chart1.ChartAreas)
         {
-            Name = "Series:4:Lat",
-            ChartArea = "ChartArea4",
-            XValueType = ChartValueType.Double
-        };
-        Series seriesLon = new Series()
-        {
-            Name = "Series:4:Lon",
-            ChartArea = "ChartArea4",
-            XValueType = ChartValueType.Double
-        };
-
-        double[] listLat = _csvData.ListLat.ToArray();
-        double[] listLon = _csvData.ListLon.ToArray();
-        seriesLat.Points.DataBindXY(hertzTimeArr, listLat);
-        seriesLon.Points.DataBindXY(hertzTimeArr, listLon);
-        chart1.Series.Add(seriesLat);
-        chart1.Series.Add(seriesLon);
-        #endregion
-
-        /* TODO: Fix this properly
-         * Using it so we can reference the gear position for the label at the bottom of the screen,
-         * whilst still getitng relevant position based on chart position click
-         */
-        if (chart1.Series.Any(x => x.Name == "Series4:4:Gear"))
-            chart1.Series["Series:4:Gear"].Enabled = false;
-        chart1.Series["Series:4:Lat"].Enabled = false;
-        chart1.Series["Series:4:Lon"].Enabled = false;
-        chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
-
-
-        #region --- Lap segregation ---
-        if (false)
-        {
-            //List<Tuple<string, int>> lapList = new List<Tuple<string, int>>();
-            //for (int i = 1; i < csvData.ListLapCount.Count; i++)
-            //{
-            //    if (csvData.ListLapCount[i - 1] != csvData.ListLapCount[i])
-            //        lapList.Add(new Tuple<string, int>(csvData.ListHertzTime[i], csvData.ListLapCount[i]));
-            //}
-
-            //foreach (ChartArea ca in chart1.ChartAreas)
-            //{
-            //    foreach (var lap in lapList)
-            //    {
-            //        ca.AxisX.StripLines.Add(new StripLine()
-            //        {
-            //            IntervalOffset = Convert.ToDouble(lap.Item1),
-            //            StripWidth = 0,
-            //            BorderColor = Color.Gray,
-            //            BorderWidth = 1,
-            //            BorderDashStyle = ChartDashStyle.Solid,
-            //            Text = "Lap: " + lap.Item2.ToString(),
-            //            ForeColor = Color.Gray
-            //        });
-            //    }
-            //}
+            ca.AxisX.Minimum = double.NaN;
+            ca.AxisX.Maximum = double.NaN;
+            ca.RecalculateAxesScale();
+            ca.AxisX.ScaleView.ZoomReset();
         }
 
-        // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly
-        if (true)
+        if (chart1.Series.Any(x => x.Name == "Series4:4:Gear"))
+            chart1.Series["Series:4:Gear"].Enabled = false;
+        chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
+
+        if (loadAllLaps)
         {
-            bool isFinishLine(double min, double max, double current)
-            {
-                return current >= min && current <= max;
-            }
-
-            double thisTrackLatMin = 0;
-            double thisTrackLatMax = 0;
-            double thisTrackLonMin = 0;
-            double thisTrackLonMax = 0;
-
-            switch (_csvData.Track)
-            {
-                case "smsp":
-                    thisTrackLatMin = -33.803825;
-                    thisTrackLatMax = -33.803653;
-                    thisTrackLonMin = 150.870923;
-                    thisTrackLonMax = 150.870962;
-                    break;
-                case "morganpark":
-                    thisTrackLatMin = -28.262069;
-                    thisTrackLatMax = -28.262085;
-                    thisTrackLonMin = 152.036327;
-                    thisTrackLonMax = 152.036430;
-                    break;
-            }
-
-            List<Tuple<double, string>> lapList = new List<Tuple<double, string>>();
-            lapList.Add(new Tuple<double, string>(hertzTimeArr[1], "Out"));
-            for (int i = 0; i < hertzTimeArr.Length; i++)
-            {
-                if (isFinishLine(thisTrackLatMin, thisTrackLatMax, _csvData.ListLat[i]) && isFinishLine(thisTrackLonMin, thisTrackLonMax, _csvData.ListLon[i]))
-                    lapList.Add(new Tuple<double, string>(hertzTimeArr[i], (lapList.Count + 1).ToString()));
-            }
-
             foreach (ChartArea ca in chart1.ChartAreas)
             {
-                foreach (var lap in lapList)
+                foreach (var lap in _csvData.DictLapData)
                 {
+                    string lapText = "";
+                    int maxLaps = _csvData.DictLapData.Count;
+
+                    if (lap.Key == 0)
+                        lapText = "Out Lap";
+                    else if (lap.Key == maxLaps - 1)
+                        lapText = "In Lap";
+                    else
+                        lapText = "Lap " + lap.Key.ToString();
+
                     ca.AxisX.StripLines.Add(new StripLine()
                     {
-                        IntervalOffset = Convert.ToDouble(lap.Item1),
+                        IntervalOffset = lap.Value.Item1,
                         StripWidth = 0,
                         BorderColor = Color.Gray,
                         BorderWidth = 1,
                         BorderDashStyle = ChartDashStyle.Solid,
-                        Text = "Lap: " + lap.Item2.ToString(),
+                        Text = lapText,
                         ForeColor = Color.Gray,
                         TextOrientation = TextOrientation.Horizontal,
                         TextAlignment = StringAlignment.Near
@@ -285,7 +255,6 @@ public partial class ChartForm : Form
                 }
             }
         }
-        #endregion
 
         foreach (ChartArea ca in chart1.ChartAreas)
         {
@@ -329,6 +298,84 @@ public partial class ChartForm : Form
         lbl_MaxIAT.Text = maxIAT.ToString();
         lbl_MaxOilTemp.Text = maxOilTemp.ToString();
         lbl_MaxOilPressure.Text = maxOilPressure.ToString();
+        #endregion
+
+        #region Test code for calculating the laps based on lat/lon
+        // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly
+        // USED this to work out the laps for the data we have, then updated the lap in the data.
+        // It's also testing the GPS stuff for the dash, so maybe handy to keep it somewhere
+        //if (false)
+        //{
+        //    double thisTrackLatMin = 0;
+        //    double thisTrackLatMax = 0;
+        //    double thisTrackLonMin = 0;
+        //    double thisTrackLonMax = 0;
+        //    double previousLat = 0.0;
+        //    double previousLon = 0.0;
+
+        //    switch (_csvData.Track)
+        //    {
+        //        case "smsp":
+        //            thisTrackLatMin = -33.803825;
+        //            thisTrackLatMax = -33.803653;
+        //            thisTrackLonMin = 150.870923;
+        //            thisTrackLonMax = 150.870962;
+        //            break;
+        //        case "morganpark":
+        //            thisTrackLatMin = -28.262069;
+        //            thisTrackLatMax = -28.262085;
+        //            thisTrackLonMin = 152.036327;
+        //            thisTrackLonMax = 152.036430;
+        //            break;
+        //    }
+
+        //    bool FinishLineCheck(double x1, double y1, double x2, double y2, // Finish line points (start - finish)
+        //                        double x3, double y3, double x4, double y4)  // Movement path points (previous - current)
+        //    {
+        //        // Represent the finish line as a line segment defined by two GPS points.
+        //        // Use a geometric algorithm to determine if your movement path crosses this line.
+
+        //        // ** We calculate the intersection point on both the finish line AND movement line                
+        //        // - FinishLine = line across the track (min to max points)
+        //        // - MovementPath = previous location to current location
+
+        //        double denominator = (x3 - x4) * (y1 - y2) - (y3 - y4) * (x1 - x2);
+
+        //        // If denominator is 0, the lines are parallel or coincident
+        //        if (Math.Abs(denominator) < 1e-10)
+        //            return false;
+
+        //        // Calculate the numerators
+        //        double tNumerator = (x3 - x1) * (y1 - y2) - (y3 - y1) * (x1 - x2);
+        //        double uNumerator = (x3 - x1) * (y3 - y4) - (y3 - y1) * (x3 - x4);
+
+        //        // Solve for t and u
+        //        // t - Parametric value along the finish line segment
+        //        // u - Parametric value along the movement path
+        //        double t = tNumerator / denominator;
+        //        double u = uNumerator / denominator;
+
+        //        // Check if the intersection happens on both segments
+        //        return (t >= 0 && t <= 1) && (u >= 0 && u <= 1);
+        //    }
+
+
+        //    List<Tuple<double, string>> lapList = new List<Tuple<double, string>>();
+        //    lapList.Add(new Tuple<double, string>(hertzTimeArr[1], "Out"));
+
+        //    for (int i = 0; i < _csvData.ListLat.Count; i++)
+        //    {
+        //        if (FinishLineCheck(thisTrackLatMin, thisTrackLonMin, thisTrackLatMax, thisTrackLonMax,
+        //                            previousLat, previousLon, _csvData.ListLat[i], _csvData.ListLon[i]))
+        //        {
+        //            lapList.Add(new Tuple<double, string>(hertzTimeArr[i], lapList.Count.ToString()));
+        //            i += 100; // Hack, otherwise it'll pick up the next 10 items as its 10hz. Dash will skip over this anyways
+        //        }
+
+        //        previousLat = _csvData.ListLat[i];
+        //        previousLon = _csvData.ListLon[i];
+        //    }
+        //}
         #endregion
     }
 
@@ -378,58 +425,20 @@ public partial class ChartForm : Form
             ChartType = SeriesChartType.FastPoint,
             Color = Color.White
         };
-        series.Points.DataBindXY(_csvData.ListLon.ToArray(), _csvData.ListLat.ToArray());
+
+        List<double> unpackedLat = new List<double>();
+        List<double> unpackedLon = new List<double>();
+
+        foreach (var item in _csvData.DictLatLon)
+        {
+            unpackedLat.Add(item.Value.Item1);
+            unpackedLon.Add(item.Value.Item2);
+        }
+
+        series.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
         chart_TrackMap.Series.Add(series);
     }
 
-    private void MoveTrackMapCurrentPosition(double lat, double lon)
-    {
-        // First clear the previous marker
-        if (previousMarkerDataPoint >= 0)
-        {
-            DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
-            point.MarkerColor = default;
-            point.MarkerSize = default;
-            point.MarkerStyle = default;
-        }
-
-        for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
-        {
-            DataPoint point = chart_TrackMap.Series[0].Points[i];
-
-            if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
-            {
-                // TODO: This works but the blue line goes through circle
-                //point.MarkerColor = Color.Red;
-                //point.MarkerSize = 20;
-                //point.MarkerStyle = MarkerStyle.Circle;
-
-                //point.Color = Color.Red;
-
-                // TODO: This is the shitty workaround
-                // Remove the current series if it exists
-                if (previousMarkerDataPoint >= 0)
-                {
-                    Series removeSeries = chart_TrackMap.Series[1];
-                    chart_TrackMap.Series.Remove(removeSeries);
-                }
-
-                Series series = new Series("DataMarker");
-                series.ChartType = SeriesChartType.Point;
-                series.Points.AddXY(lon, lat);
-                series.Points[0].MarkerColor = Color.Red;
-                series.Points[0].MarkerSize = 20;
-                series.Points[0].MarkerStyle = MarkerStyle.Circle;
-                series.Points[0].Color = Color.Red;
-
-                chart_TrackMap.Series.Add(series);
-
-                previousMarkerDataPoint = i;
-                break;
-            }
-        }
-    }
-    
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
     {
         if (chart1 != null && e.X > 0)
@@ -471,14 +480,16 @@ public partial class ChartForm : Form
 
                     if (series.Name == "Series:4:Gear")
                         gearValue = matchingPoint.YValues.FirstOrDefault().ToString();
-
-                    if (series.Name == "Series:4:Lat")
-                        currentLat = (double)matchingPoint.YValues.FirstOrDefault();
-
-                    if (series.Name == "Series:4:Lon")
-                        currentLon = (double)matchingPoint.YValues.FirstOrDefault();
                 }
             });
+
+            {
+                DataPoint matchingPoint = chart1.Series[0].Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+
+                var latLonVal = _csvData.DictLatLon[matchingPoint.XValue];
+                currentLat = latLonVal.Item1;
+                currentLon = latLonVal.Item2;
+            }
 
             // TODO: Suss this later
             // Have to move this out for some reason because of the multi threading.
@@ -493,6 +504,54 @@ public partial class ChartForm : Form
             //    .ToList()
             //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
             //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
+        }
+    }
+
+    private void MoveTrackMapCurrentPosition(double lat, double lon)
+    {
+        // First clear the previous marker
+        //if (previousMarkerDataPoint >= 0)
+        //{
+        //    DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
+        //    point.MarkerColor = default;
+        //    point.MarkerSize = default;
+        //    point.MarkerStyle = default;
+        //}
+
+        for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
+        {
+            DataPoint point = chart_TrackMap.Series[0].Points[i];
+
+            if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
+            {
+                // TODO: This works but the blue line goes through circle
+                //point.MarkerColor = Color.Red;
+                //point.MarkerSize = 20;
+                //point.MarkerStyle = MarkerStyle.Circle;
+
+                //point.Color = Color.Red;
+
+                // TODO: This is the shitty workaround
+                // Remove the current series if it exists
+                if (previousMarkerDataPoint >= 0 && chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
+                {
+                    Series removeSeries = chart_TrackMap.Series[1];
+                    chart_TrackMap.Series.Remove(removeSeries);
+                }
+
+                Series series = new Series("DataMarker");
+                series.ChartType = SeriesChartType.Point;
+                series.Points.AddXY(lon, lat);
+                series.Points[0].MarkerColor = Color.Red;
+                series.Points[0].MarkerSize = 15;
+                series.Points[0].MarkerStyle = MarkerStyle.Circle;
+                series.Points[0].Color = Color.Red;
+
+                chart_TrackMap.Series.Add(series);
+
+                previousMarkerDataPoint = i;
+                break;
+            }
         }
     }
 
@@ -529,6 +588,11 @@ public partial class ChartForm : Form
     /// <param name="e"></param>
     private void chart1_MouseWheelMove(object sender, MouseEventArgs e)
     {
+        /* NOTE
+         * - This is experimental, trying to find the right solution with scaling so it's pleasant to the eye
+         * - So there might be some different iterations commented out, just testing things as I go
+         */
+
         Axis xAxis = chart1.ChartAreas[0].AxisX;
         double zoomScale = 0.1; //0.05
         double currentXMinView = xAxis.ScaleView.ViewMinimum;
@@ -615,7 +679,7 @@ public partial class ChartForm : Form
         }
         catch (Exception ex)
         {
-            Console.WriteLine("ERROR: " + ex);
+            MessageBox.Show("ERROR: " + ex);
         }
     }
 

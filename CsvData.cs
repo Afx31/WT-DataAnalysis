@@ -115,32 +115,22 @@ public class CsvData
         set => _listOilPressure = value;
     }
 
-    private List<double> _listLat = new List<double>();
-    public List<double> ListLat
+    private Dictionary<double, (double, double)> _dictLatLon = new Dictionary<double, (double, double)>();
+    public Dictionary<double, (double, double)> DictLatLon
     {
-        get => _listLat;
-        set => _listLat = value;
+        get => _dictLatLon;
+        set => _dictLatLon = value;
     }
 
-    private List<double> _listLon = new List<double>();
-    public List<double> ListLon
+    /// <summary>
+    /// [Key] = lap itself
+    /// [Value] = hertz value at the start & end of that lap
+    /// </summary>
+    private Dictionary<int, (double, double)> _dictLapData = new Dictionary<int, (double, double)>();
+    public Dictionary<int, (double, double)> DictLapData
     {
-        get => _listLon;
-        set => _listLon = value;
-    }
-
-    //private List<Tuple<double, double>> _listLatLon = new List<Tuple<double, double>>();
-    //public List<Tuple<double, double>> ListLatLon
-    //{
-    //    get => _listLatLon;
-    //    set => _listLatLon = value;
-    //}
-
-    private List<int> _listLapCount = new List<int>();
-    public List<int> ListLapCount
-    {
-        get => _listLapCount;
-        set => _listLapCount = value;
+        get => _dictLapData;
+        set => _dictLapData = value;
     }
     #endregion
 
@@ -153,6 +143,7 @@ public class CsvData
         using (StreamReader reader = new StreamReader(filePath))
         {
             int lineCounter = 1;
+            string previousLapCounter = "-1";
 
             while (!reader.EndOfStream)
             {
@@ -189,12 +180,34 @@ public class CsvData
                     _listLambdaRatio.Add(double.Parse(values[9]));
                     _listOilTemperature.Add(double.Parse(values[10]));
                     _listOilPressure.Add(double.Parse(values[11]));
-                    //_listLatLon.Add(new Tuple<double, double>(double.Parse(values[12]), double.Parse(values[13])));
-                    _listLat.Add(double.Parse(values[12]));
-                    _listLon.Add(double.Parse(values[13]));
-                    _listLapCount.Add(int.Parse(values[14]));
+                    
+                    _dictLatLon.Add(double.Parse(values[0]), (double.Parse(values[12]), double.Parse(values[13])));
+
+                    if (!previousLapCounter.Equals(values[14]))
+                    {
+                        _dictLapData.Add(int.Parse(values[14]), (double.Parse(values[0]), 0.0));
+                        previousLapCounter = values[14];
+
+                        // TODO - fix this hack
+                        // Default first one to 0.1 hertz start, works better with the chart
+                        if (_dictLapData.Count == 1)
+                            _dictLapData[0] = (0.1, 0.0);
+                    }
                 }
             }
+        }
+
+        // Now fill in the end lap hertz
+        for (int i = 0; i < _dictLapData.Count; i++)
+        {
+            var currVal = _dictLapData[i];
+
+            if (i != _dictLapData.Count - 1)
+                currVal.Item2 = Math.Round(_dictLapData[i + 1].Item1 - 0.1, 1);
+            else
+                currVal.Item2 = _listHertzTime.Last();
+
+            _dictLapData[i] = currVal;
         }
     }
 
