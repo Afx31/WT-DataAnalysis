@@ -86,7 +86,7 @@ namespace WT_DataAnalysis
             tsmi_LapSelector.Items.AddRange(new object[] { "All Laps" });
             tsmi_LapSelector.Name = "tsmi_LapSelector";
             tsmi_LapSelector.Size = new Size(80, 23);
-            tsmi_LapSelector.Text = "-- Lap  --";
+            tsmi_LapSelector.SelectedIndex = 0;
             tsmi_LapSelector.SelectedIndexChanged += tsmi_LapSelector_SelectedIndexChanged;
             // 
             // ofd_LoadFile

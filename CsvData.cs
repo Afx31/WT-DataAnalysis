@@ -115,18 +115,11 @@ public class CsvData
         set => _listOilPressure = value;
     }
 
-    private List<double> _listLat = new List<double>();
-    public List<double> ListLat
+    private Dictionary<double, (double, double)> _dictLatLon = new Dictionary<double, (double, double)>();
+    public Dictionary<double, (double, double)> DictLatLon
     {
-        get => _listLat;
-        set => _listLat = value;
-    }
-
-    private List<double> _listLon = new List<double>();
-    public List<double> ListLon
-    {
-        get => _listLon;
-        set => _listLon = value;
+        get => _dictLatLon;
+        set => _dictLatLon = value;
     }
 
     /// <summary>
@@ -187,8 +180,8 @@ public class CsvData
                     _listLambdaRatio.Add(double.Parse(values[9]));
                     _listOilTemperature.Add(double.Parse(values[10]));
                     _listOilPressure.Add(double.Parse(values[11]));
-                    _listLat.Add(double.Parse(values[12]));
-                    _listLon.Add(double.Parse(values[13]));
+                    
+                    _dictLatLon.Add(double.Parse(values[0]), (double.Parse(values[12]), double.Parse(values[13])));
 
                     if (!previousLapCounter.Equals(values[14]))
                     {
