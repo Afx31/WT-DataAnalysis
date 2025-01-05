@@ -217,6 +217,7 @@ public partial class ChartForm : Form
             ca.AxisX.Minimum = double.NaN;
             ca.AxisX.Maximum = double.NaN;
             ca.RecalculateAxesScale();
+            ca.AxisX.ScaleView.ZoomReset();
         }
 
         if (chart1.Series.Any(x => x.Name == "Series4:4:Gear"))
@@ -299,7 +300,7 @@ public partial class ChartForm : Form
         lbl_MaxOilPressure.Text = maxOilPressure.ToString();
         #endregion
 
-        // TESTING
+        #region Test code for calculating the laps based on lat/lon
         // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly
         // USED this to work out the laps for the data we have, then updated the lap in the data.
         // It's also testing the GPS stuff for the dash, so maybe handy to keep it somewhere
@@ -375,6 +376,7 @@ public partial class ChartForm : Form
         //        previousLon = _csvData.ListLon[i];
         //    }
         //}
+        #endregion
     }
 
     private void DrawTrackMap()
@@ -586,6 +588,11 @@ public partial class ChartForm : Form
     /// <param name="e"></param>
     private void chart1_MouseWheelMove(object sender, MouseEventArgs e)
     {
+        /* NOTE
+         * - This is experimental, trying to find the right solution with scaling so it's pleasant to the eye
+         * - So there might be some different iterations commented out, just testing things as I go
+         */
+
         Axis xAxis = chart1.ChartAreas[0].AxisX;
         double zoomScale = 0.1; //0.05
         double currentXMinView = xAxis.ScaleView.ViewMinimum;
@@ -672,7 +679,7 @@ public partial class ChartForm : Form
         }
         catch (Exception ex)
         {
-            Console.WriteLine("ERROR: " + ex);
+            MessageBox.Show("ERROR: " + ex);
         }
     }
 
