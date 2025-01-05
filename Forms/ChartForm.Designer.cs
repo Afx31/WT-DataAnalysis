@@ -116,9 +116,9 @@
             // chart_TrackMap
             // 
             chart_TrackMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            chart_TrackMap.Location = new Point(770, 146);
+            chart_TrackMap.Location = new Point(875, 250);
             chart_TrackMap.Name = "chart_TrackMap";
-            chart_TrackMap.Size = new Size(300, 300);
+            chart_TrackMap.Size = new Size(200, 200);
             chart_TrackMap.TabIndex = 5;
             chart_TrackMap.Text = "chart_TrackMap";
             // 

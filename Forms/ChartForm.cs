@@ -543,7 +543,7 @@ public partial class ChartForm : Form
                 series.ChartType = SeriesChartType.Point;
                 series.Points.AddXY(lon, lat);
                 series.Points[0].MarkerColor = Color.Red;
-                series.Points[0].MarkerSize = 20;
+                series.Points[0].MarkerSize = 15;
                 series.Points[0].MarkerStyle = MarkerStyle.Circle;
                 series.Points[0].Color = Color.Red;
 
