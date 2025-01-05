@@ -17,7 +17,7 @@ public partial class ChartForm : Form
         {
             _csvData = csvData;
             InitialChartSetup();
-            MapDataPointsToChart();
+            MapDataPointsToChart(9999);
             DrawTrackMap();
         }
     }
@@ -136,11 +136,12 @@ public partial class ChartForm : Form
             loadThisHertzRange = _csvData.ListHertzTime.GetRange(startIndex, endIndex - startIndex + 1);
         }
 
-        // Cleanup to reload
+        // Cleanup for changing chart
         while (chart1.Series.Count > 0)
         {
             chart1.Series.RemoveAt(0);
-        }
+        while (chart1.Legends.Count > 0)
+            chart1.Legends.RemoveAt(0);
 
         double[] GetRelevantDataForThisHertzRange(double[] fullList)
         {
@@ -174,6 +175,8 @@ public partial class ChartForm : Form
                     ForeColor = Color.White,
                     BackColor = Color.Transparent
                 };
+
+                chart1.Legends.Add(legend);
 
                 // Create series
                 Series series = new Series
