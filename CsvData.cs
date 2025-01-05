@@ -130,13 +130,14 @@ public class CsvData
     }
 
     /// <summary>
-    /// Key = lap itself | Value = hertz value at the start of that lap
+    /// [Key] = lap itself
+    /// [Value] = hertz value at the start & end of that lap
     /// </summary>
-    private Dictionary<int, double> _dictLapCount = new Dictionary<int, double>();
-    public Dictionary<int, double> DictLapCount
+    private Dictionary<int, (double, double)> _dictLapData = new Dictionary<int, (double, double)>();
+    public Dictionary<int, (double, double)> DictLapData
     {
-        get => _dictLapCount;
-        set => _dictLapCount = value;
+        get => _dictLapData;
+        set => _dictLapData = value;
     }
     #endregion
 
@@ -191,16 +192,29 @@ public class CsvData
 
                     if (!previousLapCounter.Equals(values[14]))
                     {
-                        _dictLapCount.Add(int.Parse(values[14]), double.Parse(values[0]));
+                        _dictLapData.Add(int.Parse(values[14]), (double.Parse(values[0]), 0.0));
                         previousLapCounter = values[14];
 
                         // TODO - fix this hack
                         // Default first one to 0.1 hertz start, works better with the chart
-                        if (_dictLapCount.Count == 1)
-                            _dictLapCount[0] = 0.1;
+                        if (_dictLapData.Count == 1)
+                            _dictLapData[0] = (0.1, 0.0);
                     }
                 }
             }
+        }
+
+        // Now fill in the end lap hertz
+        for (int i = 0; i < _dictLapData.Count; i++)
+        {
+            var currVal = _dictLapData[i];
+
+            if (i != _dictLapData.Count - 1)
+                currVal.Item2 = Math.Round(_dictLapData[i + 1].Item1 - 0.1, 1);
+            else
+                currVal.Item2 = _listHertzTime.Last();
+
+            _dictLapData[i] = currVal;
         }
     }
 

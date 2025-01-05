@@ -56,7 +56,7 @@ public MainForm()
 
     private void SetupLapCountComboBox()
     {
-        int maxLaps = CsvData.DictLapCount.Count;
+        int maxLaps = CsvData.DictLapData.Count;
         for (int i = 0; i < maxLaps; i++)
         {
             string item = "";
@@ -190,7 +190,7 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         if (tsmi_LapSelector.SelectedItem != "All Laps")
             selectedLap = tsmi_LapSelector.Items.IndexOf(tsmi_LapSelector.SelectedItem) - 1;
         else
-            selectedLap = 0000; // TODO: Hacky, fix one decade
+            selectedLap = 9999; // TODO: Hacky, fix one decade
 
         _ChartForm.MapDataPointsToChart(selectedLap);
     }

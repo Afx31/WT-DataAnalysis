@@ -114,27 +114,28 @@ public partial class ChartForm : Form
 
     public void MapDataPointsToChart(int displayThisSpecificLap)
     {
-        // Load in lap 1's data points
-        // Re-render the chart to suit
-        double thisLapsStartingHertz = 0.0;
+        bool loadAllLaps = false;
+        int startIndex = 0;
+        int endIndex = 0;
+        List<double> loadThisHertzRange = new List<double>();
 
-        if (_csvData.DictLapCount.ContainsKey(displayThisSpecificLap))
-            thisLapsStartingHertz = _csvData.DictLapCount[displayThisSpecificLap];
+        // Display all laps
+        if (displayThisSpecificLap == 9999)
+        {
+            loadAllLaps = true;
+        }
+        else if (_csvData.DictLapData.ContainsKey(displayThisSpecificLap))
+        {
+            var currLap = _csvData.DictLapData[displayThisSpecificLap];
+            double thisLapsStartingHertz = currLap.Item1;
+            double thisLapsEndingHertz = currLap.Item2;
 
-        // we know the specific lap, and the hertz that lap starts
-        // so we want to grab all the data points for it
-        // we can +1 for the next lap, get its hertz, then -0.1 for the last hertz for this lap
+            // Lookup the hertz index in the ListHertzTime, then range those
+            startIndex = _csvData.ListHertzTime.IndexOf(thisLapsStartingHertz);
+            endIndex = _csvData.ListHertzTime.IndexOf(thisLapsEndingHertz);
+            loadThisHertzRange = _csvData.ListHertzTime.GetRange(startIndex, endIndex - startIndex + 1);
+        }
 
-        // this'll error for the last lap, out of bounds obviously (just do starting 1, then -1)
-        double thisLapsEndingHertz = 0.0;
-        if (_csvData.DictLapCount.ContainsKey(displayThisSpecificLap + 1))
-            thisLapsEndingHertz = Math.Round(_csvData.DictLapCount[displayThisSpecificLap + 1] - 0.1, 1);
-
-        // lookup the hertz index in the ListHertzTime, then range those
-        int startIndex = _csvData.ListHertzTime.IndexOf(thisLapsStartingHertz);
-        int endIndex = _csvData.ListHertzTime.IndexOf(thisLapsEndingHertz);
-        double[] thisLapsHertzRange = _csvData.ListHertzTime.GetRange(startIndex, endIndex - startIndex + 1).ToArray();
-        
         // Cleanup to reload
         while (chart1.Series.Count > 0)
         {
@@ -143,8 +144,8 @@ public partial class ChartForm : Form
 
         double[] GetRelevantDataForThisHertzRange(double[] fullList)
         {
-            List<double> retrievedList = new();
-            
+            List<double> retrievedList = new List<double>();
+
             for (int i = startIndex; i <= endIndex; i++)
                 retrievedList.Add((double)fullList.GetValue(i));
 
@@ -187,7 +188,11 @@ public partial class ChartForm : Form
                     XValueType = ChartValueType.Double
                 };
 
-                series.Points.DataBindXY(thisLapsHertzRange, GetRelevantDataForThisHertzRange(_csvData.GetDataPointsList(enumValue)));
+                if (loadAllLaps)
+                    series.Points.DataBindXY(_csvData.ListHertzTime.ToArray(), _csvData.GetDataPointsList(enumValue));
+                else
+                    series.Points.DataBindXY(loadThisHertzRange.ToArray(), GetRelevantDataForThisHertzRange(_csvData.GetDataPointsList(enumValue)));
+
                 chart1.ChartAreas["ChartArea" + counter.ToString()].AxisY.Interval = _csvData.GetDataPointsInterval(enumValue);
                 chart1.Series.Add(series);
             }
@@ -221,8 +226,17 @@ public partial class ChartForm : Form
             XValueType = ChartValueType.Double
         };
 
-        seriesLat.Points.DataBindXY(thisLapsHertzRange, GetRelevantDataForThisHertzRange(_csvData.ListLat.ToArray()));
-        seriesLon.Points.DataBindXY(thisLapsHertzRange, GetRelevantDataForThisHertzRange(_csvData.ListLon.ToArray()));
+        if (loadAllLaps)
+        {
+            seriesLat.Points.DataBindXY(_csvData.ListHertzTime.ToArray(), _csvData.ListLat.ToArray());
+            seriesLon.Points.DataBindXY(_csvData.ListHertzTime.ToArray(), _csvData.ListLon.ToArray());
+        }
+        else
+        {
+            seriesLat.Points.DataBindXY(loadThisHertzRange.ToArray(), GetRelevantDataForThisHertzRange(_csvData.ListLat.ToArray()));
+            seriesLon.Points.DataBindXY(loadThisHertzRange.ToArray(), GetRelevantDataForThisHertzRange(_csvData.ListLon.ToArray()));
+        }
+        
         chart1.Series.Add(seriesLat);
         chart1.Series.Add(seriesLon);
         #endregion
@@ -234,7 +248,7 @@ public partial class ChartForm : Form
         chart1.Series["Series:4:Lon"].Enabled = false;
         chart1.ChartAreas["ChartArea4"].AxisY.Interval = 10;
 
-        
+
     }
 
     public void MapDataPointsToChart()
