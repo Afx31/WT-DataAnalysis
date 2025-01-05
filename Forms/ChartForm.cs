@@ -141,7 +141,7 @@ public partial class ChartForm : Form
             chart1.Series.RemoveAt(0);
         while (chart1.Legends.Count > 0)
             chart1.Legends.RemoveAt(0);
-        if (previousMarkerDataPoint >= 0)
+        if (chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
         {
             Series removeSeries = chart_TrackMap.Series[1];
             chart_TrackMap.Series.Remove(removeSeries);
