@@ -94,11 +94,46 @@ public class CsvData
         set => _listMAP = value;
     }
 
+    private List<double> _listInj = new List<double>();
+    public List<double> ListInj
+    {
+        get => _listInj;
+        set => _listInj = value;
+    }
+
+    private List<double> _listIgn = new List<double>();
+    public List<double> ListIgn
+    {
+        get => _listIgn;
+        set => _listIgn = value;
+    }
+
     private List<double> _listLambdaRatio = new List<double>();
     public List<double> ListLambdaRatio
     {
         get => _listLambdaRatio;
         set => _listLambdaRatio = value;
+    }
+
+    private List<double> _listKnockCounter = new List<double>();
+    public List<double> ListKnockCounter
+    {
+        get => _listKnockCounter;
+        set => _listKnockCounter = value;
+    }
+
+    private List<double> _listTargetCamAngle = new List<double>();
+    public List<double> ListTargetCamAngle
+    {
+        get => _listTargetCamAngle;
+        set => _listTargetCamAngle = value;
+    }
+
+    private List<double> _listActualCamAngle = new List<double>();
+    public List<double> ListActualCamAngle
+    {
+        get => _listActualCamAngle;
+        set => _listActualCamAngle = value;
     }
 
     private List<double> _listOilTemperature = new List<double>();
@@ -113,6 +148,27 @@ public class CsvData
     {
         get => _listOilPressure;
         set => _listOilPressure = value;
+    }
+
+    private List<double> _listEthanolInput1 = new List<double>();
+    public List<double> ListEthanolInput1
+    {
+        get => _listEthanolInput1;
+        set => _listEthanolInput1 = value;
+    }
+
+    private List<double> _listEthanolInput2 = new List<double>();
+    public List<double> ListEthanolInput2
+    {
+        get => _listEthanolInput2;
+        set => _listEthanolInput2 = value;
+    }
+
+    private List<double> _listEthanolInput3 = new List<double>();
+    public List<double> ListEthanolInput3
+    {
+        get => _listEthanolInput3;
+        set => _listEthanolInput3 = value;
     }
 
     private Dictionary<double, (double, double)> _dictLatLon = new Dictionary<double, (double, double)>();
@@ -177,16 +233,23 @@ public class CsvData
                     _listECT.Add(double.Parse(values[6]));
                     _listTPS.Add(double.Parse(values[7]));
                     _listMAP.Add(double.Parse(values[8]));
-                    _listLambdaRatio.Add(double.Parse(values[9]));
-                    _listOilTemperature.Add(double.Parse(values[10]));
-                    _listOilPressure.Add(double.Parse(values[11]));
-                    
-                    _dictLatLon.Add(double.Parse(values[0]), (double.Parse(values[12]), double.Parse(values[13])));
+                    _listInj.Add(double.Parse(values[9]));
+                    _listIgn.Add(double.Parse(values[10]));
+                    _listLambdaRatio.Add(double.Parse(values[11]));
+                    _listKnockCounter.Add(double.Parse(values[12]));
+                    _listTargetCamAngle.Add(double.Parse(values[13]));
+                    _listActualCamAngle.Add(double.Parse(values[14]));
+                    _listOilTemperature.Add(double.Parse(values[15]));
+                    _listOilPressure.Add(double.Parse(values[16]));
+                    _listEthanolInput1.Add(double.Parse(values[17]));
+                    _listEthanolInput2.Add(double.Parse(values[18]));
+                    _listEthanolInput3.Add(double.Parse(values[19]));
+                    _dictLatLon.Add(double.Parse(values[0]), (double.Parse(values[20]), double.Parse(values[21])));
 
-                    if (!previousLapCounter.Equals(values[14]))
+                    if (!previousLapCounter.Equals(values[22]))
                     {
-                        _dictLapData.Add(int.Parse(values[14]), (double.Parse(values[0]), 0.0));
-                        previousLapCounter = values[14];
+                        _dictLapData.Add(int.Parse(values[22]), (double.Parse(values[0]), 0.0));
+                        previousLapCounter = values[22];
 
                         // TODO - fix this hack
                         // Default first one to 0.1 hertz start, works better with the chart
@@ -231,12 +294,28 @@ public class CsvData
                 return ListTPS.ToArray();
             case DataValues.MAP:
                 return ListMAP.ToArray();
+            case DataValues.INJ:
+                return ListInj.ToArray();
+            case DataValues.IGN:
+                return ListIgn.ToArray();
             case DataValues.LambdaRatio:
                 return ListLambdaRatio.ToArray();
+            case DataValues.KnockCounter:
+                return ListKnockCounter.ToArray();
+            case DataValues.TargetCamAngle:
+                return ListTargetCamAngle.ToArray();
+            case DataValues.ActualCamAngle:
+                return ListActualCamAngle.ToArray();
             case DataValues.OilTemperature:
                 return ListOilTemperature.ToArray();
             case DataValues.OilPressure:
                 return ListOilPressure.ToArray();
+            case DataValues.EthanolInput1:
+                return ListEthanolInput1.ToArray();
+            case DataValues.EthanolInput2:
+                return ListEthanolInput2.ToArray();
+            case DataValues.EthanolInput3:
+                return ListEthanolInput3.ToArray();
             default:
                 return null;
         }
@@ -250,24 +329,25 @@ public class CsvData
                 return 1000;
             case DataValues.Speed:
                 return 20;
+            case DataValues.IAT:
+            case DataValues.ECT:
+            case DataValues.TPS:
+            case DataValues.MAP:
+            case DataValues.INJ:
+            case DataValues.IGN:
+            case DataValues.LambdaRatio:
+            case DataValues.TargetCamAngle:
+            case DataValues.ActualCamAngle:
+            case DataValues.OilTemperature:
+            case DataValues.OilPressure:
+            case DataValues.EthanolInput1:
+            case DataValues.EthanolInput2:
+            case DataValues.EthanolInput3:
+                return 10;
             case DataValues.Gear:
                 return 1;
             case DataValues.Voltage:
                 return 0;
-            case DataValues.IAT:
-                return 10;
-            case DataValues.ECT:
-                return 10;
-            case DataValues.TPS:
-                return 10;
-            case DataValues.MAP:
-                return 10;
-            case DataValues.LambdaRatio:
-                return 10;
-            case DataValues.OilTemperature:
-                return 10;
-            case DataValues.OilPressure:
-                return 10;
             default:
                 return 0;
         }
@@ -284,8 +364,16 @@ public class CsvData
         ECT = 6,
         TPS = 7,
         MAP = 8,
-        LambdaRatio = 9,
-        OilTemperature = 10,
-        OilPressure = 11
+        INJ = 9,
+        IGN = 10,
+        LambdaRatio = 11,
+        KnockCounter = 12,
+        TargetCamAngle = 13,
+        ActualCamAngle = 14,
+        OilTemperature = 15,
+        OilPressure = 16,
+        EthanolInput1 = 17,
+        EthanolInput2 = 18,
+        EthanolInput3 = 19
     }
 }
