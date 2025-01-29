@@ -437,6 +437,19 @@ public partial class ChartForm : Form
 
         series.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
         chart_TrackMap.Series.Add(series);
+
+        
+        // Finish line
+        Series finishLineSeries = new Series("FinishLineSeries")
+        {
+            ChartType = SeriesChartType.Line,
+            Color = Color.Red,
+            BorderWidth = 5    
+        };
+        
+        finishLineSeries.Points.AddXY(150.870923, -33.803825);
+        finishLineSeries.Points.AddXY(150.870962, -33.803653);
+        chart_TrackMap.Series.Add(finishLineSeries);
     }
 
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
