@@ -383,21 +383,11 @@ public partial class ChartForm : Form
     {
         ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
 
-        switch (_csvData.Track)
-        {
-            case "smsp":
-                chartAreaTrackMap.AxisX.Minimum = 150.864046;
-                chartAreaTrackMap.AxisX.Maximum = 150.878478;
-                chartAreaTrackMap.AxisY.Minimum = -33.809579;
-                chartAreaTrackMap.AxisY.Maximum = -33.802297;
-                break;
-            case "morganpark":
-                chartAreaTrackMap.AxisX.Minimum = 152.028940;
-                chartAreaTrackMap.AxisX.Maximum = 152.040025;
-                chartAreaTrackMap.AxisY.Minimum = -28.265911;
-                chartAreaTrackMap.AxisY.Maximum = -28.255305;
-                break;
-        }
+        CurrentTrackCoords trackMapMaxCoords = TrackData.GetTrackMapMaxCoords(_csvData.Track);
+        chartAreaTrackMap.AxisX.Minimum = trackMapMaxCoords.LatMin;
+        chartAreaTrackMap.AxisX.Maximum = trackMapMaxCoords.LatMax;
+        chartAreaTrackMap.AxisY.Minimum = trackMapMaxCoords.LonMin;
+        chartAreaTrackMap.AxisY.Maximum = trackMapMaxCoords.LonMax;
 
         chartAreaTrackMap.Position.Height = 100;
         chartAreaTrackMap.Position.Width = 100;
@@ -438,17 +428,17 @@ public partial class ChartForm : Form
         series.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
         chart_TrackMap.Series.Add(series);
 
-        
+
         // Finish line
         Series finishLineSeries = new Series("FinishLineSeries")
         {
             ChartType = SeriesChartType.Line,
             Color = Color.Red,
-            BorderWidth = 5    
+            BorderWidth = 5
         };
-        
-        finishLineSeries.Points.AddXY(150.870923, -33.803825);
-        finishLineSeries.Points.AddXY(150.870962, -33.803653);
+        CurrentTrackCoords finishLineCoords = TrackData.GetFinishLineCoords(_csvData.Track);
+        finishLineSeries.Points.AddXY(finishLineCoords.LonMin, finishLineCoords.LatMin);
+        finishLineSeries.Points.AddXY(finishLineCoords.LonMax, finishLineCoords.LatMax);
         chart_TrackMap.Series.Add(finishLineSeries);
     }
 

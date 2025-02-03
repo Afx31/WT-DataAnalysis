@@ -1,6 +1,6 @@
 ﻿namespace WT_DataAnalysis;
 
-public struct CurrentTrackData
+public struct CurrentTrackCoords
 {
     public double LatMin;
     public double LatMax;
@@ -10,14 +10,12 @@ public struct CurrentTrackData
 
 public class TrackData
 {
-    // TODO:
-    // this needs to be named around finish line data
-    public static CurrentTrackData GetTrackData(string currentTrack)
+    public static CurrentTrackCoords GetFinishLineCoords(string currentTrack)
     {
         switch (currentTrack)
         {
             case "smsp":
-                return new CurrentTrackData
+                return new CurrentTrackCoords
                 {
                     LatMin = -33.803855,
                     LatMax = -33.803649,
@@ -25,7 +23,7 @@ public class TrackData
                     LonMax = 150.870954
                 };
             case "morganpark":
-                return new CurrentTrackData
+                return new CurrentTrackCoords
                 {
                     LatMin = -28.262057,
                     LatMax = -28.262087,
@@ -33,7 +31,7 @@ public class TrackData
                     LonMax = 152.036477
                 };
             case "winton":
-                return new CurrentTrackData
+                return new CurrentTrackCoords
                 {
                     LatMin = -28.262057,
                     LatMax = -28.262087,
@@ -41,7 +39,7 @@ public class TrackData
                     LonMax = 152.036477
                 };
             default:
-                return new CurrentTrackData
+                return new CurrentTrackCoords
                 {
                     LatMin = 0,
                     LatMax = 0,
@@ -51,6 +49,35 @@ public class TrackData
         }
     }
 
-    // TODO:
-    // then do one here for map sizing, which is currently at the top of DrawTrackMap()
+    public static CurrentTrackCoords GetTrackMapMaxCoords(string currentTrack)
+    {
+        switch (currentTrack)
+        {
+            case "smsp":
+                return new CurrentTrackCoords
+                {
+                    LatMin = 150.864046,
+                    LatMax = 150.878478,
+                    LonMin = -33.809579,
+                    LonMax = -33.802297
+                };
+            case "morganpark":
+                return new CurrentTrackCoords
+                {
+                    LatMin = 152.028940,
+                    LatMax = 152.040025,
+                    LonMin = -28.265911,
+                    LonMax = -28.255305
+                };
+            //TODO: case "winton":
+            default:
+                return new CurrentTrackCoords
+                {
+                    LatMin = 0,
+                    LatMax = 0,
+                    LonMin = 0,
+                    LonMax = 0
+                };
+        }
+    }
 }
