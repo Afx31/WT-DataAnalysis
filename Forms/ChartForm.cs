@@ -514,13 +514,13 @@ public partial class ChartForm : Form
     private void MoveTrackMapCurrentPosition(double lat, double lon)
     {
         // First clear the previous marker
-        //if (previousMarkerDataPoint >= 0)
-        //{
-        //    DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
-        //    point.MarkerColor = default;
-        //    point.MarkerSize = default;
-        //    point.MarkerStyle = default;
-        //}
+        if (previousMarkerDataPoint >= 0)
+        {
+            DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
+            point.MarkerColor = default;
+            point.MarkerSize = default;
+            point.MarkerStyle = default;
+        }
 
         for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
         {
@@ -528,20 +528,10 @@ public partial class ChartForm : Form
 
             if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
             {
-                // TODO: This works but the blue line goes through circle
-                //point.MarkerColor = Color.Red;
-                //point.MarkerSize = 20;
-                //point.MarkerStyle = MarkerStyle.Circle;
-
-                //point.Color = Color.Red;
-
                 // TODO: This is the shitty workaround
                 // Remove the current series if it exists
                 if (previousMarkerDataPoint >= 0 && chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
-                {
-                    Series removeSeries = chart_TrackMap.Series[1];
-                    chart_TrackMap.Series.Remove(removeSeries);
-                }
+                    chart_TrackMap.Series.Remove(chart_TrackMap.Series["DataMarker"]);
 
                 Series series = new Series("DataMarker");
                 series.ChartType = SeriesChartType.Point;

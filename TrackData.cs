@@ -17,10 +17,15 @@ public class TrackData
             case "smsp":
                 return new CurrentTrackCoords
                 {
-                    LatMin = -33.803855,
-                    LatMax = -33.803649,
-                    LonMin = 150.870905,
-                    LonMax = 150.870954
+                    //LatMin = -33.803855,
+                    //LatMax = -33.803649,
+                    //LonMin = 150.870905,
+                    //LonMax = 150.870954
+                    // TOOD: Temp wider attempt for the line
+                    LatMin = -33.803925,
+                    LatMax = -33.803573,
+                    LonMin = 150.870887,
+                    LonMax = 150.870971
                 };
             case "morganpark":
                 return new CurrentTrackCoords
