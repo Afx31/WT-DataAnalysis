@@ -383,27 +383,17 @@ public partial class ChartForm : Form
     {
         ChartArea chartAreaTrackMap = new ChartArea("ChartAreaTrackMap");
 
-        switch (_csvData.Track)
-        {
-            case "smsp":
-                chartAreaTrackMap.AxisX.Minimum = 150.864046;
-                chartAreaTrackMap.AxisX.Maximum = 150.878478;
-                chartAreaTrackMap.AxisY.Minimum = -33.809579;
-                chartAreaTrackMap.AxisY.Maximum = -33.802297;
-                break;
-            case "morganpark":
-                chartAreaTrackMap.AxisX.Minimum = 152.028940;
-                chartAreaTrackMap.AxisX.Maximum = 152.040025;
-                chartAreaTrackMap.AxisY.Minimum = -28.265911;
-                chartAreaTrackMap.AxisY.Maximum = -28.255305;
-                break;
-        }
+        CurrentTrackCoords trackMapMaxCoords = TrackData.GetTrackMapMaxCoords(_csvData.Track);
+        chartAreaTrackMap.AxisX.Minimum = trackMapMaxCoords.LatMin;
+        chartAreaTrackMap.AxisX.Maximum = trackMapMaxCoords.LatMax;
+        chartAreaTrackMap.AxisY.Minimum = trackMapMaxCoords.LonMin;
+        chartAreaTrackMap.AxisY.Maximum = trackMapMaxCoords.LonMax;
 
         chartAreaTrackMap.Position.Height = 100;
         chartAreaTrackMap.Position.Width = 100;
         chartAreaTrackMap.BackColor = Color.DarkGray;
 
-        // Don't run if needing to debug coordinates positioning
+        // Disable if needed to view the coords axis labels
         if (true)
         {
             chartAreaTrackMap.AxisX.MajorGrid.Enabled = false;
@@ -420,11 +410,13 @@ public partial class ChartForm : Form
 
         chart_TrackMap.ChartAreas.Add(chartAreaTrackMap);
 
-        Series series = new Series("TrackMapSeries")
+        Series trackMapSeries = new Series("TrackMapSeries")
         {
             ChartType = SeriesChartType.FastPoint,
-            Color = Color.White
+            Color = Color.White,
+            MarkerSize = 2
         };
+
 
         List<double> unpackedLat = new List<double>();
         List<double> unpackedLon = new List<double>();
@@ -434,9 +426,21 @@ public partial class ChartForm : Form
             unpackedLat.Add(item.Value.Item1);
             unpackedLon.Add(item.Value.Item2);
         }
+        trackMapSeries.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
+        chart_TrackMap.Series.Add(trackMapSeries);
 
-        series.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
-        chart_TrackMap.Series.Add(series);
+
+        // Finish line
+        Series finishLineSeries = new Series("FinishLineSeries")
+        {
+            ChartType = SeriesChartType.Line,
+            Color = Color.Red,
+            BorderWidth = 4
+        };
+        CurrentTrackCoords finishLineCoords = TrackData.GetFinishLineCoords(_csvData.Track);
+        finishLineSeries.Points.AddXY(finishLineCoords.LonMin, finishLineCoords.LatMin);
+        finishLineSeries.Points.AddXY(finishLineCoords.LonMax, finishLineCoords.LatMax);
+        chart_TrackMap.Series.Add(finishLineSeries);
     }
 
     private void DoCurrentCursorPositionDataEvalution(object sender, MouseEventArgs e)
@@ -510,13 +514,13 @@ public partial class ChartForm : Form
     private void MoveTrackMapCurrentPosition(double lat, double lon)
     {
         // First clear the previous marker
-        //if (previousMarkerDataPoint >= 0)
-        //{
-        //    DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
-        //    point.MarkerColor = default;
-        //    point.MarkerSize = default;
-        //    point.MarkerStyle = default;
-        //}
+        if (previousMarkerDataPoint >= 0)
+        {
+            DataPoint point = chart_TrackMap.Series[0].Points[previousMarkerDataPoint];
+            point.MarkerColor = default;
+            point.MarkerSize = default;
+            point.MarkerStyle = default;
+        }
 
         for (var i = 0; i < chart_TrackMap.Series[0].Points.Count; i++)
         {
@@ -524,20 +528,10 @@ public partial class ChartForm : Form
 
             if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
             {
-                // TODO: This works but the blue line goes through circle
-                //point.MarkerColor = Color.Red;
-                //point.MarkerSize = 20;
-                //point.MarkerStyle = MarkerStyle.Circle;
-
-                //point.Color = Color.Red;
-
                 // TODO: This is the shitty workaround
                 // Remove the current series if it exists
                 if (previousMarkerDataPoint >= 0 && chart_TrackMap.Series.Any(x => x.Name == "DataMarker"))
-                {
-                    Series removeSeries = chart_TrackMap.Series[1];
-                    chart_TrackMap.Series.Remove(removeSeries);
-                }
+                    chart_TrackMap.Series.Remove(chart_TrackMap.Series["DataMarker"]);
 
                 Series series = new Series("DataMarker");
                 series.ChartType = SeriesChartType.Point;
