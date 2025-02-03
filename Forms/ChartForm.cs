@@ -16,9 +16,36 @@ public partial class ChartForm : Form
         if (csvData != null)
         {
             _csvData = csvData;
+            InitialChartControlSetup();
             InitialChartSetup();
             MapDataPointsToChart(9999);
             DrawTrackMap();
+        }
+    }
+
+    private void InitialChartControlSetup()
+    {
+        /* Three modes of moving the line:
+         * 1 - Single click (Left)
+         * 2 - Click and drag (Right)
+         * 3 - Auto move with cursor
+         */
+
+        // This will handle both cases
+        chart1.MouseMove += chart1_MouseMove;
+
+        if (AppSettings.AutoCursorLine)
+        {
+            chart1.MouseLeave += chart1_MouseLeave;
+        }
+        else
+        {
+            // #1
+            chart1.MouseClick += chart1_MouseClick;
+
+            // #2
+            chart1.MouseDown += chart1_MouseDown;
+            chart1.MouseUp += chart1_MouseUp;
         }
     }
 
@@ -490,24 +517,27 @@ public partial class ChartForm : Form
             {
                 DataPoint matchingPoint = chart1.Series[0].Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
 
-                var latLonVal = _csvData.DictLatLon[matchingPoint.XValue];
-                currentLat = latLonVal.Item1;
-                currentLon = latLonVal.Item2;
+                if (matchingPoint != null)
+                {
+                    var latLonVal = _csvData.DictLatLon[matchingPoint.XValue];
+                    currentLat = latLonVal.Item1;
+                    currentLon = latLonVal.Item2;
+                }
+
+                // TODO: Suss this later
+                // Have to move this out for some reason because of the multi threading.
+                lbl_Gear.Text = gearValue;
+
+                MoveTrackMapCurrentPosition(currentLat, currentLon);
+
+                // TODO: No idea what this was for
+                //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
+                //chart.Series
+                //    .Where(x => x.ChartArea == ca.Name)
+                //    .ToList()
+                //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
+                //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
             }
-
-            // TODO: Suss this later
-            // Have to move this out for some reason because of the multi threading.
-            lbl_Gear.Text = gearValue;
-
-            MoveTrackMapCurrentPosition(currentLat, currentLon);
-
-            // TODO: No idea what this was for
-            //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
-            //chart.Series
-            //    .Where(x => x.ChartArea == ca.Name)
-            //    .ToList()
-            //    .ForEach(x => x.LegendText = x.Name + " = " + yValue.ToString());
-            //double yValue = Math.Round(chart.ChartAreas[series.ChartArea].AxisY.PixelPositionToValue(e.Y), 2);
         }
     }
 
@@ -549,29 +579,27 @@ public partial class ChartForm : Form
         }
     }
 
-    private void chart1_MouseDown(object sender, MouseEventArgs e)
+    private void chart1_MouseClick(object sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)
+            DoCurrentCursorPositionDataEvalution(sender, e);
+    }
+
+    private void chart1_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Right)
             isDragging = true;
     }
 
     private void chart1_MouseUp(object sender, MouseEventArgs e)
     {
-        if (e.Button == MouseButtons.Left)
+        if (e.Button == MouseButtons.Right)
             isDragging = false;
     }
 
     private void chart1_MouseMove(object sender, MouseEventArgs e)
     {
-        //if (AppSettings.AutoCursorLine)
-        if (isDragging)
-            DoCurrentCursorPositionDataEvalution(sender, e);
-    }
-
-    private void chart1_MouseClick(object sender, MouseEventArgs e)
-    {
-        //if (!AppSettings.AutoCursorLine)
-        if (true) // TODO: doing this for now, for the click and drag setup
+        if (AppSettings.AutoCursorLine || isDragging)
             DoCurrentCursorPositionDataEvalution(sender, e);
     }
 
@@ -681,7 +709,7 @@ public partial class ChartForm : Form
     {
         Chart chart = chart1;
 
-        if (chart != null && AppSettings.AutoCursorLine)
+        if (chart != null)
         {
             foreach (ChartArea ca in chart.ChartAreas)
             {

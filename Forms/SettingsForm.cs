@@ -278,6 +278,7 @@ public partial class SettingsForm : Form
 
         // Misc
         AppSettings.CursorLineColour = (int)(ChartDataConfig.Colours)cbx_CursorLineColour.SelectedItem;
+        AppSettings.AutoCursorLine = chk_AutoCursorLine.Checked;
 
         AppSettings.SaveSettings();
     }

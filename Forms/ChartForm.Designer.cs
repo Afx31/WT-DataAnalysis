@@ -66,7 +66,6 @@
             chart1.Size = new Size(1075, 450);
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
-            chart1.MouseClick += chart1_MouseClick;
             chart1.MouseWheel += chart1_MouseWheelMove;
             // 
             // lbl_Gear
