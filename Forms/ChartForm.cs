@@ -393,7 +393,7 @@ public partial class ChartForm : Form
         chartAreaTrackMap.Position.Width = 100;
         chartAreaTrackMap.BackColor = Color.DarkGray;
 
-        // Don't run if needing to debug coordinates positioning
+        // Disable if needed to view the coords axis labels
         if (true)
         {
             chartAreaTrackMap.AxisX.MajorGrid.Enabled = false;
@@ -410,11 +410,13 @@ public partial class ChartForm : Form
 
         chart_TrackMap.ChartAreas.Add(chartAreaTrackMap);
 
-        Series series = new Series("TrackMapSeries")
+        Series trackMapSeries = new Series("TrackMapSeries")
         {
             ChartType = SeriesChartType.FastPoint,
-            Color = Color.White
+            Color = Color.White,
+            MarkerSize = 2
         };
+
 
         List<double> unpackedLat = new List<double>();
         List<double> unpackedLon = new List<double>();
@@ -424,9 +426,8 @@ public partial class ChartForm : Form
             unpackedLat.Add(item.Value.Item1);
             unpackedLon.Add(item.Value.Item2);
         }
-
-        series.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
-        chart_TrackMap.Series.Add(series);
+        trackMapSeries.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
+        chart_TrackMap.Series.Add(trackMapSeries);
 
 
         // Finish line
@@ -434,7 +435,7 @@ public partial class ChartForm : Form
         {
             ChartType = SeriesChartType.Line,
             Color = Color.Red,
-            BorderWidth = 5
+            BorderWidth = 4
         };
         CurrentTrackCoords finishLineCoords = TrackData.GetFinishLineCoords(_csvData.Track);
         finishLineSeries.Points.AddXY(finishLineCoords.LonMin, finishLineCoords.LatMin);
