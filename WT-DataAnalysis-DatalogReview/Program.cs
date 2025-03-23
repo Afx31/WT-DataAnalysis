@@ -1,4 +1,4 @@
-namespace WT_DataAnalysis;
+namespace WT_DataAnalysis_DatalogReview;
 
 internal static class Program
 {

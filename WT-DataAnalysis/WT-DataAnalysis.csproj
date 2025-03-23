@@ -10,8 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="WinForms.DataVisualization" Version="1.9.2" />
+    <ProjectReference Include="..\WT-DataAnalysis-DatalogReview\WT-DataAnalysis-DatalogReview.csproj" />
   </ItemGroup>
 
 </Project>

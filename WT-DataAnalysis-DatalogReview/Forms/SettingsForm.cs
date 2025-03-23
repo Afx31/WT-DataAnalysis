@@ -1,4 +1,6 @@
-﻿namespace WT_DataAnalysis;
+﻿using WT_DataAnalysis_DatalogReview.Models;
+
+namespace WT_DataAnalysis_DatalogReview;
 
 public partial class SettingsForm : Form
 {
