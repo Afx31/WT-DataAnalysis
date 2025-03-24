@@ -878,6 +878,7 @@ partial class SettingsForm
         grp_CarDetails.Controls.Add(cbx_Car);
         grp_CarDetails.Controls.Add(lbl_Ecu);
         grp_CarDetails.Controls.Add(lbl_Car);
+        grp_CarDetails.ForeColor = Color.FromArgb(204, 204, 204);
         grp_CarDetails.Location = new Point(592, 278);
         grp_CarDetails.Name = "grp_CarDetails";
         grp_CarDetails.Size = new Size(370, 97);
