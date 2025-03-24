@@ -19,11 +19,13 @@ public class AppSettings
     // Load settings from file
     private static AppSettings LoadSettings()
     {
-        if (File.Exists("AppSettings.json"))
-        {
-            var json = File.ReadAllText("AppSettings.json");
-            var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
+        string rootDir = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
+        string settingsPath = Path.Combine(rootDir, "Shared", "AppSettingsDatalogReview.json");
 
+        if (File.Exists(settingsPath))
+        {
+            var json = File.ReadAllText(settingsPath);
+            var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
             return settings ?? new AppSettings();
         }
 
@@ -33,8 +35,10 @@ public class AppSettings
     // Save settings file
     public static void SaveSettings()
     {
+        string rootDir = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
+        string settingsPath = Path.Combine(rootDir, "Shared", "AppSettingsDatalogReview.json");
         var json = Newtonsoft.Json.JsonConvert.SerializeObject(Instance, Newtonsoft.Json.Formatting.Indented);
-        File.WriteAllText("AppSettings.json", json);
+        File.WriteAllText(settingsPath, json);
     }
 }
 
