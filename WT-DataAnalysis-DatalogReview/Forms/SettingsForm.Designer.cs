@@ -106,6 +106,11 @@ partial class SettingsForm
         lbl_CursorLineColour = new Label();
         grp_ApplicationInfo = new GroupBox();
         lbl_ApplicationInfo = new Label();
+        grp_CarDetails = new GroupBox();
+        cbx_Ecu = new ComboBox();
+        cbx_Car = new ComboBox();
+        lbl_Ecu = new Label();
+        lbl_Car = new Label();
         grp_ChartDataPoints.SuspendLayout();
         grp_Chart4.SuspendLayout();
         grp_Chart3.SuspendLayout();
@@ -113,6 +118,7 @@ partial class SettingsForm
         grp_Chart1.SuspendLayout();
         grp_Misc.SuspendLayout();
         grp_ApplicationInfo.SuspendLayout();
+        grp_CarDetails.SuspendLayout();
         SuspendLayout();
         // 
         // grp_ChartDataPoints
@@ -866,12 +872,60 @@ partial class SettingsForm
         lbl_ApplicationInfo.TabIndex = 0;
         lbl_ApplicationInfo.Text = resources.GetString("lbl_ApplicationInfo.Text");
         // 
+        // grp_CarDetails
+        // 
+        grp_CarDetails.Controls.Add(cbx_Ecu);
+        grp_CarDetails.Controls.Add(cbx_Car);
+        grp_CarDetails.Controls.Add(lbl_Ecu);
+        grp_CarDetails.Controls.Add(lbl_Car);
+        grp_CarDetails.Location = new Point(592, 278);
+        grp_CarDetails.Name = "grp_CarDetails";
+        grp_CarDetails.Size = new Size(370, 97);
+        grp_CarDetails.TabIndex = 24;
+        grp_CarDetails.TabStop = false;
+        grp_CarDetails.Text = "Car Details";
+        // 
+        // cbx_Ecu
+        // 
+        cbx_Ecu.FormattingEnabled = true;
+        cbx_Ecu.Location = new Point(110, 55);
+        cbx_Ecu.Name = "cbx_Ecu";
+        cbx_Ecu.Size = new Size(244, 23);
+        cbx_Ecu.TabIndex = 3;
+        // 
+        // cbx_Car
+        // 
+        cbx_Car.FormattingEnabled = true;
+        cbx_Car.Location = new Point(110, 26);
+        cbx_Car.Name = "cbx_Car";
+        cbx_Car.Size = new Size(244, 23);
+        cbx_Car.TabIndex = 2;
+        // 
+        // lbl_Ecu
+        // 
+        lbl_Ecu.AutoSize = true;
+        lbl_Ecu.Location = new Point(22, 59);
+        lbl_Ecu.Name = "lbl_Ecu";
+        lbl_Ecu.Size = new Size(26, 15);
+        lbl_Ecu.TabIndex = 1;
+        lbl_Ecu.Text = "Ecu";
+        // 
+        // lbl_Car
+        // 
+        lbl_Car.AutoSize = true;
+        lbl_Car.Location = new Point(23, 30);
+        lbl_Car.Name = "lbl_Car";
+        lbl_Car.Size = new Size(25, 15);
+        lbl_Car.TabIndex = 0;
+        lbl_Car.Text = "Car";
+        // 
         // SettingsForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(30, 30, 30);
         ClientSize = new Size(979, 685);
+        Controls.Add(grp_CarDetails);
         Controls.Add(grp_ApplicationInfo);
         Controls.Add(grp_Misc);
         Controls.Add(btn_ReloadApplication);
@@ -893,6 +947,8 @@ partial class SettingsForm
         grp_Misc.PerformLayout();
         grp_ApplicationInfo.ResumeLayout(false);
         grp_ApplicationInfo.PerformLayout();
+        grp_CarDetails.ResumeLayout(false);
+        grp_CarDetails.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -975,4 +1031,9 @@ partial class SettingsForm
     private CheckBox chk_AutoCursorLine;
     private GroupBox grp_ApplicationInfo;
     private Label lbl_ApplicationInfo;
+    private GroupBox grp_CarDetails;
+    private ComboBox cbx_Ecu;
+    private ComboBox cbx_Car;
+    private Label lbl_Ecu;
+    private Label lbl_Car;
 }

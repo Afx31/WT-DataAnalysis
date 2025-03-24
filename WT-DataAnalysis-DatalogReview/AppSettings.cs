@@ -7,12 +7,16 @@ public class AppSettings
 
     public static AppSettings Instance => instance.Value;
 
+    #region Properties & Attributes
     public List<ChartDataConfig> Chart1DataPoints { get; set; } = new List<ChartDataConfig>();
     public List<ChartDataConfig> Chart2DataPoints { get; set; } = new List<ChartDataConfig>();
     public List<ChartDataConfig> Chart3DataPoints { get; set; } = new List<ChartDataConfig>();
     public List<ChartDataConfig> Chart4DataPoints { get; set; } = new List<ChartDataConfig>();
     public int CursorLineColour { get; set; }
     public bool AutoCursorLine = false;
+    public CarType Car;
+    public EcuType Ecu;
+    #endregion
 
     private AppSettings() { }
 
@@ -39,6 +43,19 @@ public class AppSettings
         string settingsPath = Path.Combine(rootDir, "Shared", "AppSettingsDatalogReview.json");
         var json = Newtonsoft.Json.JsonConvert.SerializeObject(Instance, Newtonsoft.Json.Formatting.Indented);
         File.WriteAllText(settingsPath, json);
+    }
+
+    public enum CarType
+    {
+        Empty = 0,
+        Honda = 1
+    }
+
+    public enum EcuType
+    {
+        Empty = 0,
+        S300 = 1,
+        KPRO = 2
     }
 }
 
