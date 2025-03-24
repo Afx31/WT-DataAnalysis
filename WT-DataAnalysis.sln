@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WT-DataAnalysis", "WT-DataA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WT-DataAnalysis-DatalogReview", "WT-DataAnalysis-DatalogReview\WT-DataAnalysis-DatalogReview.csproj", "{FD8219A6-7564-465B-85CC-668A3AEDA085}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WT-DataAnalysis-LiveTelemetry", "..\WT-DataAnalysis-LiveTelemetry\WT-DataAnalysis-LiveTelemetry.csproj", "{B1B99476-0E04-4ED1-89CF-04297798F6A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FD8219A6-7564-465B-85CC-668A3AEDA085}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD8219A6-7564-465B-85CC-668A3AEDA085}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD8219A6-7564-465B-85CC-668A3AEDA085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B99476-0E04-4ED1-89CF-04297798F6A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B99476-0E04-4ED1-89CF-04297798F6A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B99476-0E04-4ED1-89CF-04297798F6A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B99476-0E04-4ED1-89CF-04297798F6A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

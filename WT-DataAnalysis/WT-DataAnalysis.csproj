@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\WT-DataAnalysis-LiveTelemetry\WT-DataAnalysis-LiveTelemetry.csproj" />
     <ProjectReference Include="..\WT-DataAnalysis-DatalogReview\WT-DataAnalysis-DatalogReview.csproj" />
   </ItemGroup>
 

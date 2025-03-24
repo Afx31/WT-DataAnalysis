@@ -1,5 +1,3 @@
-using WT_DataAnalysis_DatalogReview;
-
 namespace WT_DataAnalysis;
 
 public partial class StartForm : Form
@@ -14,14 +12,15 @@ public partial class StartForm : Form
 
     }
 
-    private void btn_RunDatalogReview_Click(object sender, EventArgs e)
+    private void Btn_RunDatalogReview_Click(object sender, EventArgs e)
     {
-        MainForm mf = new MainForm();
+        WT_DataAnalysis_DatalogReview.MainForm mf = new WT_DataAnalysis_DatalogReview.MainForm();
         mf.Show();
     }
 
-    private void btn_RunLiveTelemetry_Click(object sender, EventArgs e)
+    private void Btn_RunLiveTelemetry_Click(object sender, EventArgs e)
     {
-
+        WT_DataAnalysis_LiveTelemetry.MainForm mf = new WT_DataAnalysis_LiveTelemetry.MainForm();
+        mf.Show();
     }
 }

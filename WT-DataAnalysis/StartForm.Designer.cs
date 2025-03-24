@@ -40,7 +40,7 @@ partial class StartForm
         btn_RunDatalogReview.TabIndex = 1;
         btn_RunDatalogReview.Text = "Datalog Review";
         btn_RunDatalogReview.UseVisualStyleBackColor = true;
-        btn_RunDatalogReview.Click += btn_RunDatalogReview_Click;
+        btn_RunDatalogReview.Click += Btn_RunDatalogReview_Click;
         // 
         // btn_RunLiveTelemetry
         // 
@@ -50,7 +50,7 @@ partial class StartForm
         btn_RunLiveTelemetry.TabIndex = 2;
         btn_RunLiveTelemetry.Text = "Live Telemetry";
         btn_RunLiveTelemetry.UseVisualStyleBackColor = true;
-        btn_RunLiveTelemetry.Click += btn_RunLiveTelemetry_Click;
+        btn_RunLiveTelemetry.Click += Btn_RunLiveTelemetry_Click;
         // 
         // StartForm
         // 
