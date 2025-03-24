@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
+using WT_DataAnalysis_DatalogReview.Models;
 
-namespace WT_DataAnalysis.Forms;
+namespace WT_DataAnalysis_DatalogReview;
 
 public partial class ScatterPlotForm : Form
 {

@@ -1,4 +1,6 @@
-﻿namespace WT_DataAnalysis;
+﻿using WT_DataAnalysis_DatalogReview.Models;
+
+namespace WT_DataAnalysis_DatalogReview;
 
 public partial class SettingsForm : Form
 {
@@ -93,6 +95,22 @@ public partial class SettingsForm : Form
 
         if (AppSettings.AutoCursorLine != null)
             chk_AutoCursorLine.Checked = AppSettings.AutoCursorLine;
+
+        // Car Details
+        cbx_Car.DataSource = Enum.GetValues(typeof(AppSettings.CarType));
+        if (AppSettings.Car != null)
+            cbx_Car.SelectedIndex = (int)AppSettings.Car;
+
+        cbx_Ecu.DataSource = Enum.GetValues(typeof(AppSettings.EcuType));
+        if (AppSettings.Ecu != null)
+            cbx_Ecu.SelectedIndex = (int)AppSettings.Ecu;// Car Details
+        cbx_Car.DataSource = Enum.GetValues(typeof(AppSettings.CarType));
+        if (AppSettings.Car != null)
+            cbx_Car.SelectedIndex = (int)AppSettings.Car;
+
+        cbx_Ecu.DataSource = Enum.GetValues(typeof(AppSettings.EcuType));
+        if (AppSettings.Ecu != null)
+            cbx_Ecu.SelectedIndex = (int)AppSettings.Ecu;
         #endregion
     }
 
@@ -279,6 +297,10 @@ public partial class SettingsForm : Form
         // Misc
         AppSettings.CursorLineColour = (int)(ChartDataConfig.Colours)cbx_CursorLineColour.SelectedItem;
         AppSettings.AutoCursorLine = chk_AutoCursorLine.Checked;
+
+        // Car Details
+        AppSettings.Car = (AppSettings.CarType)cbx_Car.SelectedItem;
+        AppSettings.Ecu = (AppSettings.EcuType)cbx_Ecu.SelectedItem;
 
         AppSettings.SaveSettings();
     }

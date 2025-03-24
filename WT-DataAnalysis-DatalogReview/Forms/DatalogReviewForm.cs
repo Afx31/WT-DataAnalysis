@@ -1,15 +1,17 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
+using WT_DataAnalysis_DatalogReview.Models;
+using WT_DataAnalysis_DatalogReview.Utils;
 
-namespace WT_DataAnalysis;
+namespace WT_DataAnalysis_DatalogReview;
 
-public partial class ChartForm : Form
+public partial class DatalogReviewForm : Form
 {
     AppSettings AppSettings = AppSettings.Instance;
     private readonly CsvData _csvData;
     int previousMarkerDataPoint = -1;
     bool isDragging = false;
 
-    public ChartForm(CsvData csvData)
+    public DatalogReviewForm(CsvData csvData)
     {
         InitializeComponent();
 

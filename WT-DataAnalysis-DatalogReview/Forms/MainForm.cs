@@ -1,11 +1,11 @@
-using WT_DataAnalysis.Forms;
+using WT_DataAnalysis_DatalogReview.Models;
 
-namespace WT_DataAnalysis;
+namespace WT_DataAnalysis_DatalogReview;
 
 public partial class MainForm : Form
 {
     //private bool _IsDarkTheme = true;
-    private ChartForm _ChartForm;
+    private DatalogReviewForm _DatalogReviewForm;
     private ScatterPlotForm _ScatterPlotForm;
     private SettingsForm _SettingsForm;
     public CsvData CsvData;
@@ -31,7 +31,7 @@ public MainForm()
         CsvData = new CsvData();
 
     // Sometimes change these based on what we're working on
-    //this.Load += toolStripMenuItem_ChartForm_Click;
+    //this.Load += toolStripMenuItem_DatalogReviewForm_Click;
     //this.Load += toolStripMenuItem_SettingsForm_Click;
 
         if (debuggingAutoLoadFile)
@@ -41,7 +41,7 @@ public MainForm()
             CsvData.ReadCsvData(fileName);
             SetupLapCountComboBox();
 
-            _ChartForm = new ChartForm(CsvData)
+            _DatalogReviewForm = new DatalogReviewForm(CsvData)
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,
@@ -49,7 +49,7 @@ public MainForm()
             };
 
         // Reload form
-            OpenChartForm();
+            OpenDatalogReviewForm();
             //OpenScatterPlotForm();
     }
 }
@@ -72,13 +72,13 @@ public MainForm()
         }
     }
 
-    private void OpenChartForm()
+    private void OpenDatalogReviewForm()
 {
         _SettingsForm?.Hide();
             
-        if (_ChartForm == null)
+        if (_DatalogReviewForm == null)
         {
-                _ChartForm = new ChartForm(CsvData)
+                _DatalogReviewForm = new DatalogReviewForm(CsvData)
                 {
                     MdiParent = this,
                     FormBorderStyle = FormBorderStyle.None,
@@ -86,12 +86,12 @@ public MainForm()
                 };
         }
 
-        _ChartForm?.Show();
+        _DatalogReviewForm?.Show();
 }
 
     private void OpenScatterPlotForm()
     {
-        _ChartForm?.Hide();
+        _DatalogReviewForm?.Hide();
         _SettingsForm?.Hide();
         _ScatterPlotForm?.Dispose();
 
@@ -107,7 +107,7 @@ public MainForm()
 
     private void OpenSettingsForm()
     {
-        _ChartForm?.Hide();
+        _DatalogReviewForm?.Hide();
 
         _SettingsForm = new SettingsForm()
         {
@@ -145,7 +145,7 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                             sr.ReadToEnd();
 
                         // Remove current instance
-                        _ChartForm?.Dispose();
+                        _DatalogReviewForm?.Dispose();
                         _ScatterPlotForm?.Dispose();
 
                         Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
@@ -156,7 +156,7 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                             SetupLapCountComboBox();
                         }
 
-                        _ChartForm = new ChartForm(CsvData)
+                        _DatalogReviewForm = new DatalogReviewForm(CsvData)
                         {
                             MdiParent = this,
                             FormBorderStyle = FormBorderStyle.None,
@@ -164,7 +164,7 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                         };
 
                         // Reload form
-                        OpenChartForm();
+                        OpenDatalogReviewForm();
                     }
                     catch (Exception ex)
                     {
@@ -172,8 +172,8 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
                     }
                 }
                 break;
-            case "tsmi_ChartForm":
-                OpenChartForm();
+            case "tsmi_DatalogReviewForm":
+                OpenDatalogReviewForm();
                 break;
             case "tsmi_ScatterPlotForm":
                 OpenScatterPlotForm();
@@ -192,6 +192,6 @@ private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         else
             selectedLap = 9999; // TODO: Hacky, fix one decade
 
-        _ChartForm.MapDataPointsToChart(selectedLap);
+        _DatalogReviewForm.MapDataPointsToChart(selectedLap);
     }
 }
