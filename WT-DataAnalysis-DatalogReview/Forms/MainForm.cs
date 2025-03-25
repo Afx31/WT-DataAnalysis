@@ -10,49 +10,45 @@ public partial class MainForm : Form
     private SettingsForm _SettingsForm;
     public CsvData CsvData;
 
-public MainForm()
-{
-    InitializeComponent();
-
-    // ----- Debugging properties -----
-    // debuggingMode set to false means it'll open on default screen 1
-    bool debuggingMode = true;
-    bool debuggingAutoLoadFile = false;
-
-    if (debuggingMode)
+    public MainForm()
     {
-        this.StartPosition = FormStartPosition.Manual;
-        Screen[] screens = Screen.AllScreens;
-        Point location = screens[0].Bounds.Location;
-        this.Left = location.X;
-    }
-
+        InitializeComponent();
+        //IsMdiContainer = true;
         this.WindowState = FormWindowState.Maximized;
         CsvData = new CsvData();
 
-    // Sometimes change these based on what we're working on
-    //this.Load += toolStripMenuItem_DatalogReviewForm_Click;
-    //this.Load += toolStripMenuItem_SettingsForm_Click;
+        // ----- Debugging properties -----
+        // debuggingMode set to false means it'll open on default screen 1
+        bool debuggingMode = true;
+        bool debuggingAutoLoadFile = false;
 
-        if (debuggingAutoLoadFile)
+        if (debuggingMode)
         {
-            string fileName = "";
+            this.StartPosition = FormStartPosition.Manual;
+            Screen[] screens = Screen.AllScreens;
+            Point location = screens[2].Bounds.Location;
+            this.Left = location.X;
 
-            CsvData.ReadCsvData(fileName);
-            SetupLapCountComboBox();
-
-            _DatalogReviewForm = new DatalogReviewForm(CsvData)
+            if (debuggingAutoLoadFile)
             {
-                MdiParent = this,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
+                string fileName = "";
 
-        // Reload form
-            OpenDatalogReviewForm();
-            //OpenScatterPlotForm();
+                CsvData.ReadCsvData(fileName);
+                SetupLapCountComboBox();
+
+                _DatalogReviewForm = new DatalogReviewForm(CsvData)
+                {
+                    MdiParent = this,
+                    FormBorderStyle = FormBorderStyle.None,
+                    Dock = DockStyle.Fill
+                };
+
+                // Reload form
+                OpenDatalogReviewForm();
+                //OpenScatterPlotForm();
+            }
+        }
     }
-}
 
     private void SetupLapCountComboBox()
     {
@@ -73,21 +69,21 @@ public MainForm()
     }
 
     private void OpenDatalogReviewForm()
-{
+    {
         _SettingsForm?.Hide();
             
         if (_DatalogReviewForm == null)
         {
-                _DatalogReviewForm = new DatalogReviewForm(CsvData)
-                {
-                    MdiParent = this,
-                    FormBorderStyle = FormBorderStyle.None,
-                    Dock = DockStyle.Fill
-                };
+            _DatalogReviewForm = new DatalogReviewForm(CsvData)
+            {
+                MdiParent = this,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
         }
 
         _DatalogReviewForm?.Show();
-}
+    }
 
     private void OpenScatterPlotForm()
     {
@@ -95,12 +91,12 @@ public MainForm()
         _SettingsForm?.Hide();
         _ScatterPlotForm?.Dispose();
 
-            _ScatterPlotForm = new ScatterPlotForm(CsvData)
-            {
-                MdiParent = this,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
+        _ScatterPlotForm = new ScatterPlotForm(CsvData)
+        {
+            MdiParent = this,
+            FormBorderStyle = FormBorderStyle.None,
+            Dock = DockStyle.Fill
+        };
 
         _ScatterPlotForm.Show();
     }
@@ -118,12 +114,6 @@ public MainForm()
 
         _SettingsForm?.Show();
     }
-
-private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-{
-    //base.OnFormClosing(e);
-    //AppSettings.SaveSettings();
-}
 
     private void toolStripMenuItem_Click(object sender, EventArgs e)
     {

@@ -30,11 +30,13 @@ partial class StartForm
     {
         btn_RunDatalogReview = new Button();
         btn_RunLiveTelemetry = new Button();
+        pnl_StartForm = new Panel();
+        pnl_StartForm.SuspendLayout();
         SuspendLayout();
         // 
         // btn_RunDatalogReview
         // 
-        btn_RunDatalogReview.Location = new Point(259, 159);
+        btn_RunDatalogReview.Location = new Point(261, 158);
         btn_RunDatalogReview.Name = "btn_RunDatalogReview";
         btn_RunDatalogReview.Size = new Size(100, 80);
         btn_RunDatalogReview.TabIndex = 1;
@@ -44,7 +46,7 @@ partial class StartForm
         // 
         // btn_RunLiveTelemetry
         // 
-        btn_RunLiveTelemetry.Location = new Point(445, 159);
+        btn_RunLiveTelemetry.Location = new Point(431, 158);
         btn_RunLiveTelemetry.Name = "btn_RunLiveTelemetry";
         btn_RunLiveTelemetry.Size = new Size(100, 80);
         btn_RunLiveTelemetry.TabIndex = 2;
@@ -52,17 +54,26 @@ partial class StartForm
         btn_RunLiveTelemetry.UseVisualStyleBackColor = true;
         btn_RunLiveTelemetry.Click += Btn_RunLiveTelemetry_Click;
         // 
+        // pnl_StartForm
+        // 
+        pnl_StartForm.Controls.Add(btn_RunDatalogReview);
+        pnl_StartForm.Controls.Add(btn_RunLiveTelemetry);
+        pnl_StartForm.Dock = DockStyle.Fill;
+        pnl_StartForm.Location = new Point(0, 0);
+        pnl_StartForm.Name = "pnl_StartForm";
+        pnl_StartForm.Size = new Size(800, 450);
+        pnl_StartForm.TabIndex = 3;
+        // 
         // StartForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(0, 10, 15);
         ClientSize = new Size(800, 450);
-        Controls.Add(btn_RunLiveTelemetry);
-        Controls.Add(btn_RunDatalogReview);
+        Controls.Add(pnl_StartForm);
         Name = "StartForm";
-        Text = "StartForm";
-        Load += StartForm_Load;
+        Text = "WillTech";
+        pnl_StartForm.ResumeLayout(false);
         ResumeLayout(false);
     }
 
@@ -70,4 +81,5 @@ partial class StartForm
 
     private Button btn_RunDatalogReview;
     private Button btn_RunLiveTelemetry;
+    private Panel pnl_StartForm;
 }

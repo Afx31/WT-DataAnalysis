@@ -98,11 +98,9 @@ partial class MainForm
         BackColor = Color.FromArgb(30, 30, 30);
         ClientSize = new Size(1131, 493);
         Controls.Add(menuStrip1);
-        IsMdiContainer = true;
         MainMenuStrip = menuStrip1;
         Name = "MainForm";
-        Text = "WillTech - Data Analysis";
-        FormClosing += MainForm_FormClosing;
+        Text = "Data Analysis";
         menuStrip1.ResumeLayout(false);
         menuStrip1.PerformLayout();
         ResumeLayout(false);
