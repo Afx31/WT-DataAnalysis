@@ -15,7 +15,6 @@ public partial class MainForm : Form
         InitializeComponent();
         //IsMdiContainer = true;
         this.WindowState = FormWindowState.Maximized;
-        CsvData = new CsvData();
 
         // ----- Debugging properties -----
         // debuggingMode set to false means it'll open on default screen 1
@@ -35,13 +34,6 @@ public partial class MainForm : Form
 
                 CsvData.ReadCsvData(fileName);
                 SetupLapCountComboBox();
-
-                _DatalogReviewForm = new DatalogReviewForm(CsvData)
-                {
-                    MdiParent = this,
-                    FormBorderStyle = FormBorderStyle.None,
-                    Dock = DockStyle.Fill
-                };
 
                 // Reload form
                 OpenDatalogReviewForm();
@@ -70,13 +62,19 @@ public partial class MainForm : Form
 
     private void OpenDatalogReviewForm()
     {
+        if (CsvData == null)
+        {
+            MessageBox.Show("Please load a CSV datalog file first", "No Data Loaded", MessageBoxButtons.OK);
+            return;
+        }
+
         _SettingsForm?.Hide();
             
         if (_DatalogReviewForm == null)
         {
             _DatalogReviewForm = new DatalogReviewForm(CsvData)
             {
-                MdiParent = this,
+                MdiParent = MdiParent,
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
@@ -88,6 +86,12 @@ public partial class MainForm : Form
 
     private void OpenScatterPlotForm()
     {
+        if (CsvData == null)
+        {
+            MessageBox.Show("Please load a CSV datalog file first", "No Data Loaded", MessageBoxButtons.OK);
+            return;
+        }
+
         _DatalogReviewForm?.Hide();
         _SettingsForm?.Hide();
         _ScatterPlotForm?.Dispose();
@@ -96,7 +100,7 @@ public partial class MainForm : Form
         {
             _ScatterPlotForm = new ScatterPlotForm(CsvData)
             {
-                MdiParent = this,
+                MdiParent = MdiParent,
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
@@ -114,11 +118,11 @@ public partial class MainForm : Form
         {
             _SettingsForm = new SettingsForm()
             {
-                MdiParent = this,
+                MdiParent = MdiParent,
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
-            pnl_DataAnalysisBase.Controls.Add(_DatalogReviewForm);
+            pnl_DataAnalysisBase.Controls.Add(_SettingsForm);
         }
 
         _SettingsForm?.Show();
@@ -136,8 +140,7 @@ public partial class MainForm : Form
                     try
                     {
                         // First dispose of any existing CSV data
-                        if (CsvData != null)
-                            CsvData = new CsvData();
+                        CsvData = new CsvData();
 
                         // Try read CSV file to confirm it's valid
                         using (var sr = new StreamReader(ofd_LoadFile.FileName))
@@ -157,7 +160,7 @@ public partial class MainForm : Form
 
                         _DatalogReviewForm = new DatalogReviewForm(CsvData)
                         {
-                            MdiParent = this,
+                            MdiParent = MdiParent,
                             FormBorderStyle = FormBorderStyle.None,
                             Dock = DockStyle.Fill
                         };
