@@ -80,6 +80,7 @@ public partial class MainForm : Form
                 FormBorderStyle = FormBorderStyle.None,
                 Dock = DockStyle.Fill
             };
+            pnl_DataAnalysisBase.Controls.Add(_DatalogReviewForm);
         }
 
         _DatalogReviewForm?.Show();
@@ -91,12 +92,16 @@ public partial class MainForm : Form
         _SettingsForm?.Hide();
         _ScatterPlotForm?.Dispose();
 
-        _ScatterPlotForm = new ScatterPlotForm(CsvData)
+        if (_ScatterPlotForm == null)
         {
-            MdiParent = this,
-            FormBorderStyle = FormBorderStyle.None,
-            Dock = DockStyle.Fill
-        };
+            _ScatterPlotForm = new ScatterPlotForm(CsvData)
+            {
+                MdiParent = this,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
+            pnl_DataAnalysisBase.Controls.Add(_ScatterPlotForm);
+        }
 
         _ScatterPlotForm.Show();
     }
@@ -105,12 +110,16 @@ public partial class MainForm : Form
     {
         _DatalogReviewForm?.Hide();
 
-        _SettingsForm = new SettingsForm()
+        if (_SettingsForm == null)
         {
-            MdiParent = this,
-            FormBorderStyle = FormBorderStyle.None,
-            Dock = DockStyle.Fill
-        };
+            _SettingsForm = new SettingsForm()
+            {
+                MdiParent = this,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
+            pnl_DataAnalysisBase.Controls.Add(_DatalogReviewForm);
+        }
 
         _SettingsForm?.Show();
     }

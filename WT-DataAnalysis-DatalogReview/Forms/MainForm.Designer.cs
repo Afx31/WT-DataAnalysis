@@ -37,6 +37,7 @@ partial class MainForm
         tsmi_LapSelector = new ToolStripComboBox();
         toolTip1 = new ToolTip(components);
         ofd_LoadFile = new OpenFileDialog();
+        pnl_DataAnalysisBase = new Panel();
         menuStrip1.SuspendLayout();
         SuspendLayout();
         // 
@@ -91,12 +92,21 @@ partial class MainForm
         // 
         ofd_LoadFile.FileName = "ofd_LoadFile";
         // 
+        // pnl_DataAnalysisBase
+        // 
+        pnl_DataAnalysisBase.Dock = DockStyle.Fill;
+        pnl_DataAnalysisBase.Location = new Point(0, 27);
+        pnl_DataAnalysisBase.Name = "pnl_DataAnalysisBase";
+        pnl_DataAnalysisBase.Size = new Size(1131, 466);
+        pnl_DataAnalysisBase.TabIndex = 4;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(30, 30, 30);
         ClientSize = new Size(1131, 493);
+        Controls.Add(pnl_DataAnalysisBase);
         Controls.Add(menuStrip1);
         MainMenuStrip = menuStrip1;
         Name = "MainForm";
@@ -118,4 +128,5 @@ partial class MainForm
     private ToolStripMenuItem tsmi_ScatterPlotForm;
     private ToolStripMenuItem tsmi_SettingsForm;
     private ToolStripComboBox tsmi_LapSelector;
+    private Panel pnl_DataAnalysisBase;
 }
