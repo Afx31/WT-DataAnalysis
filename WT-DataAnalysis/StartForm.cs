@@ -6,6 +6,16 @@ public partial class StartForm : Form
     {
         InitializeComponent();
         this.IsMdiContainer = true;
+
+        bool dev = true;
+
+        if (dev)
+        {
+            this.StartPosition = FormStartPosition.Manual;
+            Screen[] screens = Screen.AllScreens;
+            Point location = screens[2].Bounds.Location;
+            this.Left = location.X;
+        }
     }
 
     private void Btn_RunDatalogReview_Click(object sender, EventArgs e)
