@@ -36,7 +36,7 @@ partial class StartForm
         // 
         // btn_RunDatalogReview
         // 
-        btn_RunDatalogReview.Location = new Point(261, 158);
+        btn_RunDatalogReview.Location = new Point(12, 12);
         btn_RunDatalogReview.Name = "btn_RunDatalogReview";
         btn_RunDatalogReview.Size = new Size(100, 80);
         btn_RunDatalogReview.TabIndex = 1;
@@ -46,7 +46,7 @@ partial class StartForm
         // 
         // btn_RunLiveTelemetry
         // 
-        btn_RunLiveTelemetry.Location = new Point(431, 158);
+        btn_RunLiveTelemetry.Location = new Point(118, 12);
         btn_RunLiveTelemetry.Name = "btn_RunLiveTelemetry";
         btn_RunLiveTelemetry.Size = new Size(100, 80);
         btn_RunLiveTelemetry.TabIndex = 2;

@@ -7,7 +7,7 @@ public class AppSettings
 
     public static AppSettings Instance => instance.Value;
 
-    #region Properties & Attributes
+    #region Properties
     public List<ChartDataConfig> Chart1DataPoints { get; set; } = new List<ChartDataConfig>();
     public List<ChartDataConfig> Chart2DataPoints { get; set; } = new List<ChartDataConfig>();
     public List<ChartDataConfig> Chart3DataPoints { get; set; } = new List<ChartDataConfig>();
