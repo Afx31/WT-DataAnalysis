@@ -20,29 +20,31 @@ public class AppSettings
 
     private AppSettings() { }
 
-    // Load settings from file
+    /// <summary>
+    /// Load settings from file
+    /// </summary>
     private static AppSettings LoadSettings()
     {
-        string rootDir = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
-        string settingsPath = Path.Combine(rootDir, "Shared", "AppSettingsDatalogReview.json");
+        string settingsFilePath = AppContext.BaseDirectory + "AppSettingsDataReview.json";
 
-        if (File.Exists(settingsPath))
+        if (File.Exists(settingsFilePath))
         {
-            var json = File.ReadAllText(settingsPath);
-            var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
+            string json = File.ReadAllText(settingsFilePath);
+            AppSettings settings = Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
             return settings ?? new AppSettings();
         }
-
-        return new AppSettings();
+        else
+            return new AppSettings();
     }
 
-    // Save settings file
+    /// <summary>
+    /// Save settings file
+    /// </summary>
     public static void SaveSettings()
     {
-        string rootDir = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
-        string settingsPath = Path.Combine(rootDir, "Shared", "AppSettingsDatalogReview.json");
-        var json = Newtonsoft.Json.JsonConvert.SerializeObject(Instance, Newtonsoft.Json.Formatting.Indented);
-        File.WriteAllText(settingsPath, json);
+        string settingsFilePath = AppContext.BaseDirectory + "AppSettingsDataReview.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(Instance, Newtonsoft.Json.Formatting.Indented);
+        File.WriteAllText(settingsFilePath, json);
     }
 
     public enum CarType

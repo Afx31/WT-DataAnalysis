@@ -13,5 +13,5 @@ The application will ship in 2 different states.
 ### Project setup - Settings file
 
 The application stores settings config in `AppSettingsDatalogReview.json`.
+- If none exist, a blank settings file is created automatically in the build directory
 - An example file can be found in `/WT-DataAnalysis/WT-DataAnalysis-DatalogReview/Examples/AppSettingsDatalogReview.json`
-- This needs to be copy/pasted to `/WT-DataAnalysis/WT-DataAnalysis/Shared`
