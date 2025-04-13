@@ -13,7 +13,7 @@ public partial class StartForm : Form
         {
             this.StartPosition = FormStartPosition.Manual;
             Screen[] screens = Screen.AllScreens;
-            Point location = screens[2].Bounds.Location;
+            Point location = screens[0].Bounds.Location;
             this.Left = location.X;
         }
     }
