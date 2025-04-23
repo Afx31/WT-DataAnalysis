@@ -15,6 +15,7 @@ public partial class StartForm : Form
             Screen[] screens = Screen.AllScreens;
             Point location = screens[0].Bounds.Location;
             this.Left = location.X;
+            this.Size = new Size(1400, 1100);
         }
     }
 
