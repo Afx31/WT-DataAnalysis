@@ -157,22 +157,13 @@ public partial class MainForm : Form
                             CsvData.ReadCsvData(ofd_LoadFile.FileName);
                             SetupLapCountComboBox();
                         }
-
-                        _DatalogReviewForm = new DatalogReviewForm(CsvData)
-                        {
-                            MdiParent = MdiParent,
-                            FormBorderStyle = FormBorderStyle.None,
-                            Dock = DockStyle.Fill
-                        };
-
-                        // Reload form
-                        OpenDatalogReviewForm();
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
                     }
-                }
+                }                
+                OpenDatalogReviewForm();
                 break;
             case "tsmi_DatalogReviewForm":
                 OpenDatalogReviewForm();
