@@ -146,7 +146,7 @@ public partial class ScatterPlotForm : Form
 
         for (int i = 0; i < _csvData.ListHertzTime.Count; i++)
         {
-            series.Points.AddXY(_csvData.ListHertzTime[i], _csvData.ListOilPressure[i]);
+            series.Points.AddXY(_csvData.ListHertzTime[i], _csvData.ListAnalog0[i]);
 
             Color colourToUse = Color.White;
             switch(_csvData.ListRpm[i])

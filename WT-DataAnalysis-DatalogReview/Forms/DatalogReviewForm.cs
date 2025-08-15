@@ -289,7 +289,7 @@ public partial class DatalogReviewForm : Form
         {
             ca.AxisX.Interval = 20; // Seconds mark
             ca.AxisX.MajorTickMark.Interval = 20; // Major ticks at every x units
-            //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
+                                                    //ca.AxisX.MajorGrid.Interval = 10; // Which tick the major grid line will appear on
 
             // ---- X Axis time formatting ----
             // This works, but once you zoom in it's then all wrong
@@ -318,8 +318,8 @@ public partial class DatalogReviewForm : Form
         double maxSpeed = _csvData.ListSpeed.Max();
         double maxECT = _csvData.ListECT.Max();
         double maxIAT = _csvData.ListIAT.Max();
-        double maxOilTemp = _csvData.ListOilTemperature.Max();
-        double maxOilPressure = _csvData.ListOilPressure.Max();
+        double maxOilTemp = _csvData.ListAnalog0.Max();
+        double maxOilPressure = _csvData.ListAnalog1.Max();
 
         lbl_MaxRpm.Text = maxRpm.ToString();
         lbl_MaxSpeed.Text = maxSpeed.ToString();
