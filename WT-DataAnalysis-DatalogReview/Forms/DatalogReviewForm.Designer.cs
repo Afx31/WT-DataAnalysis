@@ -246,7 +246,7 @@ partial class DatalogReviewForm
         Controls.Add(grp_Gear);
         Controls.Add(chart1);
         Name = "DatalogReviewForm";
-        Text = "DAtalog Review Form";
+        Text = "Datalog Review Form";
         ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
         grp_Gear.ResumeLayout(false);
         grp_Gear.PerformLayout();

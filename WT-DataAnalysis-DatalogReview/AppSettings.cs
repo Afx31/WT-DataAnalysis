@@ -25,7 +25,7 @@ public class AppSettings
     /// </summary>
     private static AppSettings LoadSettings()
     {
-        string settingsFilePath = AppContext.BaseDirectory + "AppSettingsDataReview.json";
+        string settingsFilePath = AppContext.BaseDirectory + "AppSettingsDatalogReview.json";
 
         if (File.Exists(settingsFilePath))
         {
@@ -42,7 +42,7 @@ public class AppSettings
     /// </summary>
     public static void SaveSettings()
     {
-        string settingsFilePath = AppContext.BaseDirectory + "AppSettingsDataReview.json";
+        string settingsFilePath = AppContext.BaseDirectory + "AppSettingsDatalogReview.json";
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(Instance, Newtonsoft.Json.Formatting.Indented);
         File.WriteAllText(settingsFilePath, json);
     }

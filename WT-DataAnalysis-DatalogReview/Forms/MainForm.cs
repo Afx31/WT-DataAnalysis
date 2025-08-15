@@ -140,7 +140,7 @@ public partial class MainForm : Form
                     try
                     {
                         // First dispose of any existing CSV data
-                        CsvData = new CsvData();
+                        CsvData = new();
 
                         // Try read CSV file to confirm it's valid
                         using (var sr = new StreamReader(ofd_LoadFile.FileName))

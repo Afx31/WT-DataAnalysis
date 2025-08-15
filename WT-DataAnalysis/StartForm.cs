@@ -16,6 +16,10 @@ public partial class StartForm : Form
             Point location = screens[0].Bounds.Location;
             this.Left = location.X;
             this.Size = new Size(1400, 1100);
+            this.WindowState = FormWindowState.Maximized;
+
+            // Auto start Live Telemetry
+            //Btn_RunLiveTelemetry_Click(null, EventArgs.Empty);
         }
     }
 
@@ -42,7 +46,6 @@ public partial class StartForm : Form
             TopLevel = false
         };
         form.FormClosed += (s, args) => pnl_StartForm.Visible = true;
-        
         form.Show();
     }
 }
