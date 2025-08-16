@@ -302,7 +302,20 @@ public partial class SettingsForm : Form
         AppSettings.Car = (AppSettings.CarType)cbx_Car.SelectedItem;
         AppSettings.Ecu = (AppSettings.EcuType)cbx_Ecu.SelectedItem;
 
-        AppSettings.SaveSettings();
+        bool hasDuplicateSettings =
+            AppSettings.Chart1DataPoints.Where(x => x.DataPoint != 0).GroupBy(x => x.DataPoint).Any(g => g.Count() > 1) ||
+            AppSettings.Chart2DataPoints.Where(x => x.DataPoint != 0).GroupBy(x => x.DataPoint).Any(g => g.Count() > 1) ||
+            AppSettings.Chart3DataPoints.Where(x => x.DataPoint != 0).GroupBy(x => x.DataPoint).Any(g => g.Count() > 1) ||
+            AppSettings.Chart4DataPoints.Where(x => x.DataPoint != 0).GroupBy(x => x.DataPoint).Any(g => g.Count() > 1);
+
+        if (hasDuplicateSettings)
+        {
+            MessageBox.Show("[Error] - You can only select 1 of each data point per chart.",
+                            "Duplicate Chart Datapoints Set", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        else
+            AppSettings.SaveSettings();
     }
 
     private void btn_ReloadApplication_Click(object sender, EventArgs e)
