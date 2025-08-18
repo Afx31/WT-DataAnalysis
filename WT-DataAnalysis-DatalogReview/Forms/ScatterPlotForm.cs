@@ -60,72 +60,55 @@ public partial class ScatterPlotForm : Form
     private void BuildScatterPlotChart(string chartName, List<double> xAxis, List<double> yAxis, List<double> zAxis, string[] values)
     {
         #region Legends
-        //Legend mainLegend = new Legend()
-        //{
-        //    Name = "mainLegend",
-        //    LegendStyle = LegendStyle.Column,
-        //    ForeColor = Color.White,
-        //    BackColor = Color.Transparent
-        //};
-        //chart1.Legends.Add(mainLegend);
-        //chart1.Legends["mainLegend"].Font = new Font("Arial", 10);
+        Legend mainLegend = new()
+        {
+            Name = "mainLegend",
+            LegendStyle = LegendStyle.Column,
+            ForeColor = Color.White,
+            BackColor = Color.Transparent
+        };
+        chart1.Legends.Add(mainLegend);
+        chart1.Legends["mainLegend"].Font = new Font("Arial", 10);
 
-        //Color GetMyScatterPlotColour(int i)
-        //{
-        //    switch (i)
-        //    {
-        //        case 0:
-        //            return ColorTranslator.FromHtml("#0000FF");
-        //        case 1:
-        //            return ColorTranslator.FromHtml("#1E90FF");
-        //        case 2:
-        //            return ColorTranslator.FromHtml("#00FFFF");
-        //        case 3:
-        //            return ColorTranslator.FromHtml("#00FF00");
-        //        case 4:
-        //            return ColorTranslator.FromHtml("#FFFF00"); //ADFF2F;
-        //        case 5:
-        //            return ColorTranslator.FromHtml("#FFD700");
-        //        case 6:
-        //            return ColorTranslator.FromHtml("#FFA500");
-        //        case 7:
-        //            return ColorTranslator.FromHtml("#FF4500");
-        //        case 8:
-        //            return ColorTranslator.FromHtml("#FF0000");
-        //        default:
-        //            return Color.White;
-        //    }
-        //}
+        Color GetMyScatterPlotColour(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return ColorTranslator.FromHtml("#0000FF");
+                case 1:
+                    return ColorTranslator.FromHtml("#1E90FF");
+                case 2:
+                    return ColorTranslator.FromHtml("#00FFFF");
+                case 3:
+                    return ColorTranslator.FromHtml("#00FF00");
+                case 4:
+                    return ColorTranslator.FromHtml("#FFFF00"); //ADFF2F;
+                case 5:
+                    return ColorTranslator.FromHtml("#FFD700");
+                case 6:
+                    return ColorTranslator.FromHtml("#FFA500");
+                case 7:
+                    return ColorTranslator.FromHtml("#FF4500");
+                case 8:
+                    return ColorTranslator.FromHtml("#FF0000");
+                default:
+                    return Color.White;
+            }
+        }
 
-        //for (int i = 0; i < values.Length; i++)
-        //{
-        //    LegendItem li = new()
-        //    {
-        //        Name = "<= " + values[i],
-        //        Color = GetMyScatterPlotColour(i)
-        //    };
-        //    chart1.Legends["mainLegend"].CustomItems.Add(li);
-        //}
-        //LegendItem legendItem10 = new LegendItem()
-        //{
-        //    Name = "<= 10,000",
-        //    Color = ColorTranslator.FromHtml("#FF0000")
-        //};
-
-        
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem10);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem9);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem8);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem7);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem6);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem5);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem4);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem3);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem2);
-        //chart1.Legends["mainLegend"].CustomItems.Add(legendItem1);
+        for (int i = 0; i < values.Length; i++)
+        {
+            LegendItem li = new()
+            {
+                Name = "<= " + values[i],
+                Color = GetMyScatterPlotColour(i)
+            };
+            chart1.Legends["mainLegend"].CustomItems.Add(li);
+        }
         #endregion
 
-        Series series = new Series()
+        Series series = new()
         {
             Name = chartName,
             IsValueShownAsLabel = false,
@@ -152,58 +135,26 @@ public partial class ScatterPlotForm : Form
         for (int i = 0; i < xAxis.Count; i++)
         {
             series.Points.AddXY(xAxis[i], yAxis[i]);
-            //series.Points.AddXY(_csvData.ListHertzTime[i], _csvData.ListAnalog0[i]);
 
             Color colourToUse = Color.White;
-            //if (zAxis[i] >= val9)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#FF0000");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val8)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#FF4500");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val7)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#FFA500");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val6)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#FFD700");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val5)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#FFFF00");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val4)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#00FF00"); //ADFF2F
-            //    break;
-            //}
-            //else if (zAxis[i] >= val3)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#00FFFF");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val2)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#1E90FF");
-            //    break;
-            //}
-            //else if (zAxis[i] >= val1)
-            //{
-            //    colourToUse = ColorTranslator.FromHtml("#0000FF");
-            //    break;
-            //}
-            //else
-            //{
-            //    var t1 = 0;
-            //}
+            if (zAxis[i] >= val9)
+                colourToUse = ColorTranslator.FromHtml("#FF0000");
+            else if (zAxis[i] >= val8)
+                colourToUse = ColorTranslator.FromHtml("#FF4500");
+            else if (zAxis[i] >= val7)
+                colourToUse = ColorTranslator.FromHtml("#FFA500");
+            else if (zAxis[i] >= val6)
+                colourToUse = ColorTranslator.FromHtml("#FFD700");
+            else if (zAxis[i] >= val5)
+                colourToUse = ColorTranslator.FromHtml("#FFFF00");
+            else if (zAxis[i] >= val4)
+                colourToUse = ColorTranslator.FromHtml("#00FF00"); //ADFF2F
+            else if (zAxis[i] >= val3)
+                colourToUse = ColorTranslator.FromHtml("#00FFFF");
+            else if (zAxis[i] >= val2)
+                colourToUse = ColorTranslator.FromHtml("#1E90FF");
+            else if (zAxis[i] >= val1)
+                colourToUse = ColorTranslator.FromHtml("#0000FF");
 
             series.Points[i].Color = colourToUse;
         }
@@ -217,7 +168,9 @@ public partial class ScatterPlotForm : Form
         // RPM | Oil Pressure | Oil Temp
         string[] str1 = { "20", "40", "60", "70", "80", "90", "110", "120", "140" };
         //BuildScatterPlotChart("RPM", _csvData.ListRpm, _csvData.ListAnalog1, _csvData.ListAnalog0, str1);
-        BuildScatterPlotChart("RPM", _csvData.ListHertzTime, _csvData.ListAnalog0, _csvData.ListRpm, str1);
+
+        string[] str2 = { "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000" };
+        BuildScatterPlotChart("RPM", _csvData.ListHertzTime, _csvData.ListAnalog0, _csvData.ListRpm, str2);
     }
 
     private void Chart1_MouseMoveOrClick(object sender, MouseEventArgs e)
