@@ -70,7 +70,7 @@ public partial class ScatterPlotForm : Form
         chart1.Legends.Add(mainLegend);
         chart1.Legends["mainLegend"].Font = new Font("Arial", 10);
 
-        Color GetMyScatterPlotColour(int i)
+        static Color GetMyScatterPlotColour(int i)
         {
             switch (i)
             {
@@ -97,7 +97,7 @@ public partial class ScatterPlotForm : Form
             }
         }
 
-        for (int i = 0; i < values.Length; i++)
+        for (int i = 8; i >= 0; i--)
         {
             LegendItem li = new()
             {
@@ -108,6 +108,7 @@ public partial class ScatterPlotForm : Form
         }
         #endregion
 
+        #region DataPoints
         Series series = new()
         {
             Name = chartName,
@@ -138,39 +139,40 @@ public partial class ScatterPlotForm : Form
 
             Color colourToUse = Color.White;
             if (zAxis[i] >= val9)
-                colourToUse = ColorTranslator.FromHtml("#FF0000");
+                colourToUse = GetMyScatterPlotColour(8);
             else if (zAxis[i] >= val8)
-                colourToUse = ColorTranslator.FromHtml("#FF4500");
+                colourToUse = GetMyScatterPlotColour(7);
             else if (zAxis[i] >= val7)
-                colourToUse = ColorTranslator.FromHtml("#FFA500");
+                colourToUse = GetMyScatterPlotColour(6);
             else if (zAxis[i] >= val6)
-                colourToUse = ColorTranslator.FromHtml("#FFD700");
+                colourToUse = GetMyScatterPlotColour(5);
             else if (zAxis[i] >= val5)
-                colourToUse = ColorTranslator.FromHtml("#FFFF00");
+                colourToUse = GetMyScatterPlotColour(4);
             else if (zAxis[i] >= val4)
-                colourToUse = ColorTranslator.FromHtml("#00FF00"); //ADFF2F
+                colourToUse = GetMyScatterPlotColour(3);
             else if (zAxis[i] >= val3)
-                colourToUse = ColorTranslator.FromHtml("#00FFFF");
+                colourToUse = GetMyScatterPlotColour(2);
             else if (zAxis[i] >= val2)
-                colourToUse = ColorTranslator.FromHtml("#1E90FF");
+                colourToUse = GetMyScatterPlotColour(1);
             else if (zAxis[i] >= val1)
-                colourToUse = ColorTranslator.FromHtml("#0000FF");
+                colourToUse = GetMyScatterPlotColour(0);
 
             series.Points[i].Color = colourToUse;
         }
 
         chart1.ChartAreas["ScatterPlotChartArea"].AxisY.Interval = 10;
         chart1.Series.Add(series);
+        #endregion
     }
 
     private void MapDataToChart()
     {
         // RPM | Oil Pressure | Oil Temp
         string[] str1 = { "20", "40", "60", "70", "80", "90", "110", "120", "140" };
-        //BuildScatterPlotChart("RPM", _csvData.ListRpm, _csvData.ListAnalog1, _csvData.ListAnalog0, str1);
+        BuildScatterPlotChart("Oil reee", _csvData.ListRpm, _csvData.ListAnalog1, _csvData.ListAnalog0, str1);
 
         string[] str2 = { "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000" };
-        BuildScatterPlotChart("RPM", _csvData.ListHertzTime, _csvData.ListAnalog0, _csvData.ListRpm, str2);
+        //BuildScatterPlotChart("RPM", _csvData.ListHertzTime, _csvData.ListAnalog0, _csvData.ListRpm, str2);
     }
 
     private void Chart1_MouseMoveOrClick(object sender, MouseEventArgs e)
