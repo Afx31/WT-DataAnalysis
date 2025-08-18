@@ -6,6 +6,7 @@ public partial class StartForm : Form
     {
         InitializeComponent();
         this.IsMdiContainer = true;
+        CenterPanel();
 
         bool dev = true;
 
@@ -47,5 +48,16 @@ public partial class StartForm : Form
         };
         form.FormClosed += (s, args) => pnl_StartForm.Visible = true;
         form.Show();
+    }
+
+    private void CenterPanel()
+    {
+        pnl_Buttons.Left = (this.ClientSize.Width - pnl_Buttons.Width) / 2;
+        pnl_Buttons.Top = (this.ClientSize.Height - pnl_Buttons.Height) / 4;
+    }
+
+    private void StartForm_Resize(object sender, EventArgs e)
+    {
+        CenterPanel();
     }
 }

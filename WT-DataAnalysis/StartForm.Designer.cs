@@ -31,14 +31,16 @@ partial class StartForm
         btn_RunDatalogReview = new Button();
         btn_RunLiveTelemetry = new Button();
         pnl_StartForm = new Panel();
+        pnl_Buttons = new Panel();
         pnl_StartForm.SuspendLayout();
+        pnl_Buttons.SuspendLayout();
         SuspendLayout();
         // 
         // btn_RunDatalogReview
         // 
-        btn_RunDatalogReview.Location = new Point(12, 12);
+        btn_RunDatalogReview.Location = new Point(3, 3);
         btn_RunDatalogReview.Name = "btn_RunDatalogReview";
-        btn_RunDatalogReview.Size = new Size(100, 80);
+        btn_RunDatalogReview.Size = new Size(183, 108);
         btn_RunDatalogReview.TabIndex = 1;
         btn_RunDatalogReview.Text = "Datalog Review";
         btn_RunDatalogReview.UseVisualStyleBackColor = true;
@@ -46,9 +48,9 @@ partial class StartForm
         // 
         // btn_RunLiveTelemetry
         // 
-        btn_RunLiveTelemetry.Location = new Point(118, 12);
+        btn_RunLiveTelemetry.Location = new Point(192, 3);
         btn_RunLiveTelemetry.Name = "btn_RunLiveTelemetry";
-        btn_RunLiveTelemetry.Size = new Size(100, 80);
+        btn_RunLiveTelemetry.Size = new Size(183, 108);
         btn_RunLiveTelemetry.TabIndex = 2;
         btn_RunLiveTelemetry.Text = "Live Telemetry";
         btn_RunLiveTelemetry.UseVisualStyleBackColor = true;
@@ -56,13 +58,21 @@ partial class StartForm
         // 
         // pnl_StartForm
         // 
-        pnl_StartForm.Controls.Add(btn_RunDatalogReview);
-        pnl_StartForm.Controls.Add(btn_RunLiveTelemetry);
+        pnl_StartForm.Controls.Add(pnl_Buttons);
         pnl_StartForm.Dock = DockStyle.Fill;
         pnl_StartForm.Location = new Point(0, 0);
         pnl_StartForm.Name = "pnl_StartForm";
         pnl_StartForm.Size = new Size(800, 450);
         pnl_StartForm.TabIndex = 3;
+        // 
+        // pnl_Buttons
+        // 
+        pnl_Buttons.Controls.Add(btn_RunDatalogReview);
+        pnl_Buttons.Controls.Add(btn_RunLiveTelemetry);
+        pnl_Buttons.Location = new Point(12, 12);
+        pnl_Buttons.Name = "pnl_Buttons";
+        pnl_Buttons.Size = new Size(378, 114);
+        pnl_Buttons.TabIndex = 3;
         // 
         // StartForm
         // 
@@ -73,7 +83,9 @@ partial class StartForm
         Controls.Add(pnl_StartForm);
         Name = "StartForm";
         Text = "WillTech";
+        Resize += StartForm_Resize;
         pnl_StartForm.ResumeLayout(false);
+        pnl_Buttons.ResumeLayout(false);
         ResumeLayout(false);
     }
 
@@ -82,4 +94,5 @@ partial class StartForm
     private Button btn_RunDatalogReview;
     private Button btn_RunLiveTelemetry;
     private Panel pnl_StartForm;
+    private Panel pnl_Buttons;
 }
