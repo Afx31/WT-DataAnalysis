@@ -28,29 +28,27 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        components = new System.ComponentModel.Container();
-        menuStrip1 = new MenuStrip();
+        ms_DataAnalysis = new MenuStrip();
         tsmi_LoadFile = new ToolStripMenuItem();
         tsmi_DatalogReviewForm = new ToolStripMenuItem();
         tsmi_ScatterPlotForm = new ToolStripMenuItem();
         tsmi_SettingsForm = new ToolStripMenuItem();
         tsmi_LapSelector = new ToolStripComboBox();
-        toolTip1 = new ToolTip(components);
         ofd_LoadFile = new OpenFileDialog();
         pnl_DataAnalysisBase = new Panel();
-        menuStrip1.SuspendLayout();
+        ms_DataAnalysis.SuspendLayout();
         SuspendLayout();
         // 
-        // menuStrip1
+        // ms_DataAnalysis
         // 
-        menuStrip1.BackColor = Color.FromArgb(45, 45, 45);
-        menuStrip1.ForeColor = Color.FromArgb(255, 255, 255);
-        menuStrip1.Items.AddRange(new ToolStripItem[] { tsmi_LoadFile, tsmi_DatalogReviewForm, tsmi_ScatterPlotForm, tsmi_SettingsForm, tsmi_LapSelector });
-        menuStrip1.Location = new Point(0, 0);
-        menuStrip1.Name = "menuStrip1";
-        menuStrip1.Size = new Size(1131, 27);
-        menuStrip1.TabIndex = 3;
-        menuStrip1.Text = "menuStrip1";
+        ms_DataAnalysis.BackColor = Color.FromArgb(45, 45, 45);
+        ms_DataAnalysis.ForeColor = Color.FromArgb(255, 255, 255);
+        ms_DataAnalysis.Items.AddRange(new ToolStripItem[] { tsmi_LoadFile, tsmi_DatalogReviewForm, tsmi_ScatterPlotForm, tsmi_SettingsForm, tsmi_LapSelector });
+        ms_DataAnalysis.Location = new Point(0, 0);
+        ms_DataAnalysis.Name = "ms_DataAnalysis";
+        ms_DataAnalysis.Size = new Size(1131, 27);
+        ms_DataAnalysis.TabIndex = 3;
+        ms_DataAnalysis.Text = "menuStrip1";
         // 
         // tsmi_LoadFile
         // 
@@ -107,12 +105,12 @@ partial class MainForm
         BackColor = Color.FromArgb(30, 30, 30);
         ClientSize = new Size(1131, 493);
         Controls.Add(pnl_DataAnalysisBase);
-        Controls.Add(menuStrip1);
-        MainMenuStrip = menuStrip1;
+        Controls.Add(ms_DataAnalysis);
+        MainMenuStrip = ms_DataAnalysis;
         Name = "MainForm";
         Text = "Data Analysis";
-        menuStrip1.ResumeLayout(false);
-        menuStrip1.PerformLayout();
+        ms_DataAnalysis.ResumeLayout(false);
+        ms_DataAnalysis.PerformLayout();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -120,8 +118,7 @@ partial class MainForm
     #endregion
 
     private Button btn_theme;
-    private ToolTip toolTip1;
-    private MenuStrip menuStrip1;
+    private MenuStrip ms_DataAnalysis;
     private OpenFileDialog ofd_LoadFile;
     private ToolStripMenuItem tsmi_LoadFile;
     private ToolStripMenuItem tsmi_DatalogReviewForm;

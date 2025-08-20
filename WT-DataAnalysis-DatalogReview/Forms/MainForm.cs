@@ -1,13 +1,10 @@
 using WT_DataAnalysis_DatalogReview.Models;
+using WT_DataAnalysis_DatalogReview.Views;
 
 namespace WT_DataAnalysis_DatalogReview;
 
 public partial class MainForm : Form
 {
-    //private bool _IsDarkTheme = true;
-    private DatalogReviewForm _DatalogReviewForm;
-    private ScatterPlotForm _ScatterPlotForm;
-    private SettingsForm _SettingsForm;
     public CsvData CsvData;
 
     public MainForm()
@@ -20,6 +17,7 @@ public partial class MainForm : Form
         // debuggingMode set to false means it'll open on default screen 1
         bool debuggingMode = true;
         bool debuggingAutoLoadFile = false;
+        bool debuggingAutoLoadDatalogReviewView = false;
 
         if (debuggingMode)
         {
@@ -39,7 +37,25 @@ public partial class MainForm : Form
                 OpenDatalogReviewForm();
                 //OpenScatterPlotForm();
             }
+
+            if (debuggingAutoLoadDatalogReviewView)
+            {
+                OpenDatalogReviewForm();
         }
+    }
+    }
+
+    private void ShowView(UserControl view)
+    {
+        if (pnl_DataAnalysisBase.Controls.Count > 0)
+        {
+            var oldView = pnl_DataAnalysisBase.Controls[0];
+            oldView.Dispose();
+            pnl_DataAnalysisBase.Controls.Clear();
+        }
+
+        view.Dock = DockStyle.Fill;
+        pnl_DataAnalysisBase.Controls.Add(view);
     }
 
     private void SetupLapCountComboBox()
@@ -68,20 +84,8 @@ public partial class MainForm : Form
             return;
         }
 
-        _SettingsForm?.Hide();
-            
-        if (_DatalogReviewForm == null)
-        {
-            _DatalogReviewForm = new DatalogReviewForm(CsvData)
-            {
-                MdiParent = MdiParent,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
-            pnl_DataAnalysisBase.Controls.Add(_DatalogReviewForm);
-        }
-
-        _DatalogReviewForm?.Show();
+        DatalogReviewView view = new(CsvData);
+        ShowView(view);
     }
 
     private void OpenScatterPlotForm()
@@ -92,41 +96,15 @@ public partial class MainForm : Form
             return;
         }
 
-        _DatalogReviewForm?.Hide();
-        _SettingsForm?.Hide();
-        _ScatterPlotForm?.Dispose();
-
-        if (_ScatterPlotForm == null)
-        {
-            _ScatterPlotForm = new ScatterPlotForm(CsvData)
-            {
-                MdiParent = MdiParent,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
-            pnl_DataAnalysisBase.Controls.Add(_ScatterPlotForm);
+        ScatterPlotView view = new(CsvData);
+        ShowView(view);
         }
-
-        _ScatterPlotForm.Show();
-    }
 
     private void OpenSettingsForm()
     {
-        _DatalogReviewForm?.Hide();
-
-        if (_SettingsForm == null)
-        {
-            _SettingsForm = new SettingsForm()
-            {
-                MdiParent = MdiParent,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
-            pnl_DataAnalysisBase.Controls.Add(_SettingsForm);
+        SettingsView view = new();
+        ShowView(view);
         }
-
-        _SettingsForm?.Show();
-    }
 
     private void toolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -145,10 +123,6 @@ public partial class MainForm : Form
                         // Try read CSV file to confirm it's valid
                         using (var sr = new StreamReader(ofd_LoadFile.FileName))
                             sr.ReadToEnd();
-
-                        // Remove current instance
-                        _DatalogReviewForm?.Dispose();
-                        _ScatterPlotForm?.Dispose();
 
                         Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
 
@@ -179,12 +153,13 @@ public partial class MainForm : Form
 
     private void tsmi_LapSelector_SelectedIndexChanged(object sender, EventArgs e)
     {
-        int selectedLap = 0;
-        if (tsmi_LapSelector.SelectedItem != "All Laps")
-            selectedLap = tsmi_LapSelector.Items.IndexOf(tsmi_LapSelector.SelectedItem) - 1;
-        else
-            selectedLap = 9999; // TODO: Hacky, fix one decade
+        // TODO:
+        //int selectedLap = 0;
+        //if (tsmi_LapSelector.SelectedItem != "All Laps")
+        //    selectedLap = tsmi_LapSelector.Items.IndexOf(tsmi_LapSelector.SelectedItem) - 1;
+        //else
+        //    selectedLap = 9999; // TODO: Hacky, fix one decade
 
-        _DatalogReviewForm.MapDataPointsToChart(selectedLap);
+        //_DatalogReviewForm.MapDataPointsToChart(selectedLap);
     }
 }
