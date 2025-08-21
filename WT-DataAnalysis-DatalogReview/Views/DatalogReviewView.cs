@@ -29,22 +29,24 @@ public partial class DatalogReviewView : UserControl
             Dock = DockStyle.Fill,
             SplitterDistance = 10
         };
+        spl_Main.BackColor = Color.Gray;
         spl_Main.Panel1.BackColor = Color.FromArgb(0, 10, 15);
         spl_Main.Panel2.BackColor = Color.FromArgb(0, 10, 15);
 
-        SplitContainer spl_Right = new()
+        SplitContainer spl_Left = new()
         {
-            Name = "spl_Right_DatalogReivew",
+            Name = "spl_Left_DatalogReivew",
             Dock = DockStyle.Fill,
             //SplitterDistance = 300,
             Orientation = Orientation.Horizontal
         };
-        spl_Right.Panel2MinSize = 15;
-        spl_Right.SplitterDistance = 100;
-        spl_Right.Panel1.BackColor = Color.FromArgb(0, 10, 15);
-        spl_Right.Panel2.BackColor = Color.FromArgb(0, 10, 15);
+        spl_Left.Panel2MinSize = 20;
+        spl_Left.SplitterDistance = 100;
+        spl_Left.BackColor = Color.Gray;
+        spl_Left.Panel1.BackColor = Color.FromArgb(0, 10, 15);
+        spl_Left.Panel2.BackColor = Color.FromArgb(0, 10, 15);
 
-        spl_Main.Panel2.Controls.Add(spl_Right);
+        spl_Main.Panel1.Controls.Add(spl_Left);
         Controls.Add(spl_Main);
     }
 
@@ -54,10 +56,10 @@ public partial class DatalogReviewView : UserControl
         {
             Name = "chart_DatalogReviewChart",
             Dock = DockStyle.Fill,
-            //BackColor = Color.Transparent
+            BackColor = Color.Transparent
         };
-        var spl_Right = Controls.Find("spl_Right_DatalogReivew", true).FirstOrDefault() as SplitContainer;
-        spl_Right.Panel1.Controls.Add(chart);
+        var spl_Right = Controls.Find("spl_Main_DatalogReview", true).FirstOrDefault() as SplitContainer;
+        spl_Right.Panel2.Controls.Add(chart);
 
         /* Three modes of moving the line:
          * 1 - Single click (Left)
@@ -116,10 +118,10 @@ public partial class DatalogReviewView : UserControl
         chartArea2.AxisX.LineWidth = 0;
         chartArea3.AxisX.LineWidth = 0;
 
-        chartArea1.Position = new ElementPosition(0, 0, 99.5f, 24); // ElementPosition(0, 0, 99.5f, 23);
-        chartArea2.Position = new ElementPosition(0, 24, 99.5f, 24); // ElementPosition(0, 22, 99.5f, 23);
-        chartArea3.Position = new ElementPosition(0, 48, 99.5f, 24); // ElementPosition(0, 44, 99.5f, 23);
-        chartArea4.Position = new ElementPosition(0, 73, 99.5f, 24); // ElementPosition(0, 67, 99.5f, 23);
+        chartArea1.Position = new ElementPosition(0, 0, 99.5f, 25); // ElementPosition(0, 0, 99.5f, 23);
+        chartArea2.Position = new ElementPosition(0, 25, 99.5f, 25); // ElementPosition(0, 22, 99.5f, 23);
+        chartArea3.Position = new ElementPosition(0, 50, 99.5f, 25); // ElementPosition(0, 44, 99.5f, 23);
+        chartArea4.Position = new ElementPosition(0, 75, 99.5f, 25); // ElementPosition(0, 67, 99.5f, 23);
 
         // Axis interval tick decimal formatting
         chartArea1.AxisX.LabelStyle.Format = "0.0";
@@ -209,8 +211,8 @@ public partial class DatalogReviewView : UserControl
         {
             Name = "chart_TrackMap"
         };
-        var spl_Right = Controls.Find("spl_Right_DatalogReivew", true).FirstOrDefault() as SplitContainer;
-        spl_Right.Panel2.Controls.Add(chartTrackMap);
+        var spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
+        spl_Left.Panel2.Controls.Add(chartTrackMap);
 
         if (chartTrackMap.Series.Any(x => x.Name == "DataMarker"))
         {
