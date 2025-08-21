@@ -34,6 +34,7 @@ partial class MainForm
         tsmi_ScatterPlotForm = new ToolStripMenuItem();
         tsmi_SettingsForm = new ToolStripMenuItem();
         tsmi_LapSelector = new ToolStripComboBox();
+        tsmi_OLD_LoadFile = new ToolStripMenuItem();
         ofd_LoadFile = new OpenFileDialog();
         pnl_DataAnalysisBase = new Panel();
         ms_DataAnalysis.SuspendLayout();
@@ -43,7 +44,7 @@ partial class MainForm
         // 
         ms_DataAnalysis.BackColor = Color.FromArgb(45, 45, 45);
         ms_DataAnalysis.ForeColor = Color.FromArgb(255, 255, 255);
-        ms_DataAnalysis.Items.AddRange(new ToolStripItem[] { tsmi_LoadFile, tsmi_DatalogReviewForm, tsmi_ScatterPlotForm, tsmi_SettingsForm, tsmi_LapSelector });
+        ms_DataAnalysis.Items.AddRange(new ToolStripItem[] { tsmi_LoadFile, tsmi_DatalogReviewForm, tsmi_ScatterPlotForm, tsmi_SettingsForm, tsmi_LapSelector, tsmi_OLD_LoadFile });
         ms_DataAnalysis.Location = new Point(0, 0);
         ms_DataAnalysis.Name = "ms_DataAnalysis";
         ms_DataAnalysis.Size = new Size(1131, 27);
@@ -86,6 +87,13 @@ partial class MainForm
         tsmi_LapSelector.Text = "All Laps";
         tsmi_LapSelector.SelectedIndexChanged += tsmi_LapSelector_SelectedIndexChanged;
         // 
+        // tsmi_OLD_LoadFile
+        // 
+        tsmi_OLD_LoadFile.Name = "tsmi_OLD_LoadFile";
+        tsmi_OLD_LoadFile.Size = new Size(100, 23);
+        tsmi_OLD_LoadFile.Text = "OLD - Load File";
+        tsmi_OLD_LoadFile.Click += tsmi_OLD_LoadFile_Click;
+        // 
         // ofd_LoadFile
         // 
         ofd_LoadFile.FileName = "ofd_LoadFile";
@@ -126,4 +134,5 @@ partial class MainForm
     private ToolStripMenuItem tsmi_SettingsForm;
     private ToolStripComboBox tsmi_LapSelector;
     private Panel pnl_DataAnalysisBase;
+    private ToolStripMenuItem tsmi_OLD_LoadFile;
 }
