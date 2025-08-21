@@ -10,6 +10,7 @@ public partial class DatalogReviewView : UserControl
     private CsvData _csvData;
     int previousMarkerDataPoint = -1;
     bool isDragging = false;
+    Label lbl_Gear;
 
     public DatalogReviewView(CsvData csvData)
     {
@@ -48,6 +49,43 @@ public partial class DatalogReviewView : UserControl
 
         spl_Main.Panel1.Controls.Add(spl_Left);
         Controls.Add(spl_Main);
+
+
+        // Max Values DataGridView
+        DataGridView dgv_MaxValues = new()
+        {
+            Name = "dgv_MaxValues",
+            BackgroundColor = Color.FromArgb(0, 10, 15),
+            AllowUserToAddRows = false,
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+            Dock = DockStyle.Fill
+        };
+        dgv_MaxValues.Columns.Add("col_Variable", "Variable");
+        dgv_MaxValues.Columns.Add("col_Value", "Max Value");
+
+        //spl_Left.Panel1.Controls.Add(dgv_MaxValues);
+
+        // Current Gear
+        GroupBox grp_Gear = new()
+        {
+            Name = "grp_Gear",
+            Text = "Gear",
+            BackColor = Color.LightGray,
+            Size = new Size(70, 70),
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left
+        };
+        lbl_Gear = new()
+        {
+            Name = "lbl_Gear",
+            Text = "-",
+            Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point, 0),
+            AutoSize = false,
+            Dock = DockStyle.Fill,
+            TextAlign = ContentAlignment.TopCenter
+        };
+        grp_Gear.Controls.Add(lbl_Gear);
+        spl_Left.Panel1.Controls.Add(grp_Gear);
+
     }
 
     private void ChartSetup()
@@ -367,12 +405,16 @@ public partial class DatalogReviewView : UserControl
         double maxOilTemp = _csvData.ListAnalog0.Max();
         double maxOilPressure = _csvData.ListAnalog1.Max();
 
-        //lbl_MaxRpm.Text = maxRpm.ToString();
-        //lbl_MaxSpeed.Text = maxSpeed.ToString();
-        //lbl_MaxECT.Text = maxECT.ToString();
-        //lbl_MaxIAT.Text = maxIAT.ToString();
-        //lbl_MaxOilTemp.Text = maxOilTemp.ToString();
-        //lbl_MaxOilPressure.Text = maxOilPressure.ToString();
+        DataGridView dgv_MaxValues = Controls.Find("dgv_MaxValues", true).FirstOrDefault() as DataGridView;
+        if (dgv_MaxValues != null)
+        {
+            dgv_MaxValues.Rows.Add("RPM", maxRpm.ToString());
+            dgv_MaxValues.Rows.Add("Speed", maxSpeed.ToString());
+            dgv_MaxValues.Rows.Add("ECT", maxECT.ToString());
+            dgv_MaxValues.Rows.Add("IAT", maxIAT.ToString());
+            dgv_MaxValues.Rows.Add("OilTemp", maxOilTemp.ToString());
+            dgv_MaxValues.Rows.Add("OilPressure", maxOilPressure.ToString());
+        }
         #endregion
 
         #region Test code for calculating the laps based on lat/lon
@@ -575,9 +617,8 @@ public partial class DatalogReviewView : UserControl
                     currentLon = latLonVal.Item2;
                 }
 
-                // TODO: Suss this later
                 // Have to move this out for some reason because of the multi threading.
-                //lbl_Gear.Text = gearValue;
+                lbl_Gear.Text = gearValue;
 
                 MoveTrackMapCurrentPosition(currentLat, currentLon);
 
