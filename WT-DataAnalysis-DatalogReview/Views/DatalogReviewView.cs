@@ -69,6 +69,7 @@ public partial class DatalogReviewView : UserControl
 
         // This will handle both cases
         chart.MouseMove += chart_MouseMove;
+        chart.MouseWheel += chart_MouseWheelMove;
 
         if (AppSettings.AutoCursorLine)
         {
