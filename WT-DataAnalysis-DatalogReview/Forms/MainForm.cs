@@ -31,7 +31,7 @@ public partial class MainForm : Form
             if (debuggingAutoLoadFile)
             {
                 string fileName = "";
-
+                CsvData = new();
                 CsvData.ReadCsvData(fileName);
                 SetupLapCountComboBox();
 

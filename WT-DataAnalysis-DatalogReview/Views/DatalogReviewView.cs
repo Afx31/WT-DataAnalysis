@@ -58,12 +58,13 @@ public partial class DatalogReviewView : UserControl
             BackgroundColor = Color.FromArgb(0, 10, 15),
             AllowUserToAddRows = false,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-            Dock = DockStyle.Fill
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
+            Dock = DockStyle.Top
         };
         dgv_MaxValues.Columns.Add("col_Variable", "Variable");
         dgv_MaxValues.Columns.Add("col_Value", "Max Value");
 
-        //spl_Left.Panel1.Controls.Add(dgv_MaxValues);
+        spl_Left.Panel1.Controls.Add(dgv_MaxValues);
 
         // Current Gear
         GroupBox grp_Gear = new()
@@ -72,6 +73,7 @@ public partial class DatalogReviewView : UserControl
             Text = "Gear",
             BackColor = Color.LightGray,
             Size = new Size(70, 70),
+            Dock = DockStyle.Bottom,
             Anchor = AnchorStyles.Bottom | AnchorStyles.Left
         };
         lbl_Gear = new()
