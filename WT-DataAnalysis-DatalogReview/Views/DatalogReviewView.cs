@@ -17,9 +17,8 @@ public partial class DatalogReviewView : UserControl
         _csvData = csvData;
         InitializeComponent();
         SplitContainerSetup();
-        ChartSetup();
-        MapDataPointsToChart(9999);
-        DrawTrackMap();
+        LeftSplitContainerControlsSetup();
+        RightSplitContainerControlsSetup();
     }
 
     private void SplitContainerSetup()
@@ -49,7 +48,11 @@ public partial class DatalogReviewView : UserControl
 
         spl_Main.Panel1.Controls.Add(spl_Left);
         Controls.Add(spl_Main);
+    }
 
+    private void LeftSplitContainerControlsSetup()
+    {
+        SplitContainer spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
 
         // Max Values DataGridView
         DataGridView dgv_MaxValues = new()
@@ -87,7 +90,13 @@ public partial class DatalogReviewView : UserControl
         };
         grp_Gear.Controls.Add(lbl_Gear);
         spl_Left.Panel1.Controls.Add(grp_Gear);
+    }
 
+    private void RightSplitContainerControlsSetup()
+    {
+        ChartSetup();
+        MapDataPointsToChart(9999);
+        DrawTrackMap();
     }
 
     private void ChartSetup()
