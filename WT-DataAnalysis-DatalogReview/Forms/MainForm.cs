@@ -10,7 +10,6 @@ public partial class MainForm : Form
 
     public MainForm()
     {
-
         InitializeComponent();
         //IsMdiContainer = true;
         this.WindowState = FormWindowState.Maximized;

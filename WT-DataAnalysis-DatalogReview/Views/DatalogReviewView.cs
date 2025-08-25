@@ -98,8 +98,8 @@ public partial class DatalogReviewView : UserControl
             Dock = DockStyle.Fill,
             BackColor = Color.Transparent
         };
-        var spl_Right = Controls.Find("spl_Main_DatalogReview", true).FirstOrDefault() as SplitContainer;
-        spl_Right.Panel2.Controls.Add(chart);
+        var spl_Main = Controls.Find("spl_Main_DatalogReview", true).FirstOrDefault() as SplitContainer;
+        spl_Main.Panel2.Controls.Add(chart);
 
         /* Three modes of moving the line:
          * 1 - Single click (Left)
