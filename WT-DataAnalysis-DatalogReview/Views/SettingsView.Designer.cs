@@ -242,6 +242,7 @@
             btn_ReloadApplication.TabIndex = 27;
             btn_ReloadApplication.Text = "Reload Application";
             btn_ReloadApplication.UseVisualStyleBackColor = false;
+            btn_ReloadApplication.Click += btn_ReloadApplication_Click;
             // 
             // grp_ChartDataPoints
             // 
@@ -917,6 +918,7 @@
             btn_SaveSettings.TabIndex = 26;
             btn_SaveSettings.Text = "Save Settings";
             btn_SaveSettings.UseVisualStyleBackColor = false;
+            btn_SaveSettings.Click += btn_SaveSettings_Click;
             // 
             // SettingsView
             // 
