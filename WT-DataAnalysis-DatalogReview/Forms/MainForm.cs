@@ -15,18 +15,11 @@ public partial class MainForm : Form
         this.WindowState = FormWindowState.Maximized;
 
         // ----- Debugging properties -----
-        // debuggingMode set to false means it'll open on default screen 1
         bool debuggingMode = true;
         bool debuggingAutoLoadFile = false;
-        bool debuggingAutoLoadDatalogReviewView = false;
 
         if (debuggingMode)
         {
-            this.StartPosition = FormStartPosition.Manual;
-            Screen[] screens = Screen.AllScreens;
-            Point location = screens[2].Bounds.Location;
-            this.Left = location.X;
-
             if (debuggingAutoLoadFile)
             {
                 string fileName = "";
@@ -38,9 +31,6 @@ public partial class MainForm : Form
                 OpenDatalogReviewForm();
                 //OpenScatterPlotForm();
             }
-
-            if (debuggingAutoLoadDatalogReviewView)
-                OpenDatalogReviewForm();
         }
     }
 
