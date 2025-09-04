@@ -73,6 +73,9 @@ public partial class MainForm : Form
             return;
         }
 
+        tsmi_DatalogReviewForm.Enabled = false;
+        tsmi_ScatterPlotForm.Enabled = true;
+
         DatalogReviewView view = new(CsvData);
         ShowView(view);
     }
@@ -85,12 +88,19 @@ public partial class MainForm : Form
             return;
         }
 
+        tsmi_DatalogReviewForm.Enabled = true;
+        tsmi_ScatterPlotForm.Enabled = false;
+
         ScatterPlotView view = new(CsvData);
         ShowView(view);
         }
 
     private void OpenSettingsForm()
     {
+        tsmi_DatalogReviewForm.Enabled = true;
+        tsmi_ScatterPlotForm.Enabled = true;
+        tsmi_SettingsForm.Enabled = false;
+
         SettingsView view = new();
         ShowView(view);
         }
@@ -150,46 +160,5 @@ public partial class MainForm : Form
         //    selectedLap = 9999; // TODO: Hacky, fix one decade
 
         //_DatalogReviewForm.MapDataPointsToChart(selectedLap);
-    }
-
-    private void tsmi_OLD_LoadFile_Click(object sender, EventArgs e)
-    {
-        if (ofd_LoadFile.ShowDialog() == DialogResult.OK)
-        {
-            try
-            {
-                // First dispose of any existing CSV data
-                CsvData = new();
-
-                // Try read CSV file to confirm it's valid
-                using (var sr = new StreamReader(ofd_LoadFile.FileName))
-                    sr.ReadToEnd();
-
-                // Remove current instance
-                _DatalogReviewForm?.Dispose();
-
-                Text = "WillTech - Data Analysis (" + ofd_LoadFile.SafeFileName + ")";
-
-                if (!string.IsNullOrEmpty(ofd_LoadFile.FileName))
-                    CsvData.ReadCsvData(ofd_LoadFile.FileName);
-
-                if (_DatalogReviewForm == null)
-                {
-                    _DatalogReviewForm = new DatalogReviewForm(CsvData)
-                    {
-                        MdiParent = MdiParent,
-                        FormBorderStyle = FormBorderStyle.None,
-                        Dock = DockStyle.Fill
-                    };
-                    pnl_DataAnalysisBase.Controls.Add(_DatalogReviewForm);
-                }
-
-                _DatalogReviewForm?.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Error: Retrieving file to load in");
-            }
-        }
     }
 }
