@@ -19,6 +19,7 @@ public partial class DatalogReviewView : UserControl
         SplitContainerSetup();
         LeftSplitContainerControlsSetup();
         RightSplitContainerControlsSetup();
+        LoadData();
     }
 
     private void SplitContainerSetup()
@@ -94,13 +95,7 @@ public partial class DatalogReviewView : UserControl
 
     private void RightSplitContainerControlsSetup()
     {
-        ChartSetup();
-        MapDataPointsToChart(9999);
-        DrawTrackMap();
-    }
-
-    private void ChartSetup()
-    {
+        #region Chart Setup
         Chart chart = new()
         {
             Name = "chart_DatalogReviewChart",
@@ -117,21 +112,21 @@ public partial class DatalogReviewView : UserControl
          */
 
         // This will handle both cases
-        chart.MouseMove += chart_MouseMove;
-        chart.MouseWheel += chart_MouseWheelMove;
+        chart.MouseMove += Chart_MouseMove;
+        chart.MouseWheel += Chart_MouseWheelMove;
 
         if (AppSettings.AutoCursorLine)
         {
-            chart.MouseLeave += chart_MouseLeave;
+            chart.MouseLeave += Chart_MouseLeave;
         }
         else
         {
             // #1
-            chart.MouseClick += chart_MouseClick;
+            chart.MouseClick += Chart_MouseClick;
 
             // #2
-            chart.MouseDown += chart_MouseDown;
-            chart.MouseUp += chart_MouseUp;
+            chart.MouseDown += Chart_MouseDown;
+            chart.MouseUp += Chart_MouseUp;
         }
 
 
@@ -221,9 +216,16 @@ public partial class DatalogReviewView : UserControl
             ca.AxisY.ScaleView.Zoomable = true;
         }
         #endregion
+        #endregion
     }
 
-    public void MapDataPointsToChart(int displayThisSpecificLap)
+    private void LoadData()
+    {
+        MapDataPointsToChart(9999);
+        DrawTrackMap();
+    }
+
+    private void MapDataPointsToChart(int displayThisSpecificLap)
     {
         Chart chart = Controls.Find("chart_DatalogReviewChart", true).FirstOrDefault() as Chart;
         if (chart == null) return;
@@ -685,31 +687,31 @@ public partial class DatalogReviewView : UserControl
         }
     }
 
-    private void chart_MouseClick(object sender, MouseEventArgs e)
+    private void Chart_MouseClick(object sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)
             DoCurrentCursorPositionDataEvalution(sender, e);
     }
 
-    private void chart_MouseDown(object sender, MouseEventArgs e)
+    private void Chart_MouseDown(object sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Right)
             isDragging = true;
     }
 
-    private void chart_MouseUp(object sender, MouseEventArgs e)
+    private void Chart_MouseUp(object sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Right)
             isDragging = false;
     }
 
-    private void chart_MouseMove(object sender, MouseEventArgs e)
+    private void Chart_MouseMove(object sender, MouseEventArgs e)
     {
         if (AppSettings.AutoCursorLine || isDragging)
             DoCurrentCursorPositionDataEvalution(sender, e);
     }
 
-    private void chart_MouseLeave(object sender, EventArgs e)
+    private void Chart_MouseLeave(object sender, EventArgs e)
     {
         if (sender is Chart chart)
         {
@@ -726,7 +728,7 @@ public partial class DatalogReviewView : UserControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void chart_MouseWheelMove(object sender, MouseEventArgs e)
+    private void Chart_MouseWheelMove(object sender, MouseEventArgs e)
     {
         /* NOTE
          * - This is experimental, trying to find the right solution with scaling so it's pleasant to the eye
