@@ -9,6 +9,8 @@ public partial class StartForm : Form
         CenterPanel();
 
         bool dev = true;
+        bool autoStartDataloggingReview = false;
+        bool autoStartLiveTelemetry = false;
 
         if (dev)
         {
@@ -19,8 +21,11 @@ public partial class StartForm : Form
             this.Size = new Size(1400, 1100);
             this.WindowState = FormWindowState.Maximized;
 
-            // Auto start Live Telemetry
-            //Btn_RunLiveTelemetry_Click(null, EventArgs.Empty);
+            if (autoStartDataloggingReview)
+                Btn_RunDatalogReview_Click(null, EventArgs.Empty);
+
+            if (autoStartLiveTelemetry)
+                Btn_RunLiveTelemetry_Click(null, EventArgs.Empty);
         }
     }
 

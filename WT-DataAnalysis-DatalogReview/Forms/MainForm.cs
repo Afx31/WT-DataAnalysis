@@ -6,7 +6,6 @@ namespace WT_DataAnalysis_DatalogReview;
 public partial class MainForm : Form
 {
     public CsvData CsvData;
-    private DatalogReviewForm _DatalogReviewForm;
 
     public MainForm()
     {
