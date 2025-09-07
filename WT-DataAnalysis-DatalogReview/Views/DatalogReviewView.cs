@@ -103,25 +103,6 @@ public partial class DatalogReviewView : UserControl
         spl_Left.Panel1.Controls.Add(dgv_AllValues);
         #endregion
 
-        #region DataGridView - Max Values from session
-        DataGridView dgv_MaxValues = new()
-        {
-            Name = "dgv_MaxValues",
-            BackgroundColor = Color.FromArgb(0, 10, 15),
-            AllowUserToAddRows = false,
-            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
-            Dock = DockStyle.Top
-        };
-        dgv_MaxValues.Columns.Add("col_Variable", "Variable");
-        dgv_MaxValues.Columns.Add("col_Value", "Max Value");
-
-
-        //DataGridView_ResizeToFitAllRows(dgv_MaxValues);
-
-        spl_Left.Panel1.Controls.Add(dgv_MaxValues);
-        #endregion
-
         // Current Gear
         GroupBox grp_Gear = new()
         {
@@ -278,6 +259,13 @@ public partial class DatalogReviewView : UserControl
 
     private void LoadData()
     {
+        // Max values for left panel grid
+        if (Controls.Find("dgv_AllValues", true).FirstOrDefault() is DataGridView dgv)
+        {
+            for (int i = 0; i < CsvData.ValueCounter; i++)
+                dgv.Rows[i].Cells[2].Value = _csvData.GetDataValueMaxValue(i);
+        }
+
         MapDataPointsToChart(9999);
         DrawTrackMap();
     }
@@ -468,26 +456,6 @@ public partial class DatalogReviewView : UserControl
             //    end += 10;
             //}
         }
-
-        #region Max values
-        double maxRpm = _csvData.ListRpm.Max();
-        double maxSpeed = _csvData.ListSpeed.Max();
-        double maxECT = _csvData.ListECT.Max();
-        double maxIAT = _csvData.ListIAT.Max();
-        double maxOilTemp = _csvData.ListAnalog0.Max();
-        double maxOilPressure = _csvData.ListAnalog1.Max();
-
-        DataGridView dgv_MaxValues = Controls.Find("dgv_MaxValues", true).FirstOrDefault() as DataGridView;
-        if (dgv_MaxValues != null)
-        {
-            dgv_MaxValues.Rows.Add("RPM", maxRpm.ToString());
-            dgv_MaxValues.Rows.Add("Speed", maxSpeed.ToString());
-            dgv_MaxValues.Rows.Add("ECT", maxECT.ToString());
-            dgv_MaxValues.Rows.Add("IAT", maxIAT.ToString());
-            dgv_MaxValues.Rows.Add("OilTemp", maxOilTemp.ToString());
-            dgv_MaxValues.Rows.Add("OilPressure", maxOilPressure.ToString());
-        }
-        #endregion
 
         #region Test code for calculating the laps based on lat/lon
         // TODO: Defaulting the lap segregation manually until the dash can auto handle it correctly

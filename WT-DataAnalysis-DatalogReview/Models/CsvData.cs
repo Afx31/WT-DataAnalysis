@@ -425,6 +425,71 @@ public class CsvData
         }
     }
 
+    public double GetDataValueMaxValue(int dataValue)
+    {
+        switch (dataValue)
+        {
+            case 0:
+                return ListRpm.Max();
+            case 1:
+                return ListSpeed.Max();
+            case 2:
+                return ListGear.Max();
+            case 3:
+                return ListVoltage.Max();
+            case 4:
+                return ListIAT.Max();
+            case 5:
+                return ListECT.Max();
+            case 6:
+                return ListTPS.Max();
+            case 7:
+                return ListMIL.Max();
+            case 8:
+                return ListVTS.Max();
+            case 9:
+                return ListCL.Max();
+            case 10:
+                return ListMAP.Max();
+            case 11:
+                return ListInj.Max();
+            case 12:
+                return ListIgn.Max();
+            case 13:
+                return ListLambdaRatio.Max();
+            case 14:
+                return ListKnockCounter.Max();
+            case 15:
+                return ListTargetCamAngle.Max();
+            case 16:
+                return ListActualCamAngle.Max();
+            case 17:
+                return ListAnalog0.Max();
+            case 18:
+                return ListAnalog1.Max();
+            case 19:
+                return ListAnalog2.Max();
+            case 20:
+                return ListAnalog3.Max();
+            case 21:
+                return ListAnalog4.Max();
+            case 22:
+                return ListAnalog5.Max();
+            case 23:
+                return ListAnalog6.Max();
+            case 24:
+                return ListAnalog7.Max();
+            case 25:
+                return ListEthanolInput1.Max();
+            case 26:
+                return ListEthanolInput2.Max();
+            case 27:
+                return ListEthanolInput3.Max();
+            default:
+                return 0;
+        }
+    }
+
     public double GetDataValueCurrentValue(int dataValue, int lookupIndex)
     {
         switch (dataValue)
