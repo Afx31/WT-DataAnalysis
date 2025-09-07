@@ -442,13 +442,13 @@ public class CsvData
             case 5:
                 return ListECT.Max();
             case 6:
-                return ListTPS.Max();
-            case 7:
                 return ListMIL.Max();
-            case 8:
+            case 7:
                 return ListVTS.Max();
-            case 9:
+            case 8:
                 return ListCL.Max();
+            case 9:
+                return ListTPS.Max();
             case 10:
                 return ListMAP.Max();
             case 11:
@@ -507,13 +507,13 @@ public class CsvData
             case 5:
                 return ListECT[lookupIndex];
             case 6:
-                return ListTPS[lookupIndex];
-            case 7:
                 return ListMIL[lookupIndex];
-            case 8:
+            case 7:
                 return ListVTS[lookupIndex];
-            case 9:
+            case 8:
                 return ListCL[lookupIndex];
+            case 9:
+                return ListTPS[lookupIndex];
             case 10:
                 return ListMAP[lookupIndex];
             case 11:
