@@ -60,10 +60,11 @@ public partial class DatalogReviewView : UserControl
         {
             Name = "dgv_AllValues",
             BackgroundColor = Color.FromArgb(0, 10, 15),
-            AllowUserToAddRows = false,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
             AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
             Dock = DockStyle.Top,
+            AllowUserToAddRows = false,
+            RowHeadersVisible = false
         };
         dgv_AllValues.Columns.Add("col_Variable", "Variable");
         dgv_AllValues.Columns.Add("col_Value", "Value");
