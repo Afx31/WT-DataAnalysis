@@ -55,7 +55,55 @@ public partial class DatalogReviewView : UserControl
     {
         SplitContainer spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
 
-        // Max Values DataGridView
+        #region DataGridView - All values at cursor point
+        DataGridView dgv_AllValues = new()
+        {
+            Name = "dgv_AllValues",
+            BackgroundColor = Color.FromArgb(0, 10, 15),
+            AllowUserToAddRows = false,
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
+            Dock = DockStyle.Top,
+        };
+        dgv_AllValues.Columns.Add("col_Variable", "Variable");
+        dgv_AllValues.Columns.Add("col_Value", "Value");
+        dgv_AllValues.Columns.Add("col_Value", "Max Value");
+
+        dgv_AllValues.Rows.Add("RPM", 0, 0);
+        dgv_AllValues.Rows.Add("Speed", 0, 0);
+        dgv_AllValues.Rows.Add("Gear", 0, 0);
+        dgv_AllValues.Rows.Add("Voltage", 0, 0);
+        dgv_AllValues.Rows.Add("IAT", 0, 0);
+        dgv_AllValues.Rows.Add("ECT", 0, 0);
+        dgv_AllValues.Rows.Add("MIL", 0, 0);
+        dgv_AllValues.Rows.Add("VTS", 0, 0);
+        dgv_AllValues.Rows.Add("CL", 0, 0);
+        dgv_AllValues.Rows.Add("TPS", 0, 0);
+        dgv_AllValues.Rows.Add("MAP", 0, 0);
+        dgv_AllValues.Rows.Add("INJ", 0, 0);
+        dgv_AllValues.Rows.Add("IGN", 0, 0);
+        dgv_AllValues.Rows.Add("Lambda Ratio", 0, 0);
+        dgv_AllValues.Rows.Add("Knock Counter", 0, 0);
+        dgv_AllValues.Rows.Add("Target Cam Angle", 0, 0);
+        dgv_AllValues.Rows.Add("Actual Cam Angle", 0, 0);
+        dgv_AllValues.Rows.Add("Analog0", 0, 0);
+        dgv_AllValues.Rows.Add("Analog1", 0, 0);
+        dgv_AllValues.Rows.Add("Analog2", 0, 0);
+        dgv_AllValues.Rows.Add("Analog3", 0, 0);
+        dgv_AllValues.Rows.Add("Analog4", 0, 0);
+        dgv_AllValues.Rows.Add("Analog5", 0, 0);
+        dgv_AllValues.Rows.Add("Analog6", 0, 0);
+        dgv_AllValues.Rows.Add("Analog7", 0, 0);
+        dgv_AllValues.Rows.Add("Ethanol Input 1", 0, 0);
+        dgv_AllValues.Rows.Add("Ethanol Input 2", 0, 0);
+        dgv_AllValues.Rows.Add("Ethanol Input 3", 0, 0);
+
+        DataGridView_ResizeToFitAllRows(dgv_AllValues);
+
+        spl_Left.Panel1.Controls.Add(dgv_AllValues);
+        #endregion
+
+        #region DataGridView - Max Values from session
         DataGridView dgv_MaxValues = new()
         {
             Name = "dgv_MaxValues",
@@ -68,7 +116,11 @@ public partial class DatalogReviewView : UserControl
         dgv_MaxValues.Columns.Add("col_Variable", "Variable");
         dgv_MaxValues.Columns.Add("col_Value", "Max Value");
 
+
+        //DataGridView_ResizeToFitAllRows(dgv_MaxValues);
+
         spl_Left.Panel1.Controls.Add(dgv_MaxValues);
+        #endregion
 
         // Current Gear
         GroupBox grp_Gear = new()
@@ -91,6 +143,11 @@ public partial class DatalogReviewView : UserControl
         };
         grp_Gear.Controls.Add(lbl_Gear);
         spl_Left.Panel1.Controls.Add(grp_Gear);
+    }
+
+    private static void DataGridView_ResizeToFitAllRows(DataGridView dgv)
+    {
+        dgv.Height = dgv.Rows.Count * dgv.RowTemplate.Height;
     }
 
     private void RightSplitContainerControlsSetup()
@@ -283,6 +340,7 @@ public partial class DatalogReviewView : UserControl
             return retrievedList.ToArray();
         }
 
+        #region Iterate datapoints to Chart Series
         int counter = 1;
         void DoDataPoints(List<ChartDataConfig> chartDataConfigs)
         {
@@ -337,6 +395,7 @@ public partial class DatalogReviewView : UserControl
         DoDataPoints(AppSettings.Chart2DataPoints);
         DoDataPoints(AppSettings.Chart3DataPoints);
         DoDataPoints(AppSettings.Chart4DataPoints);
+        #endregion
 
         foreach (ChartArea ca in chart.ChartAreas)
         {
@@ -582,6 +641,7 @@ public partial class DatalogReviewView : UserControl
         {
             // Get cursor position - being lazy and taking from first chart area
             double xValue = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+            double xValueRounded = Math.Round(xValue, 1);
 
             //foreach (ChartArea ca in chart.ChartAreas)
             Parallel.ForEach(chart.ChartAreas, ca =>
@@ -609,7 +669,7 @@ public partial class DatalogReviewView : UserControl
             //foreach (Series series in chart1.Series)
             Parallel.ForEach(chart.Series, series =>
             {
-                DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
+                DataPoint matchingPoint = series.Points.FirstOrDefault(x => x.XValue == xValueRounded);
 
                 if (matchingPoint != null)
                 {
@@ -620,6 +680,16 @@ public partial class DatalogReviewView : UserControl
                 }
             });
 
+            
+            if (Controls.Find("dgv_AllValues", true).FirstOrDefault() is DataGridView dgv_AllValues)
+            {
+                int hertzIndex = _csvData.ListHertzTime.IndexOf(xValueRounded);
+
+                for (int i = 0; i < CsvData.ValueCounter; i++)
+                    dgv_AllValues.Rows[i].Cells[1].Value = _csvData.GetDataValueCurrentValue(i, hertzIndex);
+            }
+
+            
             {
                 DataPoint matchingPoint = chart.Series[0].Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
 
