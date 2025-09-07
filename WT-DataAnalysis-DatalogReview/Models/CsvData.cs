@@ -3,6 +3,8 @@
 public class CsvData
 {
     #region Properties
+    public static readonly int ValueCounter = 27;
+
     private string _fileDate;
     public string FileDate
     {
@@ -420,6 +422,136 @@ public class CsvData
                 return ListEthanolInput3.ToArray();
             default:
                 return null;
+        }
+    }
+
+    public double GetDataValueMaxValue(int dataValue)
+    {
+        switch (dataValue)
+        {
+            case 0:
+                return ListRpm.Max();
+            case 1:
+                return ListSpeed.Max();
+            case 2:
+                return ListGear.Max();
+            case 3:
+                return ListVoltage.Max();
+            case 4:
+                return ListIAT.Max();
+            case 5:
+                return ListECT.Max();
+            case 6:
+                return ListMIL.Max();
+            case 7:
+                return ListVTS.Max();
+            case 8:
+                return ListCL.Max();
+            case 9:
+                return ListTPS.Max();
+            case 10:
+                return ListMAP.Max();
+            case 11:
+                return ListInj.Max();
+            case 12:
+                return ListIgn.Max();
+            case 13:
+                return ListLambdaRatio.Max();
+            case 14:
+                return ListKnockCounter.Max();
+            case 15:
+                return ListTargetCamAngle.Max();
+            case 16:
+                return ListActualCamAngle.Max();
+            case 17:
+                return ListAnalog0.Max();
+            case 18:
+                return ListAnalog1.Max();
+            case 19:
+                return ListAnalog2.Max();
+            case 20:
+                return ListAnalog3.Max();
+            case 21:
+                return ListAnalog4.Max();
+            case 22:
+                return ListAnalog5.Max();
+            case 23:
+                return ListAnalog6.Max();
+            case 24:
+                return ListAnalog7.Max();
+            case 25:
+                return ListEthanolInput1.Max();
+            case 26:
+                return ListEthanolInput2.Max();
+            case 27:
+                return ListEthanolInput3.Max();
+            default:
+                return 0;
+        }
+    }
+
+    public double GetDataValueCurrentValue(int dataValue, int lookupIndex)
+    {
+        switch (dataValue)
+        {
+            case 0:
+                return ListRpm[lookupIndex];
+            case 1:
+                return ListSpeed[lookupIndex];
+            case 2:
+                return ListGear[lookupIndex];
+            case 3:
+                return ListVoltage[lookupIndex];
+            case 4:
+                return ListIAT[lookupIndex];
+            case 5:
+                return ListECT[lookupIndex];
+            case 6:
+                return ListMIL[lookupIndex];
+            case 7:
+                return ListVTS[lookupIndex];
+            case 8:
+                return ListCL[lookupIndex];
+            case 9:
+                return ListTPS[lookupIndex];
+            case 10:
+                return ListMAP[lookupIndex];
+            case 11:
+                return ListInj[lookupIndex];
+            case 12:
+                return ListIgn[lookupIndex];
+            case 13:
+                return ListLambdaRatio[lookupIndex];
+            case 14:
+                return ListKnockCounter[lookupIndex];
+            case 15:
+                return ListTargetCamAngle[lookupIndex];
+            case 16:
+                return ListActualCamAngle[lookupIndex];
+            case 17:
+                return ListAnalog0[lookupIndex];
+            case 18:
+                return ListAnalog1[lookupIndex];
+            case 19:
+                return ListAnalog2[lookupIndex];
+            case 20:
+                return ListAnalog3[lookupIndex];
+            case 21:
+                return ListAnalog4[lookupIndex];
+            case 22:
+                return ListAnalog5[lookupIndex];
+            case 23:
+                return ListAnalog6[lookupIndex];
+            case 24:
+                return ListAnalog7[lookupIndex];
+            case 25:
+                return ListEthanolInput1[lookupIndex];
+            case 26:
+                return ListEthanolInput2[lookupIndex];
+            case 27:
+                return ListEthanolInput3[lookupIndex];
+            default:
+                return 0;
         }
     }
 
