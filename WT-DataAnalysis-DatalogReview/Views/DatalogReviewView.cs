@@ -57,6 +57,7 @@ public partial class DatalogReviewView : UserControl
     {
         SplitContainer spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
 
+        #region Left Split - Panel 1
         #region DataGridView - All values at cursor point
         DataGridView dgv_AllValues = new()
         {
@@ -138,6 +139,16 @@ public partial class DatalogReviewView : UserControl
         };
         grp_Gear.Controls.Add(lbl_Gear);
         spl_Left.Panel1.Controls.Add(grp_Gear);
+        #endregion
+
+        #region Left Split - Panel 2
+        Chart chartTrackMap = new()
+        {
+            Name = "chart_TrackMap"
+        };
+
+        spl_Left.Panel2.Controls.Add(chartTrackMap);
+        #endregion
     }
 
     private static void DataGridView_ResizeToFitAllRows(DataGridView dgv)
@@ -317,19 +328,6 @@ public partial class DatalogReviewView : UserControl
             chart.Series.RemoveAt(0);
         while (chart.Legends.Count > 0)
             chart.Legends.RemoveAt(0);
-
-        Chart chartTrackMap = new()
-        {
-            Name = "chart_TrackMap"
-        };
-        var spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
-        spl_Left.Panel2.Controls.Add(chartTrackMap);
-
-        if (chartTrackMap.Series.Any(x => x.Name == "DataMarker"))
-        {
-            Series removeSeries = chartTrackMap.Series[1];
-            chartTrackMap.Series.Remove(removeSeries);
-        }
 
 
         double[] GetRelevantDataForThisHertzRange(double[] fullList)
@@ -555,6 +553,12 @@ public partial class DatalogReviewView : UserControl
         Chart chartTrackMap = Controls.Find("chart_TrackMap", true).FirstOrDefault() as Chart;
         if (chartTrackMap == null) return;
 
+        if (chartTrackMap.Series.Any(x => x.Name == "DataMarker"))
+        {
+            Series removeSeries = chartTrackMap.Series[1];
+            chartTrackMap.Series.Remove(removeSeries);
+        }
+
         ChartArea chartAreaTrackMap = new("ChartAreaTrackMap");
 
         CurrentTrackCoords trackMapMaxCoords = TrackData.GetTrackMapMaxCoords(_csvData.Track);
@@ -562,6 +566,9 @@ public partial class DatalogReviewView : UserControl
         chartAreaTrackMap.AxisX.Maximum = trackMapMaxCoords.LatMax;
         chartAreaTrackMap.AxisY.Minimum = trackMapMaxCoords.LonMin;
         chartAreaTrackMap.AxisY.Maximum = trackMapMaxCoords.LonMax;
+
+        //chartAreaTrackMap.AxisX.Interval = 10;
+        //chartAreaTrackMap.AxisY.Interval = 10;
 
         chartAreaTrackMap.Position.Height = 100;
         chartAreaTrackMap.Position.Width = 100;
