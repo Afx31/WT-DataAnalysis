@@ -1,6 +1,9 @@
-﻿using System.Windows.Forms.DataVisualization.Charting;
+﻿using System.Diagnostics;
+using System.Windows.Forms.DataVisualization.Charting;
+using WT_DataAnalysis_DatalogReview.CustomFormComponents;
 using WT_DataAnalysis_DatalogReview.Models;
 using WT_DataAnalysis_DatalogReview.Utils;
+using static WT_DataAnalysis_DatalogReview.Models.CsvData;
 
 namespace WT_DataAnalysis_DatalogReview.Views;
 
@@ -62,7 +65,7 @@ public partial class DatalogReviewView : UserControl
             BackgroundColor = Color.FromArgb(0, 10, 15),
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
             AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
-            Dock = DockStyle.Top,
+            Dock = DockStyle.Fill,
             AllowUserToAddRows = false,
             RowHeadersVisible = false
         };
@@ -102,6 +105,17 @@ public partial class DatalogReviewView : UserControl
         DataGridView_ResizeToFitAllRows(dgv_AllValues);
 
         spl_Left.Panel1.Controls.Add(dgv_AllValues);
+        #endregion
+
+        #region Lap display on left panel
+        // Reverse order because PanelValueDisplay docks to top
+        // Plus reverse add to spl_Left.Panel1 so it's above the dgv
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Lap Index:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Pb Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Best Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Previous Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Current Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Elapsed Lap Time:"));
         #endregion
 
         // Current Gear
@@ -649,16 +663,34 @@ public partial class DatalogReviewView : UserControl
                 }
             });
 
-            
+
+            int hertzIndex = _csvData.ListHertzTime.IndexOf(xValueRounded);
+
+            // All data values
             if (Controls.Find("dgv_AllValues", true).FirstOrDefault() is DataGridView dgv_AllValues)
             {
-                int hertzIndex = _csvData.ListHertzTime.IndexOf(xValueRounded);
-
                 for (int i = 0; i < CsvData.ValueCounter; i++)
                     dgv_AllValues.Rows[i].Cells[1].Value = _csvData.GetDataValueCurrentValue(i, hertzIndex);
             }
 
-            
+            // Lap Timing Data
+            if (Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() is SplitContainer spl_Left)
+            {
+                double currentLapIndex = _csvData.GetDataValueCurrentValue((int)DataValues.LapIndex - 1, hertzIndex); 
+                double elapsedLapTime = _csvData.GetDataValueCurrentValue((int)DataValues.SessionStartTimeMs - 1, hertzIndex) -
+                                        _csvData.GetDataValueCurrentValue((int)DataValues.LapStartTimeMs - 1, hertzIndex);
+                double currentLapTime = _csvData.DictLapTimes[currentLapIndex];
+                double previousLapTime = currentLapIndex != 0 ? _csvData.DictLapTimes[currentLapIndex - 1] : 0;
+
+                spl_Left.Panel1.Controls["VD_Panel_ElapsedLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(elapsedLapTime).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_CurrentLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(currentLapTime).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_PreviousLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(previousLapTime).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_BestLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(_csvData.BestLapTime.Item2).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_PbLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(_csvData.BestLapTime.Item2).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_LapIndex:"].Controls["LabelValue"].Text = currentLapIndex.ToString();
+            }
+
+
             {
                 DataPoint matchingPoint = chart.Series[0].Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
 

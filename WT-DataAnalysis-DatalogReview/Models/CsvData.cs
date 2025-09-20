@@ -480,6 +480,12 @@ public class CsvData
                 return ListEthanolInput2.ToArray();
             case DataValues.EthanolInput3:
                 return ListEthanolInput3.ToArray();
+            case DataValues.SessionStartTimeMs:
+                return ListSessionStartTimeMs.ToArray();
+            case DataValues.LapIndex:
+                return ListLapIndex.ToArray();
+            case DataValues.LapStartTimeMs:
+                return ListLapStartTimeMs.ToArray();
             default:
                 return null;
         }
@@ -545,6 +551,12 @@ public class CsvData
                 return ListEthanolInput2.Max();
             case 27:
                 return ListEthanolInput3.Max();
+            case 28:
+                return ListSessionStartTimeMs.Max();
+            case 29:
+                return ListLapIndex.Max();
+            case 30:
+                return ListLapStartTimeMs.Max();
             default:
                 return 0;
         }
@@ -610,6 +622,12 @@ public class CsvData
                 return ListEthanolInput2[lookupIndex];
             case 27:
                 return ListEthanolInput3[lookupIndex];
+            case 28:
+                return ListSessionStartTimeMs[lookupIndex];
+            case 29:
+                return ListLapIndex[lookupIndex];
+            case 30:
+                return ListLapStartTimeMs[lookupIndex];
             default:
                 return 0;
         }
@@ -686,6 +704,9 @@ public class CsvData
         Analog7 = 25,
         EthanolInput1 = 26,
         EthanolInput2 = 27,
-        EthanolInput3 = 28
+        EthanolInput3 = 28,
+        SessionStartTimeMs = 29,
+        LapIndex = 30,
+        LapStartTimeMs = 31
     }
 }
