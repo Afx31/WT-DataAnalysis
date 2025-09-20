@@ -253,6 +253,41 @@ public class CsvData
         get => _dictLapData;
         set => _dictLapData = value;
     }
+
+    private List<double> _listSessionStartTimeMs = new List<double>();
+    public List<double> ListSessionStartTimeMs
+    {
+        get => _listSessionStartTimeMs;
+        set => _listSessionStartTimeMs = value;
+    }
+
+    private List<double> _listLapIndex = new List<double>();
+    public List<double> ListLapIndex
+    {
+        get => _listLapIndex;
+        set => _listLapIndex = value;
+    }
+
+    private List<double> _listLapStartTimeMs = new List<double>();
+    public List<double> ListLapStartTimeMs
+    {
+        get => _listLapStartTimeMs;
+        set => _listLapStartTimeMs = value;
+    }
+
+    private Dictionary<double, double> _dictLapTimes = new Dictionary<double, double>();
+    public Dictionary<double, double> DictLapTimes
+    {
+        get => _dictLapTimes;
+        set => _dictLapTimes = value;
+    }
+
+    private (double, double) _bestLapTime;
+    public (double, double) BestLapTime
+    {
+        get => _bestLapTime;
+        set => _bestLapTime = value;
+    }
     #endregion
 
     public CsvData()
@@ -327,16 +362,20 @@ public class CsvData
                         _listEthanolInput3.Add(double.Parse(values[28]));
                         _dictLatLon.Add(double.Parse(values[0]), (double.Parse(values[29]), double.Parse(values[30])));
 
-                        if (!previousLapCounter.Equals(values[31]))
+                        if (!previousLapCounter.Equals(values[32]))
                         {
-                            _dictLapData.Add(int.Parse(values[31]), (double.Parse(values[0]), 0.0));
-                            previousLapCounter = values[31];
+                            _dictLapData.Add(int.Parse(values[32]), (double.Parse(values[0]), 0.0));
+                            previousLapCounter = values[32];
 
                             // TODO - fix this hack
                             // Default first one to 0.1 hertz start, works better with the chart
                             if (_dictLapData.Count == 1)
                                 _dictLapData[0] = (0.1, 0.0);
                         }
+
+                        _listSessionStartTimeMs.Add(double.Parse(values[31]));
+                        _listLapIndex.Add(double.Parse(values[32]));
+                        _listLapStartTimeMs.Add(double.Parse(values[33]));
                     }
                     catch (Exception ex)
                     {
