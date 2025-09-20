@@ -385,7 +385,7 @@ public class CsvData
             }
         }
 
-        // Now fill in the end lap hertz
+        // Contains the min/max hertz for each lap
         for (int i = 0; i < _dictLapData.Count; i++)
         {
             var currVal = _dictLapData[i];
@@ -397,6 +397,27 @@ public class CsvData
 
             _dictLapData[i] = currVal;
         }
+
+        // Lap Timing - Work out the derived data values
+        // TODO: This is dirty, do 'properly' one day
+        for (int i = 0; i <= _listHertzTime.Count - 1; i++)
+        {
+            var currentLapIndex = _listLapIndex[i];
+
+            if (i == _listHertzTime.Count - 1)
+            {
+                _dictLapTimes.Add(currentLapIndex, _listSessionStartTimeMs[i] - _listLapStartTimeMs[i]);
+                break;
+            }
+
+            if (currentLapIndex < _listLapIndex[i + 1])
+                _dictLapTimes.Add(currentLapIndex, _listSessionStartTimeMs[i - 1] - _listLapStartTimeMs[i - 1]);
+        }
+
+        var bestLap = _dictLapTimes
+                        .OrderBy(x => x.Value)
+                        .First();
+        _bestLapTime = (bestLap.Key, bestLap.Value);
     }
 
     public double[] GetDataPointsList(DataValues dataValue)
