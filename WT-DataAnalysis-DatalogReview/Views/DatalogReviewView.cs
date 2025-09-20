@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Forms.DataVisualization.Charting;
+﻿using System.Windows.Forms.DataVisualization.Charting;
 using WT_DataAnalysis_DatalogReview.CustomFormComponents;
 using WT_DataAnalysis_DatalogReview.Models;
 using WT_DataAnalysis_DatalogReview.Utils;
@@ -676,20 +675,28 @@ public partial class DatalogReviewView : UserControl
             // Lap Timing Data
             if (Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() is SplitContainer spl_Left)
             {
-                double currentLapIndex = _csvData.GetDataValueCurrentValue((int)DataValues.LapIndex - 1, hertzIndex); 
+                double currentLapIndex = _csvData.GetDataValueCurrentValue((int)DataValues.LapIndex - 1, hertzIndex);
+
                 double elapsedLapTime = _csvData.GetDataValueCurrentValue((int)DataValues.SessionStartTimeMs - 1, hertzIndex) -
-                                        _csvData.GetDataValueCurrentValue((int)DataValues.LapStartTimeMs - 1, hertzIndex);
+                                            _csvData.GetDataValueCurrentValue((int)DataValues.LapStartTimeMs - 1, hertzIndex);
                 double currentLapTime = _csvData.DictLapTimes[currentLapIndex];
                 double previousLapTime = currentLapIndex != 0 ? _csvData.DictLapTimes[currentLapIndex - 1] : 0;
+
+                string strCurrentLapIndex;
+                if (currentLapIndex == 0)
+                    strCurrentLapIndex = "Out Lap";
+                else if (currentLapIndex == _csvData.DictLapTimes.Count - 1)
+                    strCurrentLapIndex = "In Lap";
+                else
+                    strCurrentLapIndex = currentLapIndex.ToString();
 
                 spl_Left.Panel1.Controls["VD_Panel_ElapsedLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(elapsedLapTime).ToString(@"m\:ss\:fff");
                 spl_Left.Panel1.Controls["VD_Panel_CurrentLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(currentLapTime).ToString(@"m\:ss\:fff");
                 spl_Left.Panel1.Controls["VD_Panel_PreviousLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(previousLapTime).ToString(@"m\:ss\:fff");
                 spl_Left.Panel1.Controls["VD_Panel_BestLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(_csvData.BestLapTime.Item2).ToString(@"m\:ss\:fff");
                 spl_Left.Panel1.Controls["VD_Panel_PbLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(_csvData.BestLapTime.Item2).ToString(@"m\:ss\:fff");
-                spl_Left.Panel1.Controls["VD_Panel_LapIndex:"].Controls["LabelValue"].Text = currentLapIndex.ToString();
+                spl_Left.Panel1.Controls["VD_Panel_LapIndex:"].Controls["LabelValue"].Text = strCurrentLapIndex;
             }
-
 
             {
                 DataPoint matchingPoint = chart.Series[0].Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
