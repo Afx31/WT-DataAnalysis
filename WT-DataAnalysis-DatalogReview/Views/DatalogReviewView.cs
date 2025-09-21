@@ -1,6 +1,8 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
+using WT_DataAnalysis_DatalogReview.CustomFormComponents;
 using WT_DataAnalysis_DatalogReview.Models;
 using WT_DataAnalysis_DatalogReview.Utils;
+using static WT_DataAnalysis_DatalogReview.Models.CsvData;
 
 namespace WT_DataAnalysis_DatalogReview.Views;
 
@@ -8,7 +10,6 @@ public partial class DatalogReviewView : UserControl
 {
     AppSettings AppSettings = AppSettings.Instance;
     private CsvData _csvData;
-    int previousMarkerDataPoint = -1;
     bool isDragging = false;
     Label lbl_Gear;
 
@@ -55,6 +56,7 @@ public partial class DatalogReviewView : UserControl
     {
         SplitContainer spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
 
+        #region Left Split - Panel 1
         #region DataGridView - All values at cursor point
         DataGridView dgv_AllValues = new()
         {
@@ -62,7 +64,7 @@ public partial class DatalogReviewView : UserControl
             BackgroundColor = Color.FromArgb(0, 10, 15),
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
             AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
-            Dock = DockStyle.Top,
+            Dock = DockStyle.Fill,
             AllowUserToAddRows = false,
             RowHeadersVisible = false
         };
@@ -104,6 +106,17 @@ public partial class DatalogReviewView : UserControl
         spl_Left.Panel1.Controls.Add(dgv_AllValues);
         #endregion
 
+        #region Lap display on left panel
+        // Reverse order because PanelValueDisplay docks to top
+        // Plus reverse add to spl_Left.Panel1 so it's above the dgv
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Lap Index:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Pb Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Best Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Previous Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Current Lap Time:"));
+        spl_Left.Panel1.Controls.Add(PanelValueDisplay.CreatePanel("Elapsed Lap Time:"));
+        #endregion
+
         // Current Gear
         GroupBox grp_Gear = new()
         {
@@ -125,6 +138,119 @@ public partial class DatalogReviewView : UserControl
         };
         grp_Gear.Controls.Add(lbl_Gear);
         spl_Left.Panel1.Controls.Add(grp_Gear);
+        #endregion
+
+        #region Left Split - Panel 2
+        // Panel bottom (TPS bar, Brake bar, Track map)
+        Panel newBottomPanel = new()
+        {
+            Name = "BottomPanel",
+            Dock = DockStyle.Bottom,
+            BorderStyle = BorderStyle.FixedSingle,
+            Height = 200
+        };
+
+        Panel p1 = new()
+        {
+            Dock = DockStyle.Left,
+            BorderStyle = BorderStyle.FixedSingle,
+            Width = 75
+        };
+        Panel pTpsBar = new()
+        {
+            Name = "TpsPanel",
+            Dock = DockStyle.Bottom,
+            BorderStyle = BorderStyle.FixedSingle,
+            BackColor = Color.Green
+        };
+
+        Panel p2 = new()
+        {
+            Dock = DockStyle.Left,
+            BorderStyle = BorderStyle.FixedSingle,
+            Width = 75
+        };
+        Panel pBrakeBar = new()
+        {
+            Name = "BrakePanel",
+            Dock = DockStyle.Bottom,
+            BorderStyle = BorderStyle.FixedSingle,
+            BackColor = Color.Red
+        };
+
+        Panel p3 = new()
+        {
+            Dock = DockStyle.Fill,
+            BorderStyle = BorderStyle.FixedSingle
+        };
+
+        // WinForms ordering means add right most to left
+        newBottomPanel.Controls.Add(p3);
+        Chart chartTrackMap = new()
+        {
+            Name = "chart_TrackMap",
+            Text = "ChartTrackMap",
+            BackColor = Color.LightGray,
+            Size = new Size(260, 200)
+        };
+        p3.Controls.Add(chartTrackMap);
+        newBottomPanel.Controls.Add(p2);
+        p2.Controls.Add(pBrakeBar);
+        newBottomPanel.Controls.Add(p1);
+        p1.Controls.Add(pTpsBar);
+
+        #region Track Map
+        ChartArea chartAreaTrackMap = new("ChartAreaTrackMap");
+        var trackMinMax = TrackData.GetTrackMapMaxCoords(_csvData.Track);
+        chartAreaTrackMap.BackColor = Color.Black;
+        chartAreaTrackMap.AxisX.Minimum = trackMinMax.LatMin;
+        chartAreaTrackMap.AxisX.Maximum = trackMinMax.LatMax;
+        chartAreaTrackMap.AxisY.Minimum = trackMinMax.LonMin;
+        chartAreaTrackMap.AxisY.Maximum = trackMinMax.LonMax;
+        chartAreaTrackMap.AxisX.Interval = 10;
+        chartAreaTrackMap.AxisY.Interval = 10;
+        chartAreaTrackMap.Position.Height = 100;
+        chartAreaTrackMap.Position.Width = 100;
+
+        // Disable if needed to view the coords axis labels
+        if (true)
+        {
+            chartAreaTrackMap.AxisX.MajorGrid.Enabled = false;
+            chartAreaTrackMap.AxisY.MajorGrid.Enabled = false;
+
+            chartAreaTrackMap.AxisX.MajorTickMark.Enabled = false;
+            chartAreaTrackMap.AxisY.MajorTickMark.Enabled = false;
+            chartAreaTrackMap.AxisX.MinorTickMark.Enabled = false;
+            chartAreaTrackMap.AxisY.MinorTickMark.Enabled = false;
+
+            chartAreaTrackMap.AxisX.LabelStyle.Enabled = false;
+            chartAreaTrackMap.AxisY.LabelStyle.Enabled = false;
+        }
+
+        chartTrackMap.ChartAreas.Add(chartAreaTrackMap);
+
+        Series trackMapSeriesLine = new()
+        {
+            Name = "TrackMapSeriesLine",
+            ChartType = SeriesChartType.Line,
+            Color = Color.White,
+            MarkerSize = 2
+        };
+        Series trackMapSeriesDot = new()
+        {
+            Name = "TrackMapSeriesDot",
+            ChartType = SeriesChartType.FastPoint,
+            Color = Color.Red,
+            MarkerSize = 15,
+            MarkerStyle = MarkerStyle.Circle
+        };
+
+        chartTrackMap.Series.Add(trackMapSeriesLine);
+        chartTrackMap.Series.Add(trackMapSeriesDot);
+        #endregion
+
+        spl_Left.Panel2.Controls.Add(newBottomPanel);
+        #endregion
     }
 
     private static void DataGridView_ResizeToFitAllRows(DataGridView dgv)
@@ -304,19 +430,6 @@ public partial class DatalogReviewView : UserControl
             chart.Series.RemoveAt(0);
         while (chart.Legends.Count > 0)
             chart.Legends.RemoveAt(0);
-
-        Chart chartTrackMap = new()
-        {
-            Name = "chart_TrackMap"
-        };
-        var spl_Left = Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() as SplitContainer;
-        spl_Left.Panel2.Controls.Add(chartTrackMap);
-
-        if (chartTrackMap.Series.Any(x => x.Name == "DataMarker"))
-        {
-            Series removeSeries = chartTrackMap.Series[1];
-            chartTrackMap.Series.Remove(removeSeries);
-        }
 
 
         double[] GetRelevantDataForThisHertzRange(double[] fullList)
@@ -542,62 +655,24 @@ public partial class DatalogReviewView : UserControl
         Chart chartTrackMap = Controls.Find("chart_TrackMap", true).FirstOrDefault() as Chart;
         if (chartTrackMap == null) return;
 
-        ChartArea chartAreaTrackMap = new("ChartAreaTrackMap");
-
-        CurrentTrackCoords trackMapMaxCoords = TrackData.GetTrackMapMaxCoords(_csvData.Track);
-        chartAreaTrackMap.AxisX.Minimum = trackMapMaxCoords.LatMin;
-        chartAreaTrackMap.AxisX.Maximum = trackMapMaxCoords.LatMax;
-        chartAreaTrackMap.AxisY.Minimum = trackMapMaxCoords.LonMin;
-        chartAreaTrackMap.AxisY.Maximum = trackMapMaxCoords.LonMax;
-
-        chartAreaTrackMap.Position.Height = 100;
-        chartAreaTrackMap.Position.Width = 100;
-        chartAreaTrackMap.BackColor = Color.DarkGray;
-
-        // Disable if needed to view the coords axis labels
-        if (true)
-        {
-            chartAreaTrackMap.AxisX.MajorGrid.Enabled = false;
-            chartAreaTrackMap.AxisY.MajorGrid.Enabled = false;
-
-            chartAreaTrackMap.AxisX.MajorTickMark.Enabled = false;
-            chartAreaTrackMap.AxisY.MajorTickMark.Enabled = false;
-            chartAreaTrackMap.AxisX.MinorTickMark.Enabled = false;
-            chartAreaTrackMap.AxisY.MinorTickMark.Enabled = false;
-
-            chartAreaTrackMap.AxisX.LabelStyle.Enabled = false;
-            chartAreaTrackMap.AxisY.LabelStyle.Enabled = false;
-        }
-
-        chartTrackMap.ChartAreas.Add(chartAreaTrackMap);
-
-        Series trackMapSeries = new Series("TrackMapSeries")
-        {
-            ChartType = SeriesChartType.FastPoint,
-            Color = Color.White,
-            MarkerSize = 2
-        };
-
-
-        List<double> unpackedLat = new List<double>();
-        List<double> unpackedLon = new List<double>();
+        List<double> unpackedLat = new();
+        List<double> unpackedLon = new();
 
         foreach (var item in _csvData.DictLatLon)
         {
             unpackedLat.Add(item.Value.Item1);
             unpackedLon.Add(item.Value.Item2);
         }
-        trackMapSeries.Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
-        chartTrackMap.Series.Add(trackMapSeries);
-
+        chartTrackMap.Series["TrackMapSeriesLine"].Points.DataBindXY(unpackedLon.ToArray(), unpackedLat.ToArray());
 
         // Finish line
-        Series finishLineSeries = new Series("FinishLineSeries")
+        Series finishLineSeries = new("FinishLineSeries")
         {
             ChartType = SeriesChartType.Line,
             Color = Color.Red,
             BorderWidth = 4
         };
+
         CurrentTrackCoords finishLineCoords = TrackData.GetFinishLineCoords(_csvData.Track);
         finishLineSeries.Points.AddXY(finishLineCoords.LonMin, finishLineCoords.LatMin);
         finishLineSeries.Points.AddXY(finishLineCoords.LonMax, finishLineCoords.LatMax);
@@ -649,16 +724,42 @@ public partial class DatalogReviewView : UserControl
                 }
             });
 
-            
+
+            int hertzIndex = _csvData.ListHertzTime.IndexOf(xValueRounded);
+
+            // All data values
             if (Controls.Find("dgv_AllValues", true).FirstOrDefault() is DataGridView dgv_AllValues)
             {
-                int hertzIndex = _csvData.ListHertzTime.IndexOf(xValueRounded);
-
                 for (int i = 0; i < CsvData.ValueCounter; i++)
                     dgv_AllValues.Rows[i].Cells[1].Value = _csvData.GetDataValueCurrentValue(i, hertzIndex);
             }
 
-            
+            // Lap Timing Data
+            if (Controls.Find("spl_Left_DatalogReivew", true).FirstOrDefault() is SplitContainer spl_Left)
+            {
+                double currentLapIndex = _csvData.GetDataValueCurrentValue((int)DataValues.LapIndex - 1, hertzIndex);
+
+                double elapsedLapTime = _csvData.GetDataValueCurrentValue((int)DataValues.SessionStartTimeMs - 1, hertzIndex) -
+                                            _csvData.GetDataValueCurrentValue((int)DataValues.LapStartTimeMs - 1, hertzIndex);
+                double currentLapTime = _csvData.DictLapTimes[currentLapIndex];
+                double previousLapTime = currentLapIndex != 0 ? _csvData.DictLapTimes[currentLapIndex - 1] : 0;
+
+                string strCurrentLapIndex;
+                if (currentLapIndex == 0)
+                    strCurrentLapIndex = "Out Lap";
+                else if (currentLapIndex == _csvData.DictLapTimes.Count - 1)
+                    strCurrentLapIndex = "In Lap";
+                else
+                    strCurrentLapIndex = currentLapIndex.ToString();
+
+                spl_Left.Panel1.Controls["VD_Panel_ElapsedLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(elapsedLapTime).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_CurrentLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(currentLapTime).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_PreviousLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(previousLapTime).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_BestLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(_csvData.BestLapTime.Item2).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_PbLapTime:"].Controls["LabelValue"].Text = TimeSpan.FromMilliseconds(_csvData.BestLapTime.Item2).ToString(@"m\:ss\:fff");
+                spl_Left.Panel1.Controls["VD_Panel_LapIndex:"].Controls["LabelValue"].Text = strCurrentLapIndex;
+            }
+
             {
                 DataPoint matchingPoint = chart.Series[0].Points.FirstOrDefault(x => x.XValue == Math.Round(xValue, 1));
 
@@ -672,7 +773,7 @@ public partial class DatalogReviewView : UserControl
                 // Have to move this out for some reason because of the multi threading.
                 lbl_Gear.Text = gearValue;
 
-                MoveTrackMapCurrentPosition(currentLat, currentLon);
+                MoveTrackMapCurrentPositionDot(currentLat, currentLon);
 
                 // TODO: No idea what this was for
                 //double yValue = Math.Round(ca.AxisY.PixelPositionToValue(e.Y), 2);
@@ -685,42 +786,22 @@ public partial class DatalogReviewView : UserControl
         }
     }
 
-    private void MoveTrackMapCurrentPosition(double lat, double lon)
+    private void MoveTrackMapCurrentPositionDot(double lat, double lon)
     {
         Chart trackMapChart = Controls.Find("chart_TrackMap", true).FirstOrDefault() as Chart;
         if (trackMapChart == null) return;
 
-        // First clear the previous marker
-        if (previousMarkerDataPoint >= 0)
+        for (int i = 0; i < trackMapChart.Series["TrackMapSeriesLine"].Points.Count; i++)
         {
-            DataPoint point = trackMapChart.Series[0].Points[previousMarkerDataPoint];
-            point.MarkerColor = default;
-            point.MarkerSize = default;
-            point.MarkerStyle = default;
-        }
-
-        for (var i = 0; i < trackMapChart.Series[0].Points.Count; i++)
-        {
-            DataPoint point = trackMapChart.Series[0].Points[i];
+            DataPoint point = trackMapChart.Series["TrackMapSeriesLine"].Points[i];
 
             if (point.XValue == lon && point.YValues.FirstOrDefault() == lat)
             {
-                // TODO: This is the shitty workaround
-                // Remove the current series if it exists
-                if (previousMarkerDataPoint >= 0 && trackMapChart.Series.Any(x => x.Name == "DataMarker"))
-                    trackMapChart.Series.Remove(trackMapChart.Series["DataMarker"]);
+                // Remove the previous marker, we only want 1, i.e. where we are currently on the track based on cursor click
+                if (trackMapChart.Series["TrackMapSeriesDot"].Points.Count > 0)
+                    trackMapChart.Series["TrackMapSeriesDot"].Points.Remove(trackMapChart.Series["TrackMapSeriesDot"].Points[0]);
 
-                Series series = new Series("DataMarker");
-                series.ChartType = SeriesChartType.Point;
-                series.Points.AddXY(lon, lat);
-                series.Points[0].MarkerColor = Color.Red;
-                series.Points[0].MarkerSize = 15;
-                series.Points[0].MarkerStyle = MarkerStyle.Circle;
-                series.Points[0].Color = Color.Red;
-
-                trackMapChart.Series.Add(series);
-
-                previousMarkerDataPoint = i;
+                trackMapChart.Series["TrackMapSeriesDot"].Points.AddXY(lon, lat);
                 break;
             }
         }

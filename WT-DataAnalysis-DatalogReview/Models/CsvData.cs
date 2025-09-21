@@ -244,6 +244,7 @@ public class CsvData
     }
 
     /// <summary>
+    /// More so a helper collection, contains each lap with their min/max hertz time for start/finish of each lap
     /// [Key] = lap itself
     /// [Value] = hertz value at the start & end of that lap
     /// </summary>
@@ -252,6 +253,41 @@ public class CsvData
     {
         get => _dictLapData;
         set => _dictLapData = value;
+    }
+
+    private List<double> _listSessionStartTimeMs = new List<double>();
+    public List<double> ListSessionStartTimeMs
+    {
+        get => _listSessionStartTimeMs;
+        set => _listSessionStartTimeMs = value;
+    }
+
+    private List<double> _listLapIndex = new List<double>();
+    public List<double> ListLapIndex
+    {
+        get => _listLapIndex;
+        set => _listLapIndex = value;
+    }
+
+    private List<double> _listLapStartTimeMs = new List<double>();
+    public List<double> ListLapStartTimeMs
+    {
+        get => _listLapStartTimeMs;
+        set => _listLapStartTimeMs = value;
+    }
+
+    private Dictionary<double, double> _dictLapTimes = new Dictionary<double, double>();
+    public Dictionary<double, double> DictLapTimes
+    {
+        get => _dictLapTimes;
+        set => _dictLapTimes = value;
+    }
+
+    private (double, double) _bestLapTime;
+    public (double, double) BestLapTime
+    {
+        get => _bestLapTime;
+        set => _bestLapTime = value;
     }
     #endregion
 
@@ -291,11 +327,10 @@ public class CsvData
                 {
                     try
                     {
-                        // Debugging
+                        // For debugging
                         //if (values[0] == "00.1")
-                        //{
                         //    int i = 0;
-                        //}
+                        
                         _listHertzTime.Add(double.Parse(values[0]));
                         _listRpm.Add(double.Parse(values[1]));
                         _listSpeed.Add(double.Parse(values[2]));
@@ -327,16 +362,20 @@ public class CsvData
                         _listEthanolInput3.Add(double.Parse(values[28]));
                         _dictLatLon.Add(double.Parse(values[0]), (double.Parse(values[29]), double.Parse(values[30])));
 
-                        if (!previousLapCounter.Equals(values[31]))
+                        if (!previousLapCounter.Equals(values[32]))
                         {
-                            _dictLapData.Add(int.Parse(values[31]), (double.Parse(values[0]), 0.0));
-                            previousLapCounter = values[31];
+                            _dictLapData.Add(int.Parse(values[32]), (double.Parse(values[0]), 0.0));
+                            previousLapCounter = values[32];
 
                             // TODO - fix this hack
                             // Default first one to 0.1 hertz start, works better with the chart
                             if (_dictLapData.Count == 1)
                                 _dictLapData[0] = (0.1, 0.0);
                         }
+
+                        _listSessionStartTimeMs.Add(double.Parse(values[31]));
+                        _listLapIndex.Add(double.Parse(values[32]));
+                        _listLapStartTimeMs.Add(double.Parse(values[33]));
                     }
                     catch (Exception ex)
                     {
@@ -346,7 +385,7 @@ public class CsvData
             }
         }
 
-        // Now fill in the end lap hertz
+        // Contains the min/max hertz for each lap
         for (int i = 0; i < _dictLapData.Count; i++)
         {
             var currVal = _dictLapData[i];
@@ -358,6 +397,27 @@ public class CsvData
 
             _dictLapData[i] = currVal;
         }
+
+        // Lap Timing - Work out the derived data values
+        // TODO: This is dirty, do 'properly' one day
+        for (int i = 0; i <= _listHertzTime.Count - 1; i++)
+        {
+            var currentLapIndex = _listLapIndex[i];
+
+            if (i == _listHertzTime.Count - 1)
+            {
+                _dictLapTimes.Add(currentLapIndex, _listSessionStartTimeMs[i] - _listLapStartTimeMs[i]);
+                break;
+            }
+
+            if (currentLapIndex < _listLapIndex[i + 1])
+                _dictLapTimes.Add(currentLapIndex, _listSessionStartTimeMs[i - 1] - _listLapStartTimeMs[i - 1]);
+        }
+
+        var bestLap = _dictLapTimes
+                        .OrderBy(x => x.Value)
+                        .First();
+        _bestLapTime = (bestLap.Key, bestLap.Value);
     }
 
     public double[] GetDataPointsList(DataValues dataValue)
@@ -420,6 +480,12 @@ public class CsvData
                 return ListEthanolInput2.ToArray();
             case DataValues.EthanolInput3:
                 return ListEthanolInput3.ToArray();
+            case DataValues.SessionStartTimeMs:
+                return ListSessionStartTimeMs.ToArray();
+            case DataValues.LapIndex:
+                return ListLapIndex.ToArray();
+            case DataValues.LapStartTimeMs:
+                return ListLapStartTimeMs.ToArray();
             default:
                 return null;
         }
@@ -485,6 +551,12 @@ public class CsvData
                 return ListEthanolInput2.Max();
             case 27:
                 return ListEthanolInput3.Max();
+            case 28:
+                return ListSessionStartTimeMs.Max();
+            case 29:
+                return ListLapIndex.Max();
+            case 30:
+                return ListLapStartTimeMs.Max();
             default:
                 return 0;
         }
@@ -550,6 +622,12 @@ public class CsvData
                 return ListEthanolInput2[lookupIndex];
             case 27:
                 return ListEthanolInput3[lookupIndex];
+            case 28:
+                return ListSessionStartTimeMs[lookupIndex];
+            case 29:
+                return ListLapIndex[lookupIndex];
+            case 30:
+                return ListLapStartTimeMs[lookupIndex];
             default:
                 return 0;
         }
@@ -626,6 +704,9 @@ public class CsvData
         Analog7 = 25,
         EthanolInput1 = 26,
         EthanolInput2 = 27,
-        EthanolInput3 = 28
+        EthanolInput3 = 28,
+        SessionStartTimeMs = 29,
+        LapIndex = 30,
+        LapStartTimeMs = 31
     }
 }
