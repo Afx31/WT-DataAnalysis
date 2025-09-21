@@ -244,6 +244,7 @@ public class CsvData
     }
 
     /// <summary>
+    /// More so a helper collection, contains each lap with their min/max hertz time for start/finish of each lap
     /// [Key] = lap itself
     /// [Value] = hertz value at the start & end of that lap
     /// </summary>
@@ -326,11 +327,10 @@ public class CsvData
                 {
                     try
                     {
-                        // Debugging
+                        // For debugging
                         //if (values[0] == "00.1")
-                        //{
                         //    int i = 0;
-                        //}
+                        
                         _listHertzTime.Add(double.Parse(values[0]));
                         _listRpm.Add(double.Parse(values[1]));
                         _listSpeed.Add(double.Parse(values[2]));
